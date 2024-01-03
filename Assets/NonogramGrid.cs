@@ -126,15 +126,16 @@ public class NonogramGrid : MonoBehaviour
     // Function to change grid size dynamically
     public void ChangeGridSize(int newRows, int newColumns)
     {
+        ClearRowIndices();
+        ClearColumnIndices();
+
         rows = newRows;
         columns = newColumns;
 
-        DestroyGrid(); // Clear current grid
-
-        CreateGrid(); // Create a new grid with the updated size
+        DestroyGrid();
+        CreateGrid(); 
     }
 
-    // Function to destroy the current grid
     void DestroyGrid()
     {
         if (cells != null)
@@ -146,30 +147,51 @@ public class NonogramGrid : MonoBehaviour
         }
     }
 
+    void ClearRowIndices()
+    {
+        for (int i = 0; i < rows; i++)
+        {
+            Transform rowIndex = gridParent.Find("RowIndex_" + i);
+            if (rowIndex != null)
+            {
+                Destroy(rowIndex.gameObject);
+            }
+        }
+    }
+
+    void ClearColumnIndices()
+    {
+        for (int j = 0; j < columns; j++)
+        {
+            Transform colIndex = gridParent.Find("ColIndex_" + j);
+            if (colIndex != null)
+            {
+                Destroy(colIndex.gameObject);
+            }
+        }
+    }
+
+
+
+
     // ####################### Cell State Management
 
-    // Get the state of a specific cell
     public bool GetCellState(int row, int column)
     {
         return cellStates[row, column];
     }
-    // Define a delegate for the state change event
     public delegate void CellStateChangeEvent();
-    // Define the event using the delegate
     public event CellStateChangeEvent OnCellStateChanged;
 
-    // Set the state of a specific cell
     public void SetCellState(int row, int column, bool state)
     {
         cellStates[row, column] = state;
 
-        // Invoke the event whenever a cell's state changes
         if (OnCellStateChanged != null)
         {
             OnCellStateChanged.Invoke();
         }
 
-        // Update the row index text for the row where the cell's state changed
         UpdateRowIndexText(row);
         UpdateColumnIndexText(column);
     }
@@ -265,7 +287,7 @@ public class NonogramGrid : MonoBehaviour
                 // indexRect.Rotate(new Vector3(0, 0, -90));
 
                 float difference = (indexRect.rect.height - previous_text_height) / 6f;
-                Debug.Log("difference: " + difference+ ","+minSize+","+preferredSize);
+                // Debug.Log("difference: " + difference+ ","+minSize+","+preferredSize);
                 indexRect.anchoredPosition += new Vector2(0f, difference);
             }
         }
@@ -289,9 +311,10 @@ public class NonogramGrid : MonoBehaviour
                 currentGroup = 0;
             }
         }
-        if (currentGroup > 0)
+        if (currentGroup == 0)
         {
-            rowGroupText += currentGroup + " ";
+            // remove last space
+            rowGroupText = rowGroupText.Substring(0, rowGroupText.Length - 1);
         }
 
         return rowGroupText;
