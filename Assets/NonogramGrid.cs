@@ -116,6 +116,7 @@ public class NonogramGrid : MonoBehaviour
                 cellToggle.SetGridStateReference(this, i, j); // Pass reference to the grid and cell indices
 
                 cells[i, j] = cell; // Store reference to the cell in the array
+                cell.SetActive(true); 
             }
         }
 
@@ -311,11 +312,11 @@ public class NonogramGrid : MonoBehaviour
                 currentGroup = 0;
             }
         }
-        if (currentGroup == 0)
-        {
-            // remove last space
-            rowGroupText = rowGroupText.Substring(0, rowGroupText.Length - 1);
-        }
+        // if (currentGroup == 0)
+        // {
+        //     // remove last space
+        //     rowGroupText = rowGroupText.Substring(0, rowGroupText.Length - 1);
+        // }
 
         return rowGroupText;
     }
