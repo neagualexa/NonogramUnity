@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
 
 public class NonogramGrid : MonoBehaviour
 {
@@ -15,10 +16,10 @@ public class NonogramGrid : MonoBehaviour
     private GameObject[,] cells; // 2D array to hold references to the grid cells
     private bool[,] cellStates; // 2D array to store the state of each cell
 
+
     void Start()
     {
         CreateGrid();
-        // UpdateGridIndices(); // Initialize the row and column indices to 0
         // Attach a listener to the event that triggers when cell states change
         OnCellStateChanged += HandleCellStateChanged;
     }
@@ -57,7 +58,7 @@ public class NonogramGrid : MonoBehaviour
 
             Text indexText = rowIndex.AddComponent<Text>();
             indexText.font = font;
-            indexText.text = (i + 1).ToString();
+            indexText.text = "0"; //(i + 1).ToString();
             indexText.alignment = TextAnchor.MiddleCenter;
             indexText.color = Color.white;
 
@@ -79,7 +80,7 @@ public class NonogramGrid : MonoBehaviour
 
             Text indexText = colIndex.AddComponent<Text>();
             indexText.font = font;
-            indexText.text = (j + 1).ToString();
+            indexText.text = "0"; //(j + 1).ToString();
             indexText.alignment = TextAnchor.MiddleCenter;
             indexText.color = Color.white;
 
@@ -116,7 +117,7 @@ public class NonogramGrid : MonoBehaviour
                 cellToggle.SetGridStateReference(this, i, j); // Pass reference to the grid and cell indices
 
                 cells[i, j] = cell; // Store reference to the cell in the array
-                cell.SetActive(true); 
+                cell.SetActive(true);
             }
         }
 
@@ -134,7 +135,7 @@ public class NonogramGrid : MonoBehaviour
         columns = newColumns;
 
         DestroyGrid();
-        CreateGrid(); 
+        CreateGrid();
     }
 
     void DestroyGrid()
@@ -288,7 +289,6 @@ public class NonogramGrid : MonoBehaviour
                 // indexRect.Rotate(new Vector3(0, 0, -90));
 
                 float difference = (indexRect.rect.height - previous_text_height) / 6f;
-                // Debug.Log("difference: " + difference+ ","+minSize+","+preferredSize);
                 indexRect.anchoredPosition += new Vector2(0f, difference);
             }
         }
@@ -317,7 +317,8 @@ public class NonogramGrid : MonoBehaviour
             rowGroupText += currentGroup + " ";
         }
 
-        if (rowGroupText.Length == 0){
+        if (rowGroupText.Length == 0)
+        {
             rowGroupText = "0";
         }
 
@@ -337,24 +338,152 @@ public class NonogramGrid : MonoBehaviour
             }
             else if (currentGroup > 0)
             {
-                colGroupText += currentGroup + "\n"; 
+                colGroupText += currentGroup + "\n";
                 currentGroup = 0;
             }
         }
-        if (currentGroup > 0){
+        if (currentGroup > 0)
+        {
             colGroupText += currentGroup;
         }
-
+        
+        if (colGroupText.Length == 0)
+        {
+            colGroupText = "0";
+        }
         // if last character is new line, remove it
-        if (colGroupText[colGroupText.Length - 1] == '\n'){
+        else if (colGroupText[colGroupText.Length - 1] == '\n')
+        {
             colGroupText = colGroupText.Substring(0, colGroupText.Length - 1);
         }
 
-        if (colGroupText.Length == 0){
-            colGroupText = "0";
-        }
+        
 
         return colGroupText;
+    }
+
+
+    // ####################### Grid State Management (Save & Load)
+    [System.Serializable]
+    public class GridStateData
+    {
+        public int rows;
+        public int columns;
+        public CellStatesWrapper cellStatesWrapper;
+
+        public void SetCellStates(bool[,] cellStates)
+        {
+            cellStatesWrapper = new CellStatesWrapper(cellStates);
+            rows = cellStates.GetLength(0);
+            columns = cellStates.GetLength(1);
+        }
+
+        public bool[,] GetCellStates()
+        {
+            return cellStatesWrapper.GetCellStates(rows, columns);
+        }
+    }
+
+    [System.Serializable]
+    public class CellStatesWrapper
+    {
+        public bool[] cellStates;
+
+        public CellStatesWrapper(bool[,] cellStates)
+        {
+            int rows = cellStates.GetLength(0);
+            int columns = cellStates.GetLength(1);
+            this.cellStates = new bool[rows * columns];
+
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < columns; j++)
+                {
+                    this.cellStates[i * columns + j] = cellStates[i, j];
+                }
+            }
+        }
+
+        public bool[,] GetCellStates(int rows, int columns)
+        {
+            bool[,] result = new bool[rows, columns];
+
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < columns; j++)
+                {
+                    result[i, j] = cellStates[i * columns + j];
+                }
+            }
+
+            return result;
+        }
+    }
+    public void SaveGridState(string fileName)
+    {
+        GridStateData gridData = new GridStateData();
+        gridData.SetCellStates(cellStates);
+        gridData.rows = rows;
+        gridData.columns = columns;
+
+        Debug.Log("Saving grid state: " + gridData.rows + " rows, " + gridData.columns + " columns" + ", " + gridData.cellStatesWrapper + " cell states");
+
+        string jsonData = JsonUtility.ToJson(gridData);
+
+        string filePath = Path.Combine(Application.persistentDataPath, fileName); // saved at C:\Users\{username}\AppData\LocalLow\DefaultCompany\{projectname}
+
+        try
+        {
+            File.WriteAllText(filePath, jsonData);
+            Debug.Log("Grid state saved to: " + filePath);
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError("Error saving grid state: " + e.Message);
+        }
+    }
+
+    public void LoadGridState(string fileName)
+    {
+        string filePath = Path.Combine(Application.persistentDataPath, fileName); // load from C:\Users\{username}\AppData\LocalLow\DefaultCompany\{projectname}
+
+        if (File.Exists(filePath))
+        {
+            try
+            {
+                string jsonData = File.ReadAllText(filePath);
+                GridStateData gridData = JsonUtility.FromJson<GridStateData>(jsonData);
+
+                ChangeGridSize(gridData.rows, gridData.columns);
+
+                bool[,] loadedCellStates = gridData.GetCellStates(); // TODO: Something wrong when changing from 3 to 2 json file
+                // Debug.Log("Loaded grid state: " + gridData.rows + " rows, " + gridData.columns + " columns" + ", " + loadedCellStates + " cell states");
+                for (int i = 0; i < gridData.rows; i++)
+                {
+                    for (int j = 0; j < gridData.columns; j++)
+                    {
+                        bool loadedCellState = loadedCellStates[i, j];
+                        GridCellToggle cellToggle = cells[i, j].GetComponent<GridCellToggle>();
+                        if (cellToggle != null)
+                        {
+                            // Debug.Log("Loaded cell state: " + i + ", " + j + ": " + loadedCellState);
+                            cellToggle.SetGridStateReference(this, i, j);
+                            cellToggle.UpdateButton(loadedCellState);
+                        }
+                    }
+                }
+
+                Debug.Log("Grid state loaded from: " + filePath);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError("Error loading grid state: " + e.Message);
+            }
+        }
+        else
+        {
+            Debug.LogError("File not found: " + filePath);
+        }
     }
 
 

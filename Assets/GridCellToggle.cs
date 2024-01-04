@@ -17,9 +17,15 @@ public class GridCellToggle : MonoBehaviour
     {
         button = GetComponent<Button>();
         buttonImage = button.GetComponent<Image>();
-        originalColor = buttonImage.color;
-
+        // originalColor = buttonImage.color;
+        setOriginalColor();
         button.onClick.AddListener(OnButtonClick);
+    }
+
+    void setOriginalColor()
+    {
+        string hexoriginalColor = "#C7F6FF"; // Replace this with your hex color string
+        ColorUtility.TryParseHtmlString(hexoriginalColor, out originalColor);
     }
 
     // Method to set references to the grid and cell indices
@@ -37,7 +43,7 @@ public class GridCellToggle : MonoBehaviour
         if (isPressed)
         {
             buttonImage.color = Color.red;
-            Debug.Log("Cell is pressed");
+            // Debug.Log("Cell is pressed");
             // Update the grid state when the cell is pressed
             if (gridReference != null)
             {
@@ -47,8 +53,37 @@ public class GridCellToggle : MonoBehaviour
         else
         {
             buttonImage.color = originalColor;
-            Debug.Log("Cell is released");
+            // Debug.Log("Cell is released");
             // Update the grid state when the cell is released
+            if (gridReference != null)
+            {
+                gridReference.SetCellState(rowIndex, columnIndex, false);
+            }
+        }
+    }
+
+    public void UpdateButton(bool active)
+    {
+        button = GetComponent<Button>();
+        buttonImage = button.GetComponent<Image>();
+        // originalColor = buttonImage.color;
+        setOriginalColor();
+        isPressed = active; // TODO: stil iffy indexing detencing if cell is on or off, also still have to press twice to start updating the grid (as if isPressed is False)
+
+        if (active)
+        {
+            buttonImage.color = Color.red;
+            // Debug.Log("Cell is active");
+            if (gridReference != null)
+            {
+                Debug.Log("Cell is active");
+                gridReference.SetCellState(rowIndex, columnIndex, true);
+            }
+        }
+        else
+        {
+            buttonImage.color = originalColor;
+            // Debug.Log("Cell is inactive");
             if (gridReference != null)
             {
                 gridReference.SetCellState(rowIndex, columnIndex, false);
