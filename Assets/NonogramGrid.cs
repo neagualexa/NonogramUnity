@@ -312,11 +312,14 @@ public class NonogramGrid : MonoBehaviour
                 currentGroup = 0;
             }
         }
-        // if (currentGroup == 0)
-        // {
-        //     // remove last space
-        //     rowGroupText = rowGroupText.Substring(0, rowGroupText.Length - 1);
-        // }
+        if (currentGroup > 0)
+        {
+            rowGroupText += currentGroup + " ";
+        }
+
+        if (rowGroupText.Length == 0){
+            rowGroupText = "0";
+        }
 
         return rowGroupText;
     }
@@ -334,14 +337,21 @@ public class NonogramGrid : MonoBehaviour
             }
             else if (currentGroup > 0)
             {
-                colGroupText += currentGroup + "\n";
+                colGroupText += currentGroup + "\n"; 
                 currentGroup = 0;
             }
         }
-        if (currentGroup == 0)
-        {
-            // remove last new line
+        if (currentGroup > 0){
+            colGroupText += currentGroup;
+        }
+
+        // if last character is new line, remove it
+        if (colGroupText[colGroupText.Length - 1] == '\n'){
             colGroupText = colGroupText.Substring(0, colGroupText.Length - 1);
+        }
+
+        if (colGroupText.Length == 0){
+            colGroupText = "0";
         }
 
         return colGroupText;
