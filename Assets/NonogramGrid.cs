@@ -449,15 +449,17 @@ public class NonogramGrid : MonoBehaviour
 
         if (File.Exists(filePath))
         {
-            try
-            {
+            // try
+            // {
                 string jsonData = File.ReadAllText(filePath);
                 GridStateData gridData = JsonUtility.FromJson<GridStateData>(jsonData);
 
-                ChangeGridSize(gridData.rows, gridData.columns);
+                // 1. Change grid size to match the loaded grid size, but empty states
+                ChangeGridSize(gridData.rows, gridData.columns); 
 
-                bool[,] loadedCellStates = gridData.GetCellStates(); // TODO: Something wrong when changing from 3 to 2 json file
-                // Debug.Log("Loaded grid state: " + gridData.rows + " rows, " + gridData.columns + " columns" + ", " + loadedCellStates + " cell states");
+                // 2. Updating the states of the grid from the loaded data
+                bool[,] loadedCellStates = gridData.GetCellStates();
+                Debug.Log("Loaded grid state: " + loadedCellStates[0, 0] + loadedCellStates[0,1]);
                 for (int i = 0; i < gridData.rows; i++)
                 {
                     for (int j = 0; j < gridData.columns; j++)
@@ -467,18 +469,20 @@ public class NonogramGrid : MonoBehaviour
                         if (cellToggle != null)
                         {
                             // Debug.Log("Loaded cell state: " + i + ", " + j + ": " + loadedCellState);
+                            // 3. Update row and column indices by updating the button cell state
                             cellToggle.SetGridStateReference(this, i, j);
-                            cellToggle.UpdateButton(loadedCellState);
+                            cellToggle.UpdateButton(loadedCellState);                           //TODO: error as indexes are not updated if they were covered by the grid beforehand (size)
                         }
                     }
                 }
 
+
                 Debug.Log("Grid state loaded from: " + filePath);
-            }
-            catch (System.Exception e)
-            {
-                Debug.LogError("Error loading grid state: " + e.Message);
-            }
+            // }
+            // catch (System.Exception e)
+            // {
+            //     Debug.LogError("Error loading grid state: " + e.Message);
+            // }
         }
         else
         {
