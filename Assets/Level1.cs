@@ -7,6 +7,7 @@ public class Level1 : MonoBehaviour
 {
     public LevelSetup levelGrid;
     string fileName = "coffeecup.json";
+    public string user;
 
     void Start()
     {
@@ -18,9 +19,9 @@ public class Level1 : MonoBehaviour
         levelGrid.LoadLevelToPlay(fileName);
     }
 
-    public void SaveProgress(string user="")
+    public void SaveProgress()
     {
-        string saveFileName = "level1_"+user+"_progress_" + fileName + ".json"; // Name of the save file
-        levelGrid.SaveProgress(saveFileName);
+        string savedProgressFileName = user+"_progress_level_" + fileName;
+        levelGrid.SaveProgress(savedProgressFileName);
     }
 }

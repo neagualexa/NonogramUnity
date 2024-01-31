@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
+using TMPro;
+
 
 public class LevelSetup : MonoBehaviour
 {
@@ -10,18 +12,20 @@ public class LevelSetup : MonoBehaviour
     public GameObject cellPrefab; // Prefab for the grid cell
     public Transform gridParent; // Parent object for the grid cells
     public GameObject originalCellPrefab;
+    public TMP_InputField meaningInputField; 
 
     public Font fontAsset; // Add a field for the font asset
 
     private GameObject[,] cells; // 2D array to hold references to the grid cells
     private bool[,] cellStates; // 2D array to store the state of each cell
     private bool[,] solutionCellStates; // 2D array to store the Solution state of each cell
+    private string currentMeaning = "";
 
 
     void CreateGrid()
     {
         cells = new GameObject[rows, columns];  // Initialize the 2D array for cells
-        cellStates = new bool[rows, columns];   // Initialize the 2D array for cell states
+        // cellStates = new bool[rows, columns];   // Initialize the 2D array for cell states
 
         // Calculate the size of each cell based on the grid size
         float cellSizeX = gridParent.GetComponent<RectTransform>().rect.width / columns;
@@ -96,12 +100,10 @@ public class LevelSetup : MonoBehaviour
                 cellRect.sizeDelta = new Vector2(cellSizeX, cellSizeY);
                 cellRect.anchoredPosition = new Vector2(posX, posY);
 
-                // Set initial state of the cell
-                cellStates[i, j] = false; // Assuming all cells start as unpressed
-
                 // Attach the LevelGridCellToggle script to handle toggle behavior
                 LevelGridCellToggle cellToggle = cell.AddComponent<LevelGridCellToggle>();
                 cellToggle.SetGridStateReference(this, i, j); // Pass reference to the grid and cell indices
+                cellToggle.UpdateButton(cellStates[i, j]);
 
                 cells[i, j] = cell; // Store reference to the cell in the array
                 cell.SetActive(true);
@@ -162,12 +164,16 @@ public class LevelSetup : MonoBehaviour
 
 
 
-
     // ####################### Cell State Management
 
     public bool GetCellState(int row, int column)
     {
         return cellStates[row, column];
+    }
+
+    public bool GetSolutionCellState(int row, int column)
+    {
+        return solutionCellStates[row, column];
     }
     public delegate void CellStateChangeEvent();
     public event CellStateChangeEvent OnCellStateChanged;
@@ -181,28 +187,12 @@ public class LevelSetup : MonoBehaviour
             OnCellStateChanged.Invoke();
         }
 
-        UpdateRowIndexText(row);
-        UpdateColumnIndexText(column);
-    }
-
-    // Function to print the states of all cells in the grid
-    public void PrintCellStates()
-    {
-        Debug.Log("####################### Updated Cell States #######################");
-        for (int i = 0; i < rows; i++)
-        {
-            string rowStates = "";
-            for (int j = 0; j < columns; j++)
-            {
-                bool cellState = GetCellState(i, j);
-                rowStates += (cellState ? "1" : "0") + " "; // Assuming true is represented by "1" and false by "0"
-            }
-            Debug.Log("Row " + (i + 1) + ": " + rowStates);
-        }
+        // UpdateRowIndexText(row);
+        // UpdateColumnIndexText(column);
     }
 
     // Update row indices text with consecutive pressed cell counts
-    void UpdateRowIndexText(int rowIndex)
+    void UpdateRowIndexText(int rowIndex, bool solution = false)
     {
         Transform rowTextTransform = gridParent.Find("RowIndex_" + rowIndex);
         if (rowTextTransform != null)
@@ -213,7 +203,7 @@ public class LevelSetup : MonoBehaviour
                 RectTransform indexRect = indexText.GetComponent<RectTransform>();
                 float previous_text_width = indexRect.rect.width; // remember the previous text width
 
-                string consecutiveCount = CalculateGroupPressedCellsPerRow(rowIndex);
+                string consecutiveCount = CalculateGroupPressedCellsPerRow(rowIndex, solution);
                 indexText.text = consecutiveCount;
 
                 // Calculate preferred size of the text
@@ -243,7 +233,7 @@ public class LevelSetup : MonoBehaviour
     }
 
     // Update column indices text with consecutive pressed cell counts
-    void UpdateColumnIndexText(int colIndex)
+    void UpdateColumnIndexText(int colIndex, bool solution = false)
     {
         Transform colTextTransform = gridParent.Find("ColIndex_" + colIndex);
         if (colTextTransform != null)
@@ -254,7 +244,7 @@ public class LevelSetup : MonoBehaviour
                 RectTransform indexRect = indexText.GetComponent<RectTransform>();
                 float previous_text_height = indexRect.rect.height; // remember the previous text width
 
-                string consecutiveCount = CalculateGroupPressedCellsPerColumn(colIndex);
+                string consecutiveCount = CalculateGroupPressedCellsPerColumn(colIndex, solution);
                 indexText.text = consecutiveCount;
 
                 // Calculate preferred size of the text
@@ -282,13 +272,14 @@ public class LevelSetup : MonoBehaviour
     }
 
     // Method to calculate the count of consecutive pressed cells in a row
-    string CalculateGroupPressedCellsPerRow(int rowIndex)
+    string CalculateGroupPressedCellsPerRow(int rowIndex, bool solution = false)
     {
         int currentGroup = 0;
         string rowGroupText = "";
         for (int j = 0; j < columns; j++)
         {
-            bool currentCellState = GetCellState(rowIndex, j);
+            bool currentCellState = (solution) ? GetSolutionCellState(rowIndex, j) : GetCellState(rowIndex, j);
+            
             if (currentCellState)
             {
                 currentGroup++;
@@ -312,13 +303,14 @@ public class LevelSetup : MonoBehaviour
         return rowGroupText;
     }
 
-    string CalculateGroupPressedCellsPerColumn(int colIndex)
+    string CalculateGroupPressedCellsPerColumn(int colIndex, bool solution = false)
     {
         int currentGroup = 0;
         string colGroupText = "";
         for (int j = 0; j < columns; j++)
         {
-            bool currentCellState = GetCellState(j, colIndex);
+            bool currentCellState = (solution) ? GetSolutionCellState(j, colIndex) : GetCellState(j, colIndex);
+
             if (currentCellState)
             {
                 currentGroup++;
@@ -454,26 +446,21 @@ public class LevelSetup : MonoBehaviour
                 string jsonData = File.ReadAllText(filePath);
                 GridStateData gridSolutionData = JsonUtility.FromJson<GridStateData>(jsonData);
 
-                // 1. Change grid size to match the loaded grid size, but empty states
+                // 1. Updating the states of the grid from the loaded data
+                cellStates = gridSolutionData.GetCellStates();
+                solutionCellStates = gridSolutionData.GetSolutionCellStates();
+                currentMeaning = gridSolutionData.meaning;
+
+                // 2. Change grid size to match the loaded grid size, but empty states
                 ChangeGridSize(gridSolutionData.rows, gridSolutionData.columns); 
 
-                // 2. Updating the states of the grid from the loaded data for empty progress
-                bool[,] loadedSolutionCellStates = gridSolutionData.GetSolutionCellStates();
-                for (int i = 0; i < gridSolutionData.rows; i++)
-                {
-                    for (int j = 0; j < gridSolutionData.columns; j++)
-                    {
-                        bool loadedCellState = loadedSolutionCellStates[i, j];
-                        // TODO: I want to update the row and column index with only the solution cell states and to never let it change
-                        LevelGridCellToggle cellToggle = cells[i, j].GetComponent<LevelGridCellToggle>();
-                        if (cellToggle != null)
-                        {
-                            // Debug.Log("Loaded cell state: " + i + ", " + j + ": " + loadedCellState);
-                            // 3. Update row and column indices by updating the button cell state
-                            cellToggle.SetGridStateReference(this, i, j);
-                            cellToggle.UpdateButton(loadedCellState);                           //TODO: error as indexes are not updated if they were covered by the grid beforehand (size)
-                        }
-                    }
+                
+                // 3. Updating the indeces of the grid from the solution in the loaded data
+                for (int i = 0; i < gridSolutionData.rows; i++){
+                    UpdateRowIndexText(i, true);
+                }
+                for (int j = 0; j < gridSolutionData.columns; j++){
+                    UpdateColumnIndexText(j, true);
                 }
 
 
@@ -488,6 +475,36 @@ public class LevelSetup : MonoBehaviour
         {
             Debug.LogError("File not found: " + filePath);
         }
+    }
+
+
+    // CHECKING SOLUTIONS
+    public void CheckSolution()
+    {
+        bool solvedLevel = true;
+        for (int i = 0; i < rows; i++){
+            for (int j = 0; j < columns; j++){
+                bool currentCellState = GetCellState(i, j);
+                bool currentSolutionCellState = GetSolutionCellState(i, j);
+                if (currentCellState != currentSolutionCellState){
+                    solvedLevel = false;
+                    break;
+                }
+            }
+        }
+        Debug.Log("Solved level: " + solvedLevel);
+        // return solvedLevel;
+    }
+
+    public void CheckMeaningSolution()
+    {
+        bool solvedMeaning = false;
+        string meaning = meaningInputField.text;
+        if (meaning == currentMeaning){
+            solvedMeaning = true;
+        }
+        Debug.Log("Solved meaning: " + solvedMeaning);
+        // return solvedMeaning;
     }
 
 

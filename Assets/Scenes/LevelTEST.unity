@@ -2279,8 +2279,8 @@ GameObject:
   - component: {fileID: 1634606060}
   - component: {fileID: 1634606059}
   - component: {fileID: 1634606064}
-  - component: {fileID: 1634606065}
   - component: {fileID: 1634606066}
+  - component: {fileID: 1634606067}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -2359,20 +2359,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4155028a229bf7a48a919b755ccb030a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1634606065
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1634606057}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 399377af7ad8c254e9a6d30dfa965585, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  levelGrid: {fileID: 1634606066}
-  user: test
 --- !u!114 &1634606066
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2392,6 +2378,20 @@ MonoBehaviour:
   originalCellPrefab: {fileID: 638521981}
   meaningInputField: {fileID: 1898731427}
   fontAsset: {fileID: 12800000, guid: e3265ab4bf004d28a9537516768c1c75, type: 3}
+--- !u!114 &1634606067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1634606057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e145f3d13ab5a2141963fe669cf68858, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levelGrid: {fileID: 1634606066}
+  user: test
 --- !u!1 &1695921372
 GameObject:
   m_ObjectHideFlags: 0
@@ -2901,10 +2901,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1634606065}
-        m_TargetAssemblyTypeName: Level1, Assembly-CSharp
+      - m_Target: {fileID: 1634606067}
+        m_TargetAssemblyTypeName: LevelTEST, Assembly-CSharp
         m_MethodName: SaveProgress
-        m_Mode: 5
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
