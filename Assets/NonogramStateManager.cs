@@ -6,12 +6,14 @@ public class NonogramStateManager : MonoBehaviour
 {
     public NonogramGrid nonogramGrid; // Reference to the NonogramGrid script
     public TMP_InputField nameInputField; // Reference to the TextMeshPro input field for the save file name
+    public TMP_InputField meaningInputField; 
 
     // Function to save the grid state
     public void SaveGridState()
     {
         string saveFileName = nameInputField.text + ".json"; // Name of the save file
-        nonogramGrid.SaveGridState(saveFileName);
+        string meaning = meaningInputField.text;
+        nonogramGrid.SaveGridState(saveFileName, meaning);
     }
 
     // Function to load the grid state

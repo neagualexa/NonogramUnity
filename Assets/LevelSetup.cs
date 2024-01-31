@@ -2,10 +2,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
 
-public class NonogramGrid : MonoBehaviour
+public class LevelSetup : MonoBehaviour
 {
-    public int rows = 4; // Number of rows in the grid
-    public int columns = 4; // Number of columns in the grid
+    public int rows = 0; // Number of rows in the grid
+    public int columns = 0; // Number of columns in the grid
 
     public GameObject cellPrefab; // Prefab for the grid cell
     public Transform gridParent; // Parent object for the grid cells
@@ -15,21 +15,8 @@ public class NonogramGrid : MonoBehaviour
 
     private GameObject[,] cells; // 2D array to hold references to the grid cells
     private bool[,] cellStates; // 2D array to store the state of each cell
+    private bool[,] solutionCellStates; // 2D array to store the Solution state of each cell
 
-
-    void Start()
-    {
-        CreateGrid();
-        // Attach a listener to the event that triggers when cell states change
-        OnCellStateChanged += HandleCellStateChanged;
-    }
-
-    // Method to handle the cell state change event
-    void HandleCellStateChanged()
-    {
-        // PrintCellStates(); // Call PrintCellStates whenever cell states change
-        // UpdateGridIndices(); // Update the row and column indices whenever cell states change
-    }
 
     void CreateGrid()
     {
@@ -112,8 +99,8 @@ public class NonogramGrid : MonoBehaviour
                 // Set initial state of the cell
                 cellStates[i, j] = false; // Assuming all cells start as unpressed
 
-                // Attach the GridCellToggle script to handle toggle behavior
-                GridCellToggle cellToggle = cell.AddComponent<GridCellToggle>();
+                // Attach the LevelGridCellToggle script to handle toggle behavior
+                LevelGridCellToggle cellToggle = cell.AddComponent<LevelGridCellToggle>();
                 cellToggle.SetGridStateReference(this, i, j); // Pass reference to the grid and cell indices
 
                 cells[i, j] = cell; // Store reference to the cell in the array
@@ -431,27 +418,17 @@ public class NonogramGrid : MonoBehaviour
             return result;
         }
     }
-    public void SaveGridState(string fileName, string meaning)
+    public void SaveProgress(string fileName)
     {
-        GridStateData gridData = new GridStateData();
-        gridData.SetSolutionCellStates(cellStates);
-        bool[,] falseCellStates = new bool[rows, columns];
-        // set all false
-        for (int i = 0; i < rows; i++)
-        {
-            for (int j = 0; j < columns; ++j)
-            {
-                falseCellStates[i, j] = false;
-            }
-        }
-        gridData.SetCellStates(falseCellStates); // empty 2d grid
-        gridData.rows = rows;
-        gridData.columns = columns;
-        gridData.meaning = meaning;
+        GridStateData gridProgressData = new GridStateData();
+        gridProgressData.SetCellStates(cellStates);
+        gridProgressData.SetSolutionCellStates(solutionCellStates);
+        gridProgressData.rows = rows;
+        gridProgressData.columns = columns;
 
-        Debug.Log("Saving grid state: " + gridData.rows + " rows, " + gridData.columns + " columns" + ", " + gridData.solutionCellStatesWrapper + " cell states");
+        Debug.Log("Saving grid state: " + gridProgressData.rows + " rows, " + gridProgressData.columns + " columns" + ", " + gridProgressData.cellStatesWrapper + " cell states");
 
-        string jsonData = JsonUtility.ToJson(gridData);
+        string jsonData = JsonUtility.ToJson(gridProgressData);
 
         string filePath = Path.Combine(Application.persistentDataPath, fileName); // saved at C:\Users\{username}\AppData\LocalLow\DefaultCompany\{projectname}
 
@@ -466,7 +443,7 @@ public class NonogramGrid : MonoBehaviour
         }
     }
 
-    public void LoadGridState(string fileName)
+    public void LoadLevelToPlay(string fileName)
     {
         string filePath = Path.Combine(Application.persistentDataPath, fileName); // load from C:\Users\{username}\AppData\LocalLow\DefaultCompany\{projectname}
 
@@ -475,20 +452,20 @@ public class NonogramGrid : MonoBehaviour
             // try
             // {
                 string jsonData = File.ReadAllText(filePath);
-                GridStateData gridData = JsonUtility.FromJson<GridStateData>(jsonData);
+                GridStateData gridSolutionData = JsonUtility.FromJson<GridStateData>(jsonData);
 
                 // 1. Change grid size to match the loaded grid size, but empty states
-                ChangeGridSize(gridData.rows, gridData.columns); 
+                ChangeGridSize(gridSolutionData.rows, gridSolutionData.columns); 
 
-                // 2. Updating the states of the grid from the loaded data
-                bool[,] loadedCellStates = gridData.GetCellStates();
-                Debug.Log("Loaded grid state: " + loadedCellStates[0, 0] + loadedCellStates[0,1]);
-                for (int i = 0; i < gridData.rows; i++)
+                // 2. Updating the states of the grid from the loaded data for empty progress
+                bool[,] loadedSolutionCellStates = gridSolutionData.GetSolutionCellStates();
+                for (int i = 0; i < gridSolutionData.rows; i++)
                 {
-                    for (int j = 0; j < gridData.columns; j++)
+                    for (int j = 0; j < gridSolutionData.columns; j++)
                     {
-                        bool loadedCellState = loadedCellStates[i, j];
-                        GridCellToggle cellToggle = cells[i, j].GetComponent<GridCellToggle>();
+                        bool loadedCellState = loadedSolutionCellStates[i, j];
+                        // TODO: I want to update the row and column index with only the solution cell states and to never let it change
+                        LevelGridCellToggle cellToggle = cells[i, j].GetComponent<LevelGridCellToggle>();
                         if (cellToggle != null)
                         {
                             // Debug.Log("Loaded cell state: " + i + ", " + j + ": " + loadedCellState);
