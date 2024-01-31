@@ -21,7 +21,6 @@ public class LevelSetup : MonoBehaviour
     private bool[,] solutionCellStates; // 2D array to store the Solution state of each cell
     private string currentMeaning = "";
 
-
     void CreateGrid()
     {
         cells = new GameObject[rows, columns];  // Initialize the 2D array for cells

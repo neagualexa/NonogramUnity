@@ -76,7 +76,7 @@ public class LevelGridCellToggle : MonoBehaviour
             // Debug.Log("Cell is active");
             if (gridReference != null)
             {
-                Debug.Log("Cell is active");
+                // Debug.Log("Cell is active");
                 gridReference.SetCellState(rowIndex, columnIndex, true);
             }
         }

@@ -8,11 +8,19 @@ public class LevelTEST : MonoBehaviour
 {
     public LevelSetup levelGrid;
     string fileName = "test.json";
-    public string user;
+    private string user;
 
     void Start()
     {
+        user = UsernameManager.Username;
+        if (user == null){
+            user = "test";
+            Debug.Log("TEST user in use!!!");
+        }
+        Debug.Log("Username: " + user);
+
         LoadLevel(fileName);
+
     }
 
     public void LoadLevel(string fileName)
