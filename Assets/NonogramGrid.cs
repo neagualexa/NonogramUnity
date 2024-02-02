@@ -481,7 +481,7 @@ public class NonogramGrid : MonoBehaviour
                 ChangeGridSize(gridData.rows, gridData.columns); 
 
                 // 2. Updating the states of the grid from the loaded data
-                bool[,] loadedCellStates = gridData.GetCellStates();
+                bool[,] loadedCellStates = gridData.GetSolutionCellStates();
                 Debug.Log("Loaded grid state: " + loadedCellStates[0, 0] + loadedCellStates[0,1]);
                 for (int i = 0; i < gridData.rows; i++)
                 {
