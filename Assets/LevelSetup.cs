@@ -9,17 +9,30 @@ public class LevelSetup : MonoBehaviour
     public int rows = 0; // Number of rows in the grid
     public int columns = 0; // Number of columns in the grid
 
-    public GameObject cellPrefab; // Prefab for the grid cell
-    public Transform gridParent; // Parent object for the grid cells
-    public GameObject originalCellPrefab;
+    private GameObject cellPrefab; // Prefab for the grid cell
+    private Transform gridParent; // Parent object for the grid cells
+    private GameObject originalCellPrefab;
     public TMP_InputField meaningInputField; 
+    private Button checkMeaningButton;
 
     public Font fontAsset; // Add a field for the font asset
 
     private GameObject[,] cells; // 2D array to hold references to the grid cells
     private bool[,] cellStates; // 2D array to store the state of each cell
     private bool[,] solutionCellStates; // 2D array to store the Solution state of each cell
-    private string currentMeaning = "";
+    private string solutionMeaning = "";
+
+    public bool levelCompletion = false;
+    public bool levelMeaningCompletion = false;
+
+    void Awake(){
+        cellPrefab = GameObject.Find("cellPrefab");
+        gridParent = GameObject.Find("GridHolder").transform;
+        originalCellPrefab = GameObject.Find("cellPrefab");
+        checkMeaningButton = GameObject.Find("CheckMeaningButton").GetComponent<Button>();
+        // Add a listener to the input field's OnEndEdit event to check for Enter key
+        meaningInputField.onEndEdit.AddListener(delegate { OnEndEdit(); });
+    }
 
     void CreateGrid()
     {
@@ -416,6 +429,7 @@ public class LevelSetup : MonoBehaviour
         gridProgressData.SetSolutionCellStates(solutionCellStates);
         gridProgressData.rows = rows;
         gridProgressData.columns = columns;
+        gridProgressData.meaning = solutionMeaning;
 
         Debug.Log("Saving grid state: " + gridProgressData.rows + " rows, " + gridProgressData.columns + " columns" + ", " + gridProgressData.cellStatesWrapper + " cell states");
 
@@ -448,7 +462,7 @@ public class LevelSetup : MonoBehaviour
                 // 1. Updating the states of the grid from the loaded data
                 cellStates = gridSolutionData.GetCellStates();
                 solutionCellStates = gridSolutionData.GetSolutionCellStates();
-                currentMeaning = gridSolutionData.meaning;
+                solutionMeaning = gridSolutionData.meaning;
 
                 // 2. Change grid size to match the loaded grid size, but empty states
                 ChangeGridSize(gridSolutionData.rows, gridSolutionData.columns); 
@@ -492,6 +506,7 @@ public class LevelSetup : MonoBehaviour
             }
         }
         Debug.Log("Solved level: " + solvedLevel);
+        levelCompletion = solvedLevel;
         // return solvedLevel;
     }
 
@@ -499,11 +514,17 @@ public class LevelSetup : MonoBehaviour
     {
         bool solvedMeaning = false;
         string meaning = meaningInputField.text;
-        if (meaning == currentMeaning){
+        if (meaning == solutionMeaning){
             solvedMeaning = true;
         }
-        Debug.Log("Solved meaning: " + solvedMeaning);
+        Debug.Log("Solved meaning: " + solvedMeaning + " real meaning: " + solutionMeaning + " input meaning: " + meaning);
+        levelMeaningCompletion = solvedMeaning;
         // return solvedMeaning;
+    }
+    private void OnEndEdit()
+    {
+        // This method will be called when the user presses Enter in the input field
+        checkMeaningButton.onClick.Invoke(); // Invoke the save button click event
     }
 
 
