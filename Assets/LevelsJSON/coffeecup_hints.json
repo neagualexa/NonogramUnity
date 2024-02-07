@@ -1,5 +1,7 @@
 {
-    "1": "Pay attention to the middle columns, they can be a first step to start with.",
-    "2": "Complete the rows/columns that have the most filled cells first, then move onto others.",
-    "3": "Puzzle meaning riddle: 'I'm a daily morning companion, handle me with care, I hold the potion that stirs you awake. What am I?'"
+    "hints":[
+        "Pay attention to the middle columns, they can be a first step to start with.",
+        "Complete the rows/columns that have the most filled cells first, then move onto others.",
+        "Puzzle meaning riddle: 'I'm a daily morning companion, handle me with care, I hold the potion that stirs you awake. What am I?'"
+    ]
 }

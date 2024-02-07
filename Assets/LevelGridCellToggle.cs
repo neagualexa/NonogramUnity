@@ -6,6 +6,7 @@ public class LevelGridCellToggle : MonoBehaviour
     private Button button;
     private bool isPressed = false;
     private Color originalColor;
+    private Color color;
 
     private LevelSetup gridReference; // Reference to the LevelSetup script
     private int rowIndex; // Index of the row this cell belongs to
@@ -24,8 +25,13 @@ public class LevelGridCellToggle : MonoBehaviour
 
     void setOriginalColor()
     {
-        string hexoriginalColor = "#C7F6FF"; // Replace this with your hex color string
+        string hexoriginalColor = "#BFECF5"; // Replace this with your hex color string
         ColorUtility.TryParseHtmlString(hexoriginalColor, out originalColor);
+    }
+
+    void setColor(string hexColor)
+    {
+        ColorUtility.TryParseHtmlString(hexColor, out color);
     }
 
     // Method to set references to the grid and cell indices
@@ -42,7 +48,8 @@ public class LevelGridCellToggle : MonoBehaviour
 
         if (isPressed)
         {
-            buttonImage.color = Color.red;
+            setColor("#46A2B4");
+            buttonImage.color = color;
             // Debug.Log("Cell is pressed");
             // Update the grid state when the cell is pressed
             if (gridReference != null)
@@ -72,7 +79,8 @@ public class LevelGridCellToggle : MonoBehaviour
 
         if (active)
         {
-            buttonImage.color = Color.red;
+            setColor("#46A2B4");
+            buttonImage.color = color;
             // Debug.Log("Cell is active");
             if (gridReference != null)
             {

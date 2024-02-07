@@ -4,9 +4,9 @@ using TMPro;
 
 public class UsernameManager : MonoBehaviour
 {
-    public TMP_InputField usernameInputField;
-    public TMP_Text usernameDisplayText;
-    public Button saveButton;
+    private TMP_InputField usernameInputField;
+    private TMP_Text usernameDisplayText;
+    private Button saveButton;
 
     private static string username;
 
@@ -19,6 +19,10 @@ public class UsernameManager : MonoBehaviour
 
     private void Awake()
     {
+        usernameInputField = GameObject.Find("InputField - Username").GetComponent<TMP_InputField>();
+        usernameDisplayText = GameObject.Find("UsernameDisplay").GetComponent<TMP_Text>();
+        saveButton = GameObject.Find("SaveUsername").GetComponent<Button>();
+
         if (instance == null)
         {
             instance = this;
@@ -37,7 +41,7 @@ public class UsernameManager : MonoBehaviour
     }
 
     private void Start()
-    {
+    {   
         // Set the username input field text to the saved username
         if (usernameInputField != null)
         {
