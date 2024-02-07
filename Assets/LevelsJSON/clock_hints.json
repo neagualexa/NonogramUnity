@@ -1,0 +1,9 @@
+{
+    "hints":[
+        "Complete the rows/columns that have the most filled cells first, then move onto others.",
+        "Start by identifying the definite cells first, focusing on rows and columns with the most filled or empty squares, and then gradually work your way through the puzzle using logic and elimination.",
+        "Pay attention to symetry.",
+
+        "Puzzle meaning riddle: ''"
+    ]
+}
