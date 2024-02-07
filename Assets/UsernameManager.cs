@@ -26,9 +26,6 @@ public class UsernameManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            // DontDestroyOnLoad(gameObject);
-            // DontDestroyOnLoad(usernameInputField.gameObject);
-            // DontDestroyOnLoad(usernameDisplayText.gameObject);
             LoadUsername(); // Load the saved username when the game starts
         }
         else

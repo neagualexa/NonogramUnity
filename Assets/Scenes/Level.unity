@@ -3334,7 +3334,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d1785af34625474db48eb595f356bd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fileName: heart.json
 --- !u!1 &1695921372
 GameObject:
   m_ObjectHideFlags: 0
@@ -4017,8 +4016,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Level1, Assembly-CSharp
+      - m_Target: {fileID: 1634606069}
+        m_TargetAssemblyTypeName: LevelWrapper, Assembly-CSharp
         m_MethodName: SaveProgress
         m_Mode: 1
         m_Arguments:
@@ -4338,8 +4337,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Level1, Assembly-CSharp
+      - m_Target: {fileID: 1634606069}
+        m_TargetAssemblyTypeName: LevelWrapper, Assembly-CSharp
         m_MethodName: ShowHint
         m_Mode: 1
         m_Arguments:

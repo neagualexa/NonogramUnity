@@ -5,13 +5,22 @@ using UnityEngine.UI;
 using System.IO;
 using TMPro;
 
-public class Level2 : MonoBehaviour
+public class LevelWrapper : MonoBehaviour
 {
     private LevelManager level_manager;
-    public string fileName = "heart.json";
+    private string fileName;
 
     void Start()
     {
+        // Load the saved username from PlayerPrefs
+        if (PlayerPrefs.HasKey("LevelFilename"))
+        {
+            fileName = PlayerPrefs.GetString("LevelFilename") + ".json";
+        }
+        else
+        {
+            fileName = "test.json";
+        }
         level_manager = GetComponent<LevelManager>();
 
         level_manager.LoadLevel(fileName);

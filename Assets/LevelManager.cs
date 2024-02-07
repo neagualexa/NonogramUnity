@@ -34,7 +34,7 @@ public class LevelManager : MonoBehaviour
         string savedProgressFileName = user+"_progress_level_" + fileName;
         // string progressFilePath = Path.Combine(Application.persistentDataPath, savedProgressFileName);
         string progressFilePath =  "./Assets/LevelsJSON/user_progress/"+savedProgressFileName;
-        print("Progress file path: " + progressFilePath);
+        // print("Progress file path: " + progressFilePath);
         if (System.IO.File.Exists(progressFilePath))
         {
             Debug.Log("Loading saved progress from " + progressFilePath + " instead of " + fileName + ".");
