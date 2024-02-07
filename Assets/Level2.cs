@@ -5,10 +5,10 @@ using UnityEngine.UI;
 using System.IO;
 using TMPro;
 
-public class Level1 : MonoBehaviour
+public class Level2 : MonoBehaviour
 {
     private LevelManager level_manager;
-    public string fileName = "coffeecup.json";
+    public string fileName = "heart.json";
 
     void Start()
     {
