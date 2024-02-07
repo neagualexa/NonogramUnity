@@ -435,7 +435,8 @@ public class LevelSetup : MonoBehaviour
 
         string jsonData = JsonUtility.ToJson(gridProgressData);
 
-        string filePath = Path.Combine(Application.persistentDataPath, fileName); // saved at C:\Users\{username}\AppData\LocalLow\DefaultCompany\{projectname}
+        // string filePath = Path.Combine(Application.persistentDataPath, fileName); // saved at C:\Users\{username}\AppData\LocalLow\DefaultCompany\{projectname}
+        string filePath = fileName;
 
         try
         {
@@ -448,9 +449,9 @@ public class LevelSetup : MonoBehaviour
         }
     }
 
-    public void LoadLevelToPlay(string fileName)
+    public void LoadLevelToPlay(string filePath)
     {
-        string filePath = Path.Combine(Application.persistentDataPath, fileName); // load from C:\Users\{username}\AppData\LocalLow\DefaultCompany\{projectname}
+        // string filePath = Path.Combine(Application.persistentDataPath, fileName); // load from C:\Users\{username}\AppData\LocalLow\DefaultCompany\{projectname}
 
         if (File.Exists(filePath))
         {

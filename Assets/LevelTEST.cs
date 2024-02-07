@@ -27,21 +27,22 @@ public class LevelTEST : MonoBehaviour
     {
         // if savedProgressFileName exists, load it
         string savedProgressFileName = user+"_progress_level_" + fileName;
-        string progressFilePath = Path.Combine(Application.persistentDataPath, savedProgressFileName);
+        // string progressFilePath = Path.Combine(Application.persistentDataPath, savedProgressFileName);
+        string progressFilePath =  "./Assets/LevelsJSON/user_progress/"+savedProgressFileName;
         if (System.IO.File.Exists(progressFilePath))
         {
             Debug.Log("Loading saved progress from " + progressFilePath + " instead of " + fileName + ".");
-            levelGrid.LoadLevelToPlay(savedProgressFileName);
+            levelGrid.LoadLevelToPlay(progressFilePath);
         }
         else
         {
-            levelGrid.LoadLevelToPlay(fileName);
+            levelGrid.LoadLevelToPlay("./Assets/LevelsJSON/"+fileName);
         }
     }
 
     public void SaveProgress()
     {
-        string savedProgressFileName = user+"_progress_level_" + fileName;
+        string savedProgressFileName =  "./Assets/LevelsJSON/user_progress/"+user+"_progress_level_" + fileName;
         levelGrid.SaveProgress(savedProgressFileName);
     }
 }

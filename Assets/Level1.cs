@@ -31,21 +31,22 @@ public class Level1 : MonoBehaviour
     {
         // if savedProgressFileName exists, load it
         string savedProgressFileName = user+"_progress_level_" + fileName;
-        string progressFilePath = Path.Combine(Application.persistentDataPath, savedProgressFileName);
+        // string progressFilePath = Path.Combine(Application.persistentDataPath, savedProgressFileName);
+        string progressFilePath =  "./Assets/LevelsJSON/user_progress/"+savedProgressFileName;
         if (System.IO.File.Exists(progressFilePath))
         {
             Debug.Log("Loading saved progress from " + progressFilePath + " instead of " + fileName + ".");
-            levelGrid.LoadLevelToPlay(savedProgressFileName);
+            levelGrid.LoadLevelToPlay(progressFilePath);
         }
         else
         {
-            levelGrid.LoadLevelToPlay(fileName);
+            levelGrid.LoadLevelToPlay("./Assets/LevelsJSON/"+fileName);
         }
     }
 
     public void SaveProgress()
     {
-        string savedProgressFileName = user+"_progress_level_" + fileName;
+        string savedProgressFileName =  "./Assets/LevelsJSON/user_progress/"+user+"_progress_level_" + fileName;
         levelGrid.SaveProgress(savedProgressFileName);
     }
 
@@ -59,15 +60,15 @@ public class Level1 : MonoBehaviour
     {
         // read the hints from the JSON file: ./LevelsJSON/coffecup_hints.json
         // at random choose one and display it in the hint_text object
-        // string filePath = "./LevelsJSON/"+fileName.Split('.')[0]+"_hints.json";
-        // string fileContent = File.ReadAllText(filePath);;
-        // print("Reading hints from: " + filePath);
+        string filePath = "./Assets/LevelsJSON/"+fileName.Split('.')[0]+"_hints.json";
+        string fileContent = File.ReadAllText(filePath);;
+        print("Reading hints from: " + filePath);
 
-        // Hints hints = JsonUtility.FromJson<Hints>(fileContent);
+        Hints hints = JsonUtility.FromJson<Hints>(fileContent);
 
-        // int randomIndex = UnityEngine.Random.Range(0, hints.hints.Count);
-        // string randomHint = hints.hints[randomIndex];
-        // hint_text.text = randomHint;
-        print("TODO: test");
+        int randomIndex = UnityEngine.Random.Range(0, hints.hints.Count);
+        string randomHint = hints.hints[randomIndex];
+        hint_text.text = randomHint;
+        // print("TODO: test");
     }
 }

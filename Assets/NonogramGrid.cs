@@ -453,8 +453,9 @@ public class NonogramGrid : MonoBehaviour
 
         string jsonData = JsonUtility.ToJson(gridData);
 
-        string filePath = Path.Combine(Application.persistentDataPath, fileName); // saved at C:\Users\{username}\AppData\LocalLow\DefaultCompany\{projectname}
-
+        // string filePath = Path.Combine(Application.persistentDataPath, fileName); // saved at C:\Users\{username}\AppData\LocalLow\DefaultCompany\{projectname}
+        string filePath = fileName;
+        
         try
         {
             File.WriteAllText(filePath, jsonData);
@@ -468,7 +469,8 @@ public class NonogramGrid : MonoBehaviour
 
     public void LoadGridState(string fileName)
     {
-        string filePath = Path.Combine(Application.persistentDataPath, fileName); // load from C:\Users\{username}\AppData\LocalLow\DefaultCompany\{projectname}
+        // string filePath = Path.Combine(Application.persistentDataPath, fileName); // load from C:\Users\{username}\AppData\LocalLow\DefaultCompany\{projectname}
+        string filePath = fileName;
 
         if (File.Exists(filePath))
         {

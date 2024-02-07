@@ -11,7 +11,7 @@ public class NonogramStateManager : MonoBehaviour
     // Function to save the grid state
     public void SaveGridState()
     {
-        string saveFileName = nameInputField.text + ".json"; // Name of the save file
+        string saveFileName = "./Assets/LevelsJSON/"+ nameInputField.text + ".json"; // Name of the save file
         string meaning = meaningInputField.text;
         nonogramGrid.SaveGridState(saveFileName, meaning);
     }
@@ -19,7 +19,7 @@ public class NonogramStateManager : MonoBehaviour
     // Function to load the grid state
     public void LoadGridState()
     {
-        string saveFileName = nameInputField.text + ".json"; // Name of the save file
+        string saveFileName = "./Assets/LevelsJSON/" + nameInputField.text + ".json"; // Name of the save file
         nonogramGrid.LoadGridState(saveFileName);
     }
 }
