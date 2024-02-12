@@ -12,7 +12,7 @@ public class LevelSetup : MonoBehaviour
     private GameObject cellPrefab; // Prefab for the grid cell
     private Transform gridParent; // Parent object for the grid cells
     private GameObject originalCellPrefab;
-    public TMP_InputField meaningInputField; 
+    private TMP_InputField meaningInputField; 
     private Button checkMeaningButton;
 
     public Font fontAsset; // Add a field for the font asset
@@ -30,6 +30,7 @@ public class LevelSetup : MonoBehaviour
         gridParent = GameObject.Find("GridHolder").transform;
         originalCellPrefab = GameObject.Find("cellPrefab");
         checkMeaningButton = GameObject.Find("CheckMeaningButton").GetComponent<Button>();
+        meaningInputField = GameObject.Find("InputField -Puzzle Meaning").GetComponent<TMP_InputField>();
         // Add a listener to the input field's OnEndEdit event to check for Enter key
         meaningInputField.onEndEdit.AddListener(delegate { OnEndEdit(); });
     }
@@ -71,7 +72,7 @@ public class LevelSetup : MonoBehaviour
             // indexRect.localScale = new Vector3(1f, 1f, 1f); // Ensure the scale is reset to 1 to match cell size //zooms in
 
             // Adjust font size proportionally to cell size
-            int fontSize = Mathf.RoundToInt(Mathf.Min(cellSizeX, cellSizeY) * 0.8f); // Adjust the multiplier as needed
+            int fontSize = Mathf.RoundToInt(Mathf.Min(cellSizeX, cellSizeY) * 1f); // Adjust the multiplier as needed
             indexText.fontSize = fontSize;
         }
 
@@ -93,7 +94,7 @@ public class LevelSetup : MonoBehaviour
             // indexRect.localScale = new Vector3(1f, 1f, 1f); // Ensure the scale is reset to 1 to match cell size //zooms in
 
             // Adjust font size proportionally to cell size
-            int fontSize = Mathf.RoundToInt(Mathf.Min(cellSizeX, cellSizeY) * 0.8f); // Adjust the multiplier as needed
+            int fontSize = Mathf.RoundToInt(Mathf.Min(cellSizeX, cellSizeY) * 1f); // Adjust the multiplier as needed
             indexText.fontSize = fontSize;
         }
 
