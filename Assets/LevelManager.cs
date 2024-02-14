@@ -19,7 +19,7 @@ public class LevelManager : MonoBehaviour
         hint_text = GameObject.Find("HintText").GetComponent<TMP_Text>();
         levelGrid = GetComponent<LevelSetup>();
 
-        user = UsernameManager.Username;
+        user = PlayerPrefs.GetString("Username");;
         if (user == null){
             user = "test";
             Debug.Log("TEST user in use!!!");
@@ -60,17 +60,37 @@ public class LevelManager : MonoBehaviour
 
     public void ShowHint(string fileName)
     {
-        // read the hints from the JSON file: ./LevelsJSON/coffecup_hints.json
-        // at random choose one and display it in the hint_text object
-        string filePath = "./Assets/LevelsJSON/"+fileName.Split('.')[0]+"_hints.json";
-        string fileContent = File.ReadAllText(filePath);;
-        print("Reading hints from: " + filePath);
+        // hintStyle = UsernameManager.HintChat;
+        int hintStyle = PlayerPrefs.GetInt("HintChat");
+        print("Hint style: " + hintStyle);
 
-        Hints hints = JsonUtility.FromJson<Hints>(fileContent);
+        if (hintStyle == 0)
+        {
+            // read the hints from the JSON file: ./LevelsJSON/coffecup_hints.json
+            // at random choose one and display it in the hint_text object
+            string filePath = "./Assets/LevelsJSON/"+fileName.Split('.')[0]+"_hints.json";
+            string fileContent = File.ReadAllText(filePath);;
+            print("Reading hints from: " + filePath);
 
-        // int randomIndex = UnityEngine.Random.Range(0, hints.hints.Count);
-        string randomHint = hints.hints[hint_index];
-        hint_text.text = randomHint;
-        hint_index = (hint_index + 1) % hints.hints.Count;
+            Hints hints = JsonUtility.FromJson<Hints>(fileContent);
+
+            // int randomIndex = UnityEngine.Random.Range(0, hints.hints.Count);
+            string randomHint = hints.hints[hint_index];
+            hint_text.text = randomHint;
+            hint_index = (hint_index + 1) % hints.hints.Count;
+            return;
+        } else {
+            hint_text.text = "Opening Chatbot...";
+            // add 1.2seconds delay
+            StartCoroutine(OpenChatbot());
+            return;
+        }
+    }
+
+    IEnumerator OpenChatbot()
+    {
+        yield return new WaitForSeconds(1.3f);
+        hint_text.text = "Chatbot opened!";
+        Application.OpenURL("www.google.com");
     }
 }
