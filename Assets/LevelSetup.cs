@@ -516,7 +516,8 @@ public class LevelSetup : MonoBehaviour
     {
         bool solvedMeaning = false;
         string meaning = meaningInputField.text;
-        if (meaning == solutionMeaning){
+        HTTPRequests httpRequests = new HTTPRequests();
+        if (httpRequests.SendPuzzleMeaningRequest(meaning, solutionMeaning)){
             solvedMeaning = true;
         }
         Debug.Log("Solved meaning: " + solvedMeaning + " real meaning: " + solutionMeaning + " input meaning: " + meaning);
