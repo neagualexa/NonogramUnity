@@ -91,6 +91,6 @@ public class LevelManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1.3f);
         hint_text.text = "Chatbot opened!";
-        Application.OpenURL("www.google.com");
+        Application.OpenURL("http://localhost:5000/");
     }
 }
