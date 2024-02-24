@@ -12,8 +12,9 @@ public class LevelSetup : MonoBehaviour
     private GameObject cellPrefab; // Prefab for the grid cell
     private Transform gridParent; // Parent object for the grid cells
     private GameObject originalCellPrefab;
-    private TMP_InputField meaningInputField; 
+    private TMP_InputField meaningInputField;
     private Button checkMeaningButton;
+    private HTTPRequests httpRequests;
 
     public Font fontAsset; // Add a field for the font asset
 
@@ -25,12 +26,14 @@ public class LevelSetup : MonoBehaviour
     public bool levelCompletion = false;
     public bool levelMeaningCompletion = false;
 
-    void Awake(){
+    void Awake()
+    {
         cellPrefab = GameObject.Find("cellPrefab");
         gridParent = GameObject.Find("GridHolder").transform;
         originalCellPrefab = GameObject.Find("cellPrefab");
         checkMeaningButton = GameObject.Find("CheckMeaningButton").GetComponent<Button>();
         meaningInputField = GameObject.Find("InputField -Puzzle Meaning").GetComponent<TMP_InputField>();
+        httpRequests = GetComponent<HTTPRequests>();
         // Add a listener to the input field's OnEndEdit event to check for Enter key
         meaningInputField.onEndEdit.AddListener(delegate { OnEndEdit(); });
     }
@@ -292,7 +295,7 @@ public class LevelSetup : MonoBehaviour
         for (int j = 0; j < columns; j++)
         {
             bool currentCellState = (solution) ? GetSolutionCellState(rowIndex, j) : GetCellState(rowIndex, j);
-            
+
             if (currentCellState)
             {
                 currentGroup++;
@@ -338,7 +341,7 @@ public class LevelSetup : MonoBehaviour
         {
             colGroupText += currentGroup;
         }
-        
+
         if (colGroupText.Length == 0)
         {
             colGroupText = "0";
@@ -349,7 +352,7 @@ public class LevelSetup : MonoBehaviour
             colGroupText = colGroupText.Substring(0, colGroupText.Length - 1);
         }
 
-        
+
 
         return colGroupText;
     }
@@ -458,28 +461,30 @@ public class LevelSetup : MonoBehaviour
         {
             // try
             // {
-                string jsonData = File.ReadAllText(filePath);
-                GridStateData gridSolutionData = JsonUtility.FromJson<GridStateData>(jsonData);
+            string jsonData = File.ReadAllText(filePath);
+            GridStateData gridSolutionData = JsonUtility.FromJson<GridStateData>(jsonData);
 
-                // 1. Updating the states of the grid from the loaded data
-                cellStates = gridSolutionData.GetCellStates();
-                solutionCellStates = gridSolutionData.GetSolutionCellStates();
-                solutionMeaning = gridSolutionData.meaning;
+            // 1. Updating the states of the grid from the loaded data
+            cellStates = gridSolutionData.GetCellStates();
+            solutionCellStates = gridSolutionData.GetSolutionCellStates();
+            solutionMeaning = gridSolutionData.meaning;
 
-                // 2. Change grid size to match the loaded grid size, but empty states
-                ChangeGridSize(gridSolutionData.rows, gridSolutionData.columns); 
-
-                
-                // 3. Updating the indeces of the grid from the solution in the loaded data
-                for (int i = 0; i < gridSolutionData.rows; i++){
-                    UpdateRowIndexText(i, true);
-                }
-                for (int j = 0; j < gridSolutionData.columns; j++){
-                    UpdateColumnIndexText(j, true);
-                }
+            // 2. Change grid size to match the loaded grid size, but empty states
+            ChangeGridSize(gridSolutionData.rows, gridSolutionData.columns);
 
 
-                Debug.Log("Grid state loaded from: " + filePath);
+            // 3. Updating the indeces of the grid from the solution in the loaded data
+            for (int i = 0; i < gridSolutionData.rows; i++)
+            {
+                UpdateRowIndexText(i, true);
+            }
+            for (int j = 0; j < gridSolutionData.columns; j++)
+            {
+                UpdateColumnIndexText(j, true);
+            }
+
+
+            Debug.Log("Grid state loaded from: " + filePath);
             // }
             // catch (System.Exception e)
             // {
@@ -497,11 +502,14 @@ public class LevelSetup : MonoBehaviour
     public void CheckSolution()
     {
         bool solvedLevel = true;
-        for (int i = 0; i < rows; i++){
-            for (int j = 0; j < columns; j++){
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns; j++)
+            {
                 bool currentCellState = GetCellState(i, j);
                 bool currentSolutionCellState = GetSolutionCellState(i, j);
-                if (currentCellState != currentSolutionCellState){
+                if (currentCellState != currentSolutionCellState)
+                {
                     solvedLevel = false;
                     break;
                 }
@@ -514,16 +522,10 @@ public class LevelSetup : MonoBehaviour
 
     public void CheckMeaningSolution()
     {
-        bool solvedMeaning = false;
-        string meaning = meaningInputField.text;
-        HTTPRequests httpRequests = new HTTPRequests();
-        if (httpRequests.SendPuzzleMeaningRequest(meaning, solutionMeaning)){
-            solvedMeaning = true;
-        }
-        Debug.Log("Solved meaning: " + solvedMeaning + " real meaning: " + solutionMeaning + " input meaning: " + meaning);
-        levelMeaningCompletion = solvedMeaning;
-        // return solvedMeaning;
+        string user_meaning = meaningInputField.text;
+        StartCoroutine(httpRequests.SendPuzzleMeaningRequest(user_meaning, solutionMeaning)); // TODO: would like to make this async so the rest of the funciton is not done until the response is received
     }
+
     private void OnEndEdit()
     {
         // This method will be called when the user presses Enter in the input field
