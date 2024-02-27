@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-public class LevelGridCellToggle : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
+public class LevelGridCellToggle : MonoBehaviour, IPointerEnterHandler, IPointerDownHandler, IPointerUpHandler
 {
     private Button button;
     public bool isPressed = false;
@@ -16,9 +16,6 @@ public class LevelGridCellToggle : MonoBehaviour, IPointerEnterHandler, IPointer
 
     private Image buttonImage;
     private TrackInput trackInput;
-    private bool enteringCell = false;
-    private bool exitedCell = false;
-    private bool pressSwipe = false;
 
 
     void Start()
@@ -27,9 +24,7 @@ public class LevelGridCellToggle : MonoBehaviour, IPointerEnterHandler, IPointer
         buttonImage = button.GetComponent<Image>();
         gridReference = GetComponentInParent<LevelSetup>();
         trackInput = gridReference.GetComponent<TrackInput>();
-        // rectTransform = GetComponent<RectTransform>();
 
-        // originalColor = buttonImage.color;
         setOriginalColor();
         // button.onClick.AddListener(OnButtonClick);
     }
@@ -113,24 +108,20 @@ public class LevelGridCellToggle : MonoBehaviour, IPointerEnterHandler, IPointer
         //Output to console the GameObject's name and the following message
         if (trackInput.LeftMouseisPressed)
         {
-            Debug.Log("Cursor Entering " + name + " GameObject" + "Left mouse is pressed: " + trackInput.LeftMouseisPressed);
-            enteringCell = true;
-            exitedCell = false;
+            // Debug.Log("Cursor Entering " + name + " GameObject" + "Left mouse is pressed: " + trackInput.LeftMouseisPressed);
             isPressed = !isPressed;
             buttonStateChange();
         }
     }
 
-    public void OnPointerExit(PointerEventData pointerEventData)
-    {
-        //Output to console the GameObject's name and the following message
-        if (trackInput.LeftMouseisPressed)
-        {
-            Debug.Log("Cursor Exiting " + name + " GameObject" + "Left mouse is pressed: " + trackInput.LeftMouseisPressed);
-            enteringCell = false;
-            exitedCell = true;
-        }
-    }
+    // public void OnPointerExit(PointerEventData pointerEventData)
+    // {
+    //     //Output to console the GameObject's name and the following message
+    //     if (trackInput.LeftMouseisPressed)
+    //     {
+    //         Debug.Log("Cursor Exiting " + name + " GameObject" + "Left mouse is pressed: " + trackInput.LeftMouseisPressed);
+    //     }
+    // }
 
     public void OnPointerDown(PointerEventData eventData)
     {
@@ -140,10 +131,18 @@ public class LevelGridCellToggle : MonoBehaviour, IPointerEnterHandler, IPointer
             buttonStateChange();
         }
 
-        if (eventData.pointerCurrentRaycast.gameObject.transform.IsChildOf(GameObject.Find("Panel").transform) && eventData.button == PointerEventData.InputButton.Left)
+        if (eventData.button == PointerEventData.InputButton.Left) // also allowing to press and hold when on cell vs TrackInput.cs
         {
-            Debug.Log("CHILD:: Left mouse is pressed");
-            pressSwipe = true;
+            // Debug.Log("CHILD:: Left mouse is pressed");
+            trackInput.LeftMouseisPressed = true;
+        }
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Left) // also allowing to press and hold when on cell vs TrackInput.cs
+        {
+            trackInput.LeftMouseisPressed = false;
         }
     }
 }
