@@ -1181,7 +1181,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 450, y: 100}
+  m_SizeDelta: {x: 475, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &570226245
 MonoBehaviour:
@@ -1203,7 +1203,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Complete the Nonogram then write down what you believe the gotten image
+  m_text: Complete the Nonogram then write down what you believe the completed image
     represents.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ed1a5b203c484ce40aeca2ed7f35c79b, type: 2}
@@ -1503,7 +1503,7 @@ GameObject:
   - component: {fileID: 638521986}
   - component: {fileID: 638521985}
   - component: {fileID: 638521984}
-  - component: {fileID: 638521983}
+  - component: {fileID: 638521987}
   m_Layer: 5
   m_Name: cellPrefab
   m_TagString: Untagged
@@ -1530,18 +1530,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 55, y: 55}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &638521983
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 638521981}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9770eb9fba6dcd4ea28a5fa6285171d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &638521984
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1624,6 +1612,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 638521981}
   m_CullTransparentMesh: 1
+--- !u!114 &638521987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 638521981}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 173d8ebda035b6644904d2b5dee81b4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isPressed: 0
 --- !u!1 &690981808
 GameObject:
   m_ObjectHideFlags: 0
@@ -3869,6 +3870,7 @@ GameObject:
   - component: {fileID: 1634606067}
   - component: {fileID: 1634606068}
   - component: {fileID: 1634606070}
+  - component: {fileID: 1634606071}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -3963,6 +3965,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rows: 0
   columns: 0
+  cellSizeX: 0
+  cellSizeY: 0
   fontAsset: {fileID: 12800000, guid: 585188cdc4600544eb408bee749e4b3a, type: 3}
   levelCompletion: 0
   levelMeaningCompletion: 0
@@ -4015,6 +4019,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   puzzleMeaningCheck: 0
+--- !u!114 &1634606071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1634606057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 270dcefe2247efb4e9656a6af265d54e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LeftMouseisPressed: 0
 --- !u!1 &1643370620
 GameObject:
   m_ObjectHideFlags: 0

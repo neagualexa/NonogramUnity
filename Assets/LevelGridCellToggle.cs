@@ -1,10 +1,12 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
-public class LevelGridCellToggle : MonoBehaviour
+public class LevelGridCellToggle : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
     private Button button;
-    private bool isPressed = false;
+    public bool isPressed = false;
     private Color originalColor;
     private Color color;
 
@@ -13,14 +15,23 @@ public class LevelGridCellToggle : MonoBehaviour
     private int columnIndex; // Index of the column this cell belongs to
 
     private Image buttonImage;
+    private TrackInput trackInput;
+    private bool enteringCell = false;
+    private bool exitedCell = false;
+    private bool pressSwipe = false;
+
 
     void Start()
     {
         button = GetComponent<Button>();
         buttonImage = button.GetComponent<Image>();
+        gridReference = GetComponentInParent<LevelSetup>();
+        trackInput = gridReference.GetComponent<TrackInput>();
+        // rectTransform = GetComponent<RectTransform>();
+
         // originalColor = buttonImage.color;
         setOriginalColor();
-        button.onClick.AddListener(OnButtonClick);
+        // button.onClick.AddListener(OnButtonClick);
     }
 
     void setOriginalColor()
@@ -42,16 +53,17 @@ public class LevelGridCellToggle : MonoBehaviour
         columnIndex = column;
     }
 
-    void OnButtonClick()
-    {
-        isPressed = !isPressed;
+    // void OnButtonClick()
+    // {
+    //     isPressed = !isPressed;
+    //     buttonStateChange();
+    // }
 
+    void buttonStateChange(){
         if (isPressed)
         {
             setColor("#46A2B4");
             buttonImage.color = color;
-            // Debug.Log("Cell is pressed");
-            // Update the grid state when the cell is pressed
             if (gridReference != null)
             {
                 gridReference.SetCellState(rowIndex, columnIndex, true);
@@ -60,8 +72,6 @@ public class LevelGridCellToggle : MonoBehaviour
         else
         {
             buttonImage.color = originalColor;
-            // Debug.Log("Cell is released");
-            // Update the grid state when the cell is released
             if (gridReference != null)
             {
                 gridReference.SetCellState(rowIndex, columnIndex, false);
@@ -73,7 +83,6 @@ public class LevelGridCellToggle : MonoBehaviour
     {
         button = GetComponent<Button>();
         buttonImage = button.GetComponent<Image>();
-        // originalColor = buttonImage.color;
         setOriginalColor();
         isPressed = active; // TODO: stil iffy indexing detencing if cell is on or off, also still have to press twice to start updating the grid (as if isPressed is False)
 
@@ -96,6 +105,45 @@ public class LevelGridCellToggle : MonoBehaviour
             {
                 gridReference.SetCellState(rowIndex, columnIndex, false);
             }
+        }
+    }
+
+    public void OnPointerEnter(PointerEventData pointerEventData)
+    {
+        //Output to console the GameObject's name and the following message
+        if (trackInput.LeftMouseisPressed)
+        {
+            Debug.Log("Cursor Entering " + name + " GameObject" + "Left mouse is pressed: " + trackInput.LeftMouseisPressed);
+            enteringCell = true;
+            exitedCell = false;
+            isPressed = !isPressed;
+            buttonStateChange();
+        }
+    }
+
+    public void OnPointerExit(PointerEventData pointerEventData)
+    {
+        //Output to console the GameObject's name and the following message
+        if (trackInput.LeftMouseisPressed)
+        {
+            Debug.Log("Cursor Exiting " + name + " GameObject" + "Left mouse is pressed: " + trackInput.LeftMouseisPressed);
+            enteringCell = false;
+            exitedCell = true;
+        }
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            isPressed = !isPressed;
+            buttonStateChange();
+        }
+
+        if (eventData.pointerCurrentRaycast.gameObject.transform.IsChildOf(GameObject.Find("Panel").transform) && eventData.button == PointerEventData.InputButton.Left)
+        {
+            Debug.Log("CHILD:: Left mouse is pressed");
+            pressSwipe = true;
         }
     }
 }

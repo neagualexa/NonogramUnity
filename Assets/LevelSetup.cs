@@ -8,6 +8,8 @@ public class LevelSetup : MonoBehaviour
 {
     public int rows = 0; // Number of rows in the grid
     public int columns = 0; // Number of columns in the grid
+    public float cellSizeX = 0;
+    public float cellSizeY = 0;
 
     private GameObject cellPrefab; // Prefab for the grid cell
     private Transform gridParent; // Parent object for the grid cells
@@ -18,7 +20,7 @@ public class LevelSetup : MonoBehaviour
 
     public Font fontAsset; // Add a field for the font asset
 
-    private GameObject[,] cells; // 2D array to hold references to the grid cells
+    public GameObject[,] cells; // 2D array to hold references to the grid cells
     private bool[,] cellStates; // 2D array to store the state of each cell
     private bool[,] solutionCellStates; // 2D array to store the Solution state of each cell
     private string solutionMeaning = "";
@@ -44,8 +46,8 @@ public class LevelSetup : MonoBehaviour
         // cellStates = new bool[rows, columns];   // Initialize the 2D array for cell states
 
         // Calculate the size of each cell based on the grid size
-        float cellSizeX = gridParent.GetComponent<RectTransform>().rect.width / columns;
-        float cellSizeY = gridParent.GetComponent<RectTransform>().rect.height / rows;
+        cellSizeX = gridParent.GetComponent<RectTransform>().rect.width / columns;
+        cellSizeY = gridParent.GetComponent<RectTransform>().rect.height / rows;
 
         // Calculate the total width and height of the grid
         float totalWidth = columns * cellSizeX;
@@ -117,7 +119,8 @@ public class LevelSetup : MonoBehaviour
                 cellRect.anchoredPosition = new Vector2(posX, posY);
 
                 // Attach the LevelGridCellToggle script to handle toggle behavior
-                LevelGridCellToggle cellToggle = cell.AddComponent<LevelGridCellToggle>();
+                // LevelGridCellToggle cellToggle = cell.AddComponent<LevelGridCellToggle>(); // Add the script to the cell
+                LevelGridCellToggle cellToggle = cell.GetComponent<LevelGridCellToggle>(); // Get the script from the cell
                 cellToggle.SetGridStateReference(this, i, j); // Pass reference to the grid and cell indices
                 cellToggle.UpdateButton(cellStates[i, j]);
 

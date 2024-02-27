@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+// USED in NonogramGrid.cs NOT FOR THE LEVELS
 public class GridCellToggle : MonoBehaviour
 {
     private Button button;
@@ -12,11 +13,13 @@ public class GridCellToggle : MonoBehaviour
     private int columnIndex; // Index of the column this cell belongs to
 
     private Image buttonImage;
+    // private TrackInput trackInput;
 
     void Start()
     {
         button = GetComponent<Button>();
         buttonImage = button.GetComponent<Image>();
+        // trackInput = GetComponent<TrackInput>();
         // originalColor = buttonImage.color;
         setOriginalColor();
         button.onClick.AddListener(OnButtonClick);
@@ -39,6 +42,15 @@ public class GridCellToggle : MonoBehaviour
     void OnButtonClick()
     {
         isPressed = !isPressed;
+
+        // if (trackInput.LeftMouseisPressed)
+        // {
+        //     isPressed = true;
+        // }
+        // else
+        // {
+        //     isPressed = false;
+        // }
 
         if (isPressed)
         {
