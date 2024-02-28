@@ -526,6 +526,11 @@ public class LevelSetup : MonoBehaviour
     public void CheckMeaningSolution()
     {
         string user_meaning = meaningInputField.text;
+        if (user_meaning == "")
+        {
+            Debug.Log("Please enter a meaning");
+            return;
+        }
         StartCoroutine(httpRequests.SendPuzzleMeaningRequest(user_meaning, solutionMeaning)); // TODO: would like to make this async so the rest of the funciton is not done until the response is received
     }
 
