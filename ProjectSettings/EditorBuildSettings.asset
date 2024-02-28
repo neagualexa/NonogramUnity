@@ -14,9 +14,6 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/GridTest.unity
     guid: 413ff98e8d1673147898833765f127ca
-  - enabled: 0
-    path: Assets/Scenes/Level1.unity
-    guid: 63d34d2774ef7044da48a86c7bf128ed
   - enabled: 1
     path: Assets/Scenes/Levels.unity
     guid: 83141cc40207ced49b8549724d1784eb

@@ -58,4 +58,35 @@ public class HTTPRequests : MonoBehaviour
         levelSetup.levelMeaningCompletion = puzzleMeaningCheck;
         buttonAnimations.OnMeaningCompletionCheck();
     }
+
+     public IEnumerator SendPuzzleProgressRequest(bool[,] cellStates, bool[,] solutionCellStates, string levelMeaning)
+    {
+        string apiUrl = "http://localhost:5000/check_puzzle_progress";
+        string jsonData = $"{{ \"cellStates\": \"{cellStates}\", \"solutionCellStates\": \"{solutionCellStates}\", \"levelMeaning\": \"{levelMeaning}\" }}";
+        WWWForm form = new WWWForm();
+        form.AddField("puzzleProgress", jsonData);
+
+        using UnityWebRequest www = UnityWebRequest.Post(apiUrl, form);
+        yield return www.SendWebRequest();
+
+        if (www.result != UnityWebRequest.Result.Success)
+        {
+            Debug.LogError(www.error);
+            puzzleMeaningCheck = false;
+        }
+        else
+        {
+            Debug.Log("Form upload complete!");
+            Debug.Log("Request successful!");
+
+            string responseContent = www.downloadHandler.text;
+            Debug.Log("Response received from LLM server: " + responseContent);
+            responseContent = responseContent.ToLower();
+            puzzleMeaningCheck = responseContent.Contains("true");
+        }
+
+        update_levelMeaningCompletion();
+        Debug.Log("Current progress: " + cellStates + ", solution progress: " + solutionCellStates + ", level meaning: " + levelMeaning);
+        
+    }
 }
