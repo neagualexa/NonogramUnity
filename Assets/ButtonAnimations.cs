@@ -12,7 +12,7 @@ public class ButtonAnimations : MonoBehaviour
     private Animator wrong_meaning_animator;
     private Animator hint_section_animator;
     private LevelSetup levelSetup;
-    private Level1 level1;
+    private LevelWrapper levelWrapper;
 
     private void Start()
     {
@@ -24,7 +24,7 @@ public class ButtonAnimations : MonoBehaviour
         hint_section_animator = GameObject.Find("HintSection").GetComponent<Animator>();
 
         levelSetup = GetComponent<LevelSetup>();
-        level1 = GetComponent<Level1>();
+        levelWrapper = GetComponent<LevelWrapper>();
     }
 
     public void OnLevelCompletionCheck()
@@ -65,6 +65,7 @@ public class ButtonAnimations : MonoBehaviour
         else if (hint_section_animator.GetCurrentAnimatorStateInfo(0).IsName("idle")){
             print("HINT Appearing");
             hint_section_animator.SetTrigger("Appear");
+            levelWrapper.ShowHint();
             return;
         }
 
