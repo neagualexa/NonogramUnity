@@ -184,6 +184,20 @@ public class LevelSetup : MonoBehaviour
 
 
     // ####################### Cell State Management
+    public bool[,] GetCellStates()
+    {
+        return cellStates;
+    }
+
+    public bool[,] GetSolutionCellStates()
+    {
+        return solutionCellStates;
+    }
+
+    public string GetSolutionMeaning()
+    {
+        return solutionMeaning;
+    }
 
     public bool GetCellState(int row, int column)
     {
@@ -531,7 +545,7 @@ public class LevelSetup : MonoBehaviour
             Debug.Log("Please enter a meaning");
             return;
         }
-        StartCoroutine(httpRequests.SendPuzzleMeaningRequest(user_meaning, solutionMeaning)); // TODO: would like to make this async so the rest of the funciton is not done until the response is received
+        StartCoroutine(httpRequests.SendPuzzleMeaningRequest(user_meaning, solutionMeaning)); 
     }
 
     private void OnEndEdit()

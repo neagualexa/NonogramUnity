@@ -8,7 +8,7 @@ using TMPro;
 public class LevelManager : MonoBehaviour
 {
     private LevelSetup levelGrid;
-    // private string fileName;
+    private HTTPRequests httpRequests;
     private string user;
     private TMP_Text hint_text;
 
@@ -18,6 +18,7 @@ public class LevelManager : MonoBehaviour
     {
         hint_text = GameObject.Find("HintText").GetComponent<TMP_Text>();
         levelGrid = GetComponent<LevelSetup>();
+        httpRequests = GetComponent<HTTPRequests>();
 
         user = PlayerPrefs.GetString("Username");;
         if (user == null){
@@ -62,7 +63,7 @@ public class LevelManager : MonoBehaviour
     {
         // hintStyle = UsernameManager.HintChat;
         int hintStyle = PlayerPrefs.GetInt("HintChat");
-        print("Hint style: " + hintStyle);
+        // print("Hint style: " + hintStyle);
 
         if (hintStyle == 0)
         {
@@ -92,5 +93,10 @@ public class LevelManager : MonoBehaviour
         yield return new WaitForSeconds(1.3f);
         hint_text.text = "Chatbot opened!";
         Application.OpenURL("http://localhost:5000/");
+        bool[,] cellStates = levelGrid.GetCellStates();
+        bool[,] solutionCellStates = levelGrid.GetSolutionCellStates();
+        string levelMeaning = levelGrid.GetSolutionMeaning();
+        Debug.Log("Sending puzzle progress to server...");
+        StartCoroutine(httpRequests.SendPuzzleProgressRequest(cellStates, solutionCellStates, levelMeaning));
     }
 }
