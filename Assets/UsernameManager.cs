@@ -15,11 +15,6 @@ public class UsernameManager : MonoBehaviour
     {
         get { return username; }
     }
-    private static bool hintChat;
-    public static int HintChat
-    {
-        get { return hintChat ? 1 : 0; }
-    }
 
     private static UsernameManager instance;
 
@@ -51,8 +46,6 @@ public class UsernameManager : MonoBehaviour
         {
             usernameInputField.text = username;
         }
-
-        toggle.isOn = hintChat;
     }
 
     public void SetUsername()
@@ -96,13 +89,5 @@ public class UsernameManager : MonoBehaviour
     {
         // This method will be called when the user presses Enter in the input field
         saveButton.onClick.Invoke(); // Invoke the save button click event
-    }
-
-    public void OnHintToggle()
-    {
-        hintChat = toggle.isOn;
-        // save the toggle state in the PlayerPrefs
-        PlayerPrefs.SetInt("HintChat", hintChat ? 1 : 0);
-        // print("HintChat: " + hintChat);
     }
 }

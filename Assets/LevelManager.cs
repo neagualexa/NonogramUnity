@@ -63,9 +63,7 @@ public class LevelManager : MonoBehaviour
 
     public void ShowHint(string fileName)
     {
-        // hintStyle = UsernameManager.HintChat;
         int hintStyle = PlayerPrefs.GetInt("HintChat");
-        // print("Hint style: " + hintStyle);
 
         if (hintStyle == 0)
         {
