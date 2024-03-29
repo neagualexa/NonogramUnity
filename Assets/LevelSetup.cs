@@ -17,6 +17,7 @@ public class LevelSetup : MonoBehaviour
     private TMP_InputField meaningInputField;
     private Button checkMeaningButton;
     private HTTPRequests httpRequests;
+    private LevelTimer levelTimer;
 
     public Font fontAsset; // Add a field for the font asset
 
@@ -36,6 +37,7 @@ public class LevelSetup : MonoBehaviour
         checkMeaningButton = GameObject.Find("CheckMeaningButton").GetComponent<Button>();
         meaningInputField = GameObject.Find("InputField -Puzzle Meaning").GetComponent<TMP_InputField>();
         httpRequests = GetComponent<HTTPRequests>();
+        levelTimer = GetComponent<LevelTimer>();
         // Add a listener to the input field's OnEndEdit event to check for Enter key
         meaningInputField.onEndEdit.AddListener(delegate { OnEndEdit(); });
     }
@@ -382,6 +384,11 @@ public class LevelSetup : MonoBehaviour
         public int rows;
         public int columns;
         public string meaning;
+        public string user;
+        public string level;
+        public bool onTime;
+        public float time;
+        public bool levelCompletion;
         public CellStatesWrapper cellStatesWrapper;
         public CellStatesWrapper solutionCellStatesWrapper;
 
@@ -445,12 +452,24 @@ public class LevelSetup : MonoBehaviour
     }
     public void SaveProgress(string fileName)
     {
+        // check if solved correctly
+        CheckSolution();
+        // check if meaning is correct
+        CheckMeaningSolution();
+
         GridStateData gridProgressData = new GridStateData();
         gridProgressData.SetCellStates(cellStates);
         gridProgressData.SetSolutionCellStates(solutionCellStates);
         gridProgressData.rows = rows;
         gridProgressData.columns = columns;
         gridProgressData.meaning = solutionMeaning;
+        gridProgressData.user = PlayerPrefs.GetString("Username");
+        //   "./Assets/LevelsJSON/user_progress/"+user+"_progress_level_" + levelName + ".json";
+        // gridProgressData.level = fileName.Split('.')[1].Split('/')[4].Split('_')[3]; // level name 
+        gridProgressData.level = PlayerPrefs.GetString("LevelFilename");
+        gridProgressData.onTime = levelTimer.LevelCompletedOnTime();
+        gridProgressData.time = levelTimer.GetTimePassed();
+        gridProgressData.levelCompletion = levelCompletion;
 
         Debug.Log("Saving grid state: " + gridProgressData.rows + " rows, " + gridProgressData.columns + " columns" + ", " + gridProgressData.cellStatesWrapper + " cell states");
 
@@ -485,6 +504,8 @@ public class LevelSetup : MonoBehaviour
             cellStates = gridSolutionData.GetCellStates();
             solutionCellStates = gridSolutionData.GetSolutionCellStates();
             solutionMeaning = gridSolutionData.meaning;
+            levelCompletion = gridSolutionData.levelCompletion;
+            levelTimer.SetTimePassed(gridSolutionData.time);
 
             // 2. Change grid size to match the loaded grid size, but empty states
             ChangeGridSize(gridSolutionData.rows, gridSolutionData.columns);

@@ -10,6 +10,7 @@ public class ButtonAnimations : MonoBehaviour
     private Animator wrong_level_animator;
     private Animator correct_meaning_animator;
     private Animator wrong_meaning_animator;
+    private Animator error_meaning_animator;
     private Animator hint_section_animator;
     private LevelSetup levelSetup;
     private LevelWrapper levelWrapper;
@@ -21,6 +22,7 @@ public class ButtonAnimations : MonoBehaviour
         wrong_level_animator = GameObject.Find("Wrong").GetComponent<Animator>();
         correct_meaning_animator = GameObject.Find("CorrectMeaning").GetComponent<Animator>();
         wrong_meaning_animator = GameObject.Find("WrongMeaning").GetComponent<Animator>();
+        error_meaning_animator = GameObject.Find("ErrorMeaning").GetComponent<Animator>();
         hint_section_animator = GameObject.Find("HintSection").GetComponent<Animator>();
 
         levelSetup = GetComponent<LevelSetup>();
@@ -46,11 +48,21 @@ public class ButtonAnimations : MonoBehaviour
             // Trigger the animation
             wrong_meaning_animator.SetTrigger("Disable");
             correct_meaning_animator.SetTrigger("PopUp");
+            error_meaning_animator.SetTrigger("Disable");
         } else {
             // Trigger the animation
             correct_meaning_animator.SetTrigger("Disable");
             wrong_meaning_animator.SetTrigger("PopUp");
+            error_meaning_animator.SetTrigger("Disable");
         }
+    }
+
+    public void OnMeaningServerError()
+    {
+        // Trigger the animation
+        correct_meaning_animator.SetTrigger("Disable");
+        wrong_meaning_animator.SetTrigger("Disable");
+        error_meaning_animator.SetTrigger("PopUp");
     }
 
     public void OnHintSectionToggle()

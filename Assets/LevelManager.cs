@@ -8,6 +8,7 @@ using TMPro;
 public class LevelManager : MonoBehaviour
 {
     private LevelSetup levelGrid;
+    private MainMenu mainMenu;
     private HTTPRequests httpRequests;
     private string user;
     private TMP_Text hint_text;
@@ -18,6 +19,7 @@ public class LevelManager : MonoBehaviour
     {
         hint_text = GameObject.Find("HintText").GetComponent<TMP_Text>();
         levelGrid = GetComponent<LevelSetup>();
+        mainMenu = GetComponent<MainMenu>();
         httpRequests = GetComponent<HTTPRequests>();
 
         user = PlayerPrefs.GetString("Username");;
@@ -98,5 +100,18 @@ public class LevelManager : MonoBehaviour
         string levelMeaning = levelGrid.GetSolutionMeaning();
         Debug.Log("Sending puzzle progress to server...");
         StartCoroutine(httpRequests.SendPuzzleProgressRequest(cellStates, solutionCellStates, levelMeaning));
+    }
+
+    
+    public void LevelGameOver(string fileName)
+    {
+        Debug.Log("Game Over!");
+        // Save the progress
+        SaveProgress(fileName);
+        mainMenu.GoToScene("Levels");
+        // block user from playing the same level again
+        // string availableLevels = PlayerPrefs.GetString("AvailableLevels");
+        // PlayerPrefs.SetString("AvailableLevels", availableLevels.Replace(fileName, ""));
+        // Debug.Log("Updated Available levels: " + PlayerPrefs.GetString("AvailableLevels") + " where removed: " + fileName);
     }
 }

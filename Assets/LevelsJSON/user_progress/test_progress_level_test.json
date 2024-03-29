@@ -1,1 +1,1 @@
-{"rows":2,"columns":2,"meaning":"test","cellStatesWrapper":{"cellStates":[false,false,false,true]},"solutionCellStatesWrapper":{"cellStates":[true,false,false,false]}}
+{"rows":2,"columns":2,"meaning":"test","user":"test","level":"test","onTime":false,"time":10.009903907775879,"levelCompletion":true,"cellStatesWrapper":{"cellStates":[true,false,false,false]},"solutionCellStatesWrapper":{"cellStates":[true,false,false,false]}}

@@ -7,6 +7,7 @@ public class HTTPRequests : MonoBehaviour
     public bool puzzleMeaningCheck = false;
     private LevelSetup levelSetup;
     private ButtonAnimations buttonAnimations;
+    private bool puzzleMeaningError = false;
 
     private void Start()
     {
@@ -15,6 +16,7 @@ public class HTTPRequests : MonoBehaviour
     }
     public IEnumerator SendPuzzleMeaningRequest(string userGuess, string solution)
     {
+        puzzleMeaningError = false;
         // initial condition
         if (userGuess == solution)
         {
@@ -32,10 +34,15 @@ public class HTTPRequests : MonoBehaviour
             using UnityWebRequest www = UnityWebRequest.Post(apiUrl, form);
             yield return www.SendWebRequest();
 
-            if (www.result != UnityWebRequest.Result.Success)
+            if (www.result != UnityWebRequest.Result.Success) // error happening from UnityWebRequest or cannot connect to server
             {
                 Debug.LogError(www.error);
                 puzzleMeaningCheck = false;
+                puzzleMeaningError = true;
+            }
+            else if( www.downloadHandler.text.Contains("error") ){  // error happening from hugging face model
+                puzzleMeaningCheck = false;
+                puzzleMeaningError = true;
             }
             else
             {
@@ -47,7 +54,6 @@ public class HTTPRequests : MonoBehaviour
                 responseContent = responseContent.ToLower();
                 puzzleMeaningCheck = responseContent.Contains("true");
             }
-
             update_levelMeaningCompletion();
             Debug.Log("Solved meaning: " + levelSetup.levelMeaningCompletion + ", real meaning: " + solution + ", input meaning: " + userGuess);
         }
@@ -55,6 +61,12 @@ public class HTTPRequests : MonoBehaviour
 
     private void update_levelMeaningCompletion()
     {
+        if (puzzleMeaningError)
+        {
+            Debug.Log("Error in response from hugging face model");
+            buttonAnimations.OnMeaningServerError();
+            return;
+        }
         levelSetup.levelMeaningCompletion = puzzleMeaningCheck;
         buttonAnimations.OnMeaningCompletionCheck();
     }
