@@ -18,6 +18,7 @@ public class LevelSetup : MonoBehaviour
     private Button checkMeaningButton;
     private HTTPRequests httpRequests;
     private LevelTimer levelTimer;
+    private MainMenu mainMenu;
 
     public Font fontAsset; // Add a field for the font asset
 
@@ -38,6 +39,7 @@ public class LevelSetup : MonoBehaviour
         meaningInputField = GameObject.Find("InputField -Puzzle Meaning").GetComponent<TMP_InputField>();
         httpRequests = GetComponent<HTTPRequests>();
         levelTimer = GetComponent<LevelTimer>();
+        mainMenu = GetComponent<MainMenu>();
         // Add a listener to the input field's OnEndEdit event to check for Enter key
         meaningInputField.onEndEdit.AddListener(delegate { OnEndEdit(); });
     }
@@ -389,6 +391,7 @@ public class LevelSetup : MonoBehaviour
         public bool onTime;
         public float time;
         public bool levelCompletion;
+        public bool levelMeaningCompletion;
         public CellStatesWrapper cellStatesWrapper;
         public CellStatesWrapper solutionCellStatesWrapper;
 
@@ -470,6 +473,7 @@ public class LevelSetup : MonoBehaviour
         gridProgressData.onTime = levelTimer.LevelCompletedOnTime();
         gridProgressData.time = levelTimer.GetTimePassed();
         gridProgressData.levelCompletion = levelCompletion;
+        gridProgressData.levelMeaningCompletion = levelMeaningCompletion;
 
         Debug.Log("Saving grid state: " + gridProgressData.rows + " rows, " + gridProgressData.columns + " columns" + ", " + gridProgressData.cellStatesWrapper + " cell states");
 
@@ -498,25 +502,32 @@ public class LevelSetup : MonoBehaviour
             // try
             // {
             string jsonData = File.ReadAllText(filePath);
-            GridStateData gridSolutionData = JsonUtility.FromJson<GridStateData>(jsonData);
+            GridStateData gridLoadedData = JsonUtility.FromJson<GridStateData>(jsonData);
+
+            if (gridLoadedData.onTime == false)
+            {
+                Debug.Log("Time has run out! You are blocked out of the level.");
+                mainMenu.GoToScene("Levels");
+            }
 
             // 1. Updating the states of the grid from the loaded data
-            cellStates = gridSolutionData.GetCellStates();
-            solutionCellStates = gridSolutionData.GetSolutionCellStates();
-            solutionMeaning = gridSolutionData.meaning;
-            levelCompletion = gridSolutionData.levelCompletion;
-            levelTimer.SetTimePassed(gridSolutionData.time);
+            cellStates = gridLoadedData.GetCellStates();
+            solutionCellStates = gridLoadedData.GetSolutionCellStates();
+            solutionMeaning = gridLoadedData.meaning;
+            levelCompletion = gridLoadedData.levelCompletion;
+            levelMeaningCompletion = gridLoadedData.levelMeaningCompletion;
+            levelTimer.SetTimePassed(gridLoadedData.time);
 
             // 2. Change grid size to match the loaded grid size, but empty states
-            ChangeGridSize(gridSolutionData.rows, gridSolutionData.columns);
+            ChangeGridSize(gridLoadedData.rows, gridLoadedData.columns);
 
 
             // 3. Updating the indeces of the grid from the solution in the loaded data
-            for (int i = 0; i < gridSolutionData.rows; i++)
+            for (int i = 0; i < gridLoadedData.rows; i++)
             {
                 UpdateRowIndexText(i, true);
             }
-            for (int j = 0; j < gridSolutionData.columns; j++)
+            for (int j = 0; j < gridLoadedData.columns; j++)
             {
                 UpdateColumnIndexText(j, true);
             }
@@ -567,6 +578,7 @@ public class LevelSetup : MonoBehaviour
             return;
         }
         StartCoroutine(httpRequests.SendPuzzleMeaningRequest(user_meaning, solutionMeaning)); 
+        // levelMeaningCompletion is updated under update_levelMeaningCompletion() in HTTPRequests.cs
     }
 
     private void OnEndEdit()

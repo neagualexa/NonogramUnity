@@ -92,7 +92,7 @@ public class LevelManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1.3f);
         hint_text.text = "Chatbot opened!";
-        Application.OpenURL("http://localhost:5000/");
+        // Application.OpenURL("http://localhost:5000/");
         bool[,] cellStates = levelGrid.GetCellStates();
         bool[,] solutionCellStates = levelGrid.GetSolutionCellStates();
         string levelMeaning = levelGrid.GetSolutionMeaning();
