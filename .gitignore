@@ -32,3 +32,7 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+# Temps User Data
+Assets/LevelsJSON/user_progress/*
+Assets/LevelsJSON/audio/*
