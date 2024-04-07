@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Networking;
 using System.Collections;
+using System.IO;
 
 public class HTTPRequests : MonoBehaviour
 {
@@ -71,7 +72,7 @@ public class HTTPRequests : MonoBehaviour
         buttonAnimations.OnMeaningCompletionCheck();
     }
 
-     public IEnumerator SendPuzzleProgressRequest(bool[,] cellStates, bool[,] solutionCellStates, string levelMeaning)
+    public IEnumerator SendPuzzleProgressRequest(bool[,] cellStates, bool[,] solutionCellStates, string levelMeaning)
     {
         Debug.Log("SendPuzzleProgressRequest:: Checking solution...");
         levelSetup.CheckSolution();
@@ -112,6 +113,29 @@ public class HTTPRequests : MonoBehaviour
             }
             cellStatesString += "|";
             solutionCellStatesString += "|";
+        }
+    }
+
+    public IEnumerator SendAudioClipRequest(string audioFilePath)
+    {
+        string apiUrl = "http://localhost:5000/verbal";
+        WWWForm form = new WWWForm();
+        form.AddBinaryData("audio", File.ReadAllBytes(audioFilePath), "audio.wav", "audio/wav");
+
+        using UnityWebRequest www = UnityWebRequest.Post(apiUrl, form);
+        yield return www.SendWebRequest();
+
+        if (www.result != UnityWebRequest.Result.Success)
+        {
+            Debug.LogError(www.error);
+        }
+        else
+        {
+            Debug.Log("SendAudioClipRequest:: Form upload complete!");
+            Debug.Log("SendAudioClipRequest:: Request successful!");
+
+            string responseContent = www.downloadHandler.text;
+            Debug.Log("SendAudioClipRequest:: Response received from LLM server: " + responseContent);
         }
     }
 }
