@@ -50,7 +50,7 @@ public class AudioRecorder : MonoBehaviour
         // Start recording
         startTime = Time.time;
         // MAXIMUM RECORDING TIME: 10 seconds !!!
-        recordedClip = Microphone.Start(device, true, 10, 44100); // lengthSec, frequency
+        recordedClip = Microphone.Start(device, true, 10, 16000); // lengthSec, frequency
         recordButtonText.text = "Recording...";
     }
 
@@ -85,19 +85,24 @@ public class AudioRecorder : MonoBehaviour
         // string path = "./Assets/LevelsJSON/audio/" + recordingFileName + ".wav";
         SavWav.Save(path, recordedClip);
         Debug.Log("Saved audio clip to: " + path);
-
-        // Send audio clip to the server
-        SendHttpClip(path);
         
         count++;
 
-        Invoke("PlayClip", 1); // wait for the clip to be saved (1 second)
+        Invoke("PlayClip", 0.2f); // not from path, but from the recordedClip
+        
+        // wait for the clip to be saved
+        SendHttpClip(path);
     }
 
     private void SendHttpClip(string path)
     {
         // Send audio clip to the server
         recordButtonText.text = "Sending...";
+        // wait until file at path exists
+        while (!System.IO.File.Exists(path))
+        {
+            Debug.Log("Waiting for file to exist: " + path);
+        }
         StartCoroutine(httpRequests.SendAudioClipRequest(path));
         Debug.Log("Sent audio clip to the server: " + path);
     }

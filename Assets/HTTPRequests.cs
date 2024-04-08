@@ -118,9 +118,11 @@ public class HTTPRequests : MonoBehaviour
 
     public IEnumerator SendAudioClipRequest(string audioFilePath)
     {
-        string apiUrl = "http://localhost:5000/verbal";
+        string apiUrl = "http://localhost:5005/verbal";
         WWWForm form = new WWWForm();
-        form.AddBinaryData("audio", File.ReadAllBytes(audioFilePath), "audio.wav", "audio/wav");
+        string fileName = Path.GetFileName(audioFilePath);
+        form.AddBinaryData("audioFile", File.ReadAllBytes(audioFilePath), fileName, "audio/wav");
+        form.AddField("fileName", fileName);
 
         using UnityWebRequest www = UnityWebRequest.Post(apiUrl, form);
         yield return www.SendWebRequest();
