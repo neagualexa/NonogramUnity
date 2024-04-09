@@ -12,9 +12,9 @@ public class AudioRecorder : MonoBehaviour
     private HTTPRequests httpRequests;
     string device;
     float startTime;
-    int count = 0;
+    int count;
 
-    void Start()
+    void Awake()
     {
         // Check if microphone is available
         if (Microphone.devices.Length > 0)
@@ -26,6 +26,11 @@ public class AudioRecorder : MonoBehaviour
             Debug.LogError("No microphone detected!");
         }
 
+        count = PlayerPrefs.GetInt("CounterAudioFile", 0);;
+    }
+
+    void Start()
+    {
         recordButton = GameObject.Find("RecordButton").GetComponent<Button>();
         audioSource = GameObject.Find("AudioSource").GetComponent<AudioSource>();
         recordButtonText = GameObject.Find("RecordDisplay").GetComponent<TMP_Text>();
@@ -87,6 +92,7 @@ public class AudioRecorder : MonoBehaviour
         Debug.Log("Saved audio clip to: " + path);
         
         count++;
+        PlayerPrefs.SetInt("CounterAudioFile", count);
 
         Invoke("PlayClip", 0.2f); // not from path, but from the recordedClip
         

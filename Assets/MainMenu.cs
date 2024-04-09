@@ -14,6 +14,7 @@ public class MainMenu : MonoBehaviour {
     }
 
     public void QuitApp() {
+        PlayerPrefs.Save(); // saving the username, level progress, etc.
         Application.Quit();
         Debug.Log("Application has quit.");
     }
