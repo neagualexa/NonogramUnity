@@ -107,18 +107,18 @@ public class LevelManager : MonoBehaviour
 
     public void HintReminderLoop()
     {
-        // Every one minute, send a request to the server to get a sendPuzzleProgressRequest
+        // Every 3 mins, send a request to the server to get a sendPuzzleProgressRequest
         Debug.Log("Starting Hint Reminder Loop...");
         StartCoroutine(HintReminder());
     }
 
     IEnumerator HintReminder()
     {
-        // Every one minute, send a request to the server to get a sendPuzzleProgressRequest
+        // Every 3 mins, send a request to the server to get a sendPuzzleProgressRequest
         while (true)
         {
-            Debug.Log("Starting HintReminder every 60s ...");
-            yield return new WaitForSeconds(60);
+            Debug.Log("Starting HintReminder every 180s ...");
+            yield return new WaitForSeconds(180);
             StartCoroutine(OpenChatbot());
         }
     }
