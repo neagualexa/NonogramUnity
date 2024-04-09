@@ -30,6 +30,11 @@ public class LevelManager : MonoBehaviour
         Debug.Log("Username: " + user);
     }
 
+    void Start()
+    {
+        HintReminderLoop();
+    }
+
     public void LoadLevel(string fileName)
     {
         print("Loading level from LevelManager: " + fileName);
@@ -98,6 +103,24 @@ public class LevelManager : MonoBehaviour
         string levelMeaning = levelGrid.GetSolutionMeaning();
         Debug.Log("Sending puzzle progress to server...");
         StartCoroutine(httpRequests.SendPuzzleProgressRequest(cellStates, solutionCellStates, levelMeaning));
+    }
+
+    public void HintReminderLoop()
+    {
+        // Every one minute, send a request to the server to get a sendPuzzleProgressRequest
+        Debug.Log("Starting Hint Reminder Loop...");
+        StartCoroutine(HintReminder());
+    }
+
+    IEnumerator HintReminder()
+    {
+        // Every one minute, send a request to the server to get a sendPuzzleProgressRequest
+        while (true)
+        {
+            Debug.Log("Starting HintReminder every 60s ...");
+            yield return new WaitForSeconds(60);
+            StartCoroutine(OpenChatbot());
+        }
     }
 
     
