@@ -86,7 +86,7 @@ public class LevelManager : MonoBehaviour
             hint_index = (hint_index + 1) % hints.hints.Count;
             return;
         } else {
-            hint_text.text = "Opening Chatbot...";
+            hint_text.text = "Sending message...";
             // add 1.2seconds delay
             StartCoroutine(OpenChatbot());
             return;
@@ -96,7 +96,7 @@ public class LevelManager : MonoBehaviour
     IEnumerator OpenChatbot()
     {
         yield return new WaitForSeconds(1.3f);
-        hint_text.text = "Chatbot opened!";
+        hint_text.text = "Message sent to NonoAI!";
         // Application.OpenURL("http://localhost:5000/");
         bool[,] cellStates = levelGrid.GetCellStates();
         bool[,] solutionCellStates = levelGrid.GetSolutionCellStates();
