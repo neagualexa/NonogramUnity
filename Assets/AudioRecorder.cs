@@ -94,7 +94,7 @@ public class AudioRecorder : MonoBehaviour
         count++;
         PlayerPrefs.SetInt("CounterAudioFile", count);
 
-        Invoke("PlayClip", 0.2f); // not from path, but from the recordedClip
+        // Invoke("PlayClip", 0.2f); // not from path, but from the recordedClip
         
         // wait for the clip to be saved
         SendHttpClip(path);
@@ -111,6 +111,8 @@ public class AudioRecorder : MonoBehaviour
         }
         StartCoroutine(httpRequests.SendAudioClipRequest(path));
         Debug.Log("Sent audio clip to the server: " + path);
+
+        Invoke("ReturnToInitialState", recordedClip.length); // wait for the clip 
     }
 
     private void PlayClip() 
@@ -120,8 +122,6 @@ public class AudioRecorder : MonoBehaviour
         audioSource.clip = recordedClip;
         Debug.Log("Playing audio clip: "+ recordedClip.length + " seconds");
         audioSource.Play();
-
-        Invoke("ReturnToInitialState", recordedClip.length); // wait for the clip to finish playing
     }
 
     private void ReturnToInitialState()
