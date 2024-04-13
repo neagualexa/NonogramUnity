@@ -33,7 +33,7 @@ public class AudioRecorder : MonoBehaviour
 
     void Start()
     {
-        recordButton = GameObject.Find("RecordButton").GetComponent<Button>();
+        recordButton = GameObject.Find("RecordButton").GetComponent<Button>();  // removed element => Null pointer exception
         audioSource = GameObject.Find("AudioSource").GetComponent<AudioSource>();
         recordButtonText = GameObject.Find("RecordDisplay").GetComponent<TMP_Text>();
         savWav = GetComponent<SavWav>();
