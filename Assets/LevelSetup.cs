@@ -71,17 +71,17 @@ public class LevelSetup : MonoBehaviour
 
             Text indexText = rowIndex.AddComponent<Text>();
             indexText.font = font;
-            indexText.text = "0"; //(i + 1).ToString();
+            indexText.text = "0 "; //(i + 1).ToString();
             indexText.alignment = TextAnchor.MiddleCenter;
             indexText.color = Color.white;
 
             RectTransform indexRect = indexText.GetComponent<RectTransform>();
-            indexRect.sizeDelta = new Vector2(cellSizeX, cellSizeY * 2f);
+            indexRect.sizeDelta = new Vector2(cellSizeX, cellSizeY * 1.2f);
             indexRect.anchoredPosition = new Vector2(startX - (cellSizeX / 2 + indexRect.sizeDelta[0] / 5), startY - i * cellSizeY);
             // indexRect.localScale = new Vector3(1f, 1f, 1f); // Ensure the scale is reset to 1 to match cell size //zooms in
-
+        
             // Adjust font size proportionally to cell size
-            int fontSize = Mathf.RoundToInt(Mathf.Min(cellSizeX, cellSizeY) * 1f); // Adjust the multiplier as needed
+            int fontSize = Mathf.RoundToInt(Mathf.Min(cellSizeX, cellSizeY) * 1.7f); // Adjust the multiplier as needed
             indexText.fontSize = fontSize;
         }
 
@@ -103,7 +103,7 @@ public class LevelSetup : MonoBehaviour
             // indexRect.localScale = new Vector3(1f, 1f, 1f); // Ensure the scale is reset to 1 to match cell size //zooms in
 
             // Adjust font size proportionally to cell size
-            int fontSize = Mathf.RoundToInt(Mathf.Min(cellSizeX, cellSizeY) * 1f); // Adjust the multiplier as needed
+            int fontSize = Mathf.RoundToInt(Mathf.Min(cellSizeX, cellSizeY) * 1.7f);
             indexText.fontSize = fontSize;
         }
 
@@ -238,30 +238,30 @@ public class LevelSetup : MonoBehaviour
             if (indexText != null)
             {
                 RectTransform indexRect = indexText.GetComponent<RectTransform>();
-                float previous_text_width = indexRect.rect.width; // remember the previous text width
+
+                // get width of a text containing "0" to calculate the difference in size for position adjustment in horizontal direction
+                indexText.text = "0 ";
+                float text_width_0 = indexRect.rect.width;
 
                 string consecutiveCount = CalculateGroupPressedCellsPerRow(rowIndex, solution);
                 indexText.text = consecutiveCount;
 
                 // Calculate preferred size of the text
-                Vector2 preferredSize = indexText.preferredWidth > indexText.preferredHeight ?
-                    new Vector2(indexText.preferredWidth, indexText.preferredHeight) :
-                    new Vector2(indexText.preferredHeight, indexText.preferredWidth);
+                Vector2 preferredSize = new Vector2(indexText.preferredWidth, indexText.preferredHeight);
 
+                // // Calculate the minimum size (size of the cell in the grid)
+                // float cellSizeY = gridParent.GetComponent<RectTransform>().rect.height / rows;
+                // Vector2 minSize = new Vector2(cellSizeY, cellSizeY);
 
-                // Calculate the minimum size (size of the cell in the grid)
-                float cellSizeY = gridParent.GetComponent<RectTransform>().rect.height / rows;
-                Vector2 minSize = new Vector2(cellSizeY, cellSizeY);
+                // // Set the size to the maximum between preferred size and minimum cell size
+                // Vector2 newSize = new Vector2(
+                //     Mathf.Max(preferredSize.x, minSize.x),
+                //     Mathf.Max(preferredSize.y, minSize.y)    // Adjust to fit the font size
+                // );
+                indexRect.sizeDelta = preferredSize;
 
-                // Set the size to the maximum between preferred size and minimum cell size
-                Vector2 newSize = new Vector2(
-                    Mathf.Max(preferredSize.x, minSize.x),
-                    Mathf.Max(preferredSize.y, minSize.y)
-                );
-                indexRect.sizeDelta = newSize;
-
-                // Calculate the difference in size for position adjustment
-                float difference = (indexRect.rect.width - previous_text_width) / 6f; // Difference in text width
+                // Calculate the difference in size for position adjustment in horizontal direction
+                float difference = (indexRect.rect.width - text_width_0) / 6f; // Difference in text width
 
                 // Shift the text to the left based on the text size difference
                 indexRect.anchoredPosition -= new Vector2(difference, 0f);
@@ -334,7 +334,7 @@ public class LevelSetup : MonoBehaviour
 
         if (rowGroupText.Length == 0)
         {
-            rowGroupText = "0";
+            rowGroupText = "0 ";
         }
 
         return rowGroupText;
