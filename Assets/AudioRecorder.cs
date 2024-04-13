@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+// Not in use anymore as Recording Button is not used in the final version of the game
+
 public class AudioRecorder : MonoBehaviour
 {
     public AudioClip recordedClip;
@@ -94,8 +96,6 @@ public class AudioRecorder : MonoBehaviour
         count++;
         PlayerPrefs.SetInt("CounterAudioFile", count);
 
-        // Invoke("PlayClip", 0.2f); // not from path, but from the recordedClip
-        
         // wait for the clip to be saved
         SendHttpClip(path);
     }
@@ -115,7 +115,7 @@ public class AudioRecorder : MonoBehaviour
         Invoke("ReturnToInitialState", recordedClip.length); // wait for the clip 
     }
 
-    private void PlayClip() 
+    private void PlayClip(AudioClip recordedClip) 
     {
         // Play audio clip
         recordButtonText.text = "Playing...";
