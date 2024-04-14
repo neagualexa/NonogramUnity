@@ -34,5 +34,5 @@ sysinfo.txt
 *.unitypackage
 
 # Temps User Data
-Assets/LevelsJSON/user_progress/*
+Assets/LevelsJSON/user_progress/
 Assets/LevelsJSON/audio/
