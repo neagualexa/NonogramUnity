@@ -2,8 +2,21 @@
     "hints":[
         "Complete the rows/columns that have the most filled cells first, then move onto others.",
         "Start by identifying the definite cells first, focusing on rows and columns with the most filled or empty squares, and then gradually work your way through the puzzle using logic and elimination.",
-        "Pay attention to symetry.",
+        "Pay attention to symmetry.",
+        "Utilize the intersection of row and column clues to pinpoint specific squares that must be filled.",
+        "Take advantage of any rows or columns that are nearly complete, as they can help in deducing neighboring squares.",
+        "Remember that empty squares can also provide valuable information, especially when deducing the placement of filled squares nearby.",
+        "Double-check the symmetry of your progress regularly, ensuring consistency across rows and columns.",
+        "Break down larger clue numbers into smaller segments to facilitate easier visualization and deduction.",
+        "When faced with uncertainty, analyze the consequences of filling or leaving a square empty to make informed decisions.",
+        "Don't overlook the importance of maintaining a clear mental picture of the puzzle's progress to avoid overlooking potential deductions.",
 
-        "Puzzle meaning riddle: ''"
+        "For Row 8, with a clue of [6], identify the middle filled cells first, as they can help determine the placement of the remaining filled squares.",
+        "Utilize the intersection of clues on Row 3 ([1, 3, 2, 1]) and Column 3 ([1, 6, 1]) to strategically fill in the squares where these clues overlap.",
+        "Focus on filling in the end squares of Column 4 ([5, 3]) and Column 5 ([4, 3]), as these are likely to be more constrained by neighboring clues.",
+
+        "Puzzle meaning riddle: 'I have hands but cannot clap. What am I?'",
+        "Puzzle meaning riddle: 'I have numbers but no arithmetic. What am I?'",
+        "Puzzle meaning riddle: 'Loud in the morning, silent at night. What am I?'"
     ]
 }

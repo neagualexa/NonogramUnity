@@ -2,7 +2,17 @@
     "hints":[
         "Complete the rows/columns that have the most filled cells first, then move onto others.",
         "Start by identifying the definite cells first, focusing on rows and columns with the most filled or empty squares, and then gradually work your way through the puzzle using logic and elimination.",
+        "Utilize the intersection of row and column clues to pinpoint specific squares that must be filled.",
+        "Take advantage of any rows or columns that are nearly complete, as they can help in deducing neighboring squares.",
+        "Remember that empty squares can also provide valuable information, especially when deducing the placement of filled squares nearby.",
+        "Double-check the symmetry of your progress regularly, ensuring consistency across rows and columns.",
+        "Break down larger clue numbers into smaller segments to facilitate easier visualization and deduction.",
+        "When faced with uncertainty, analyze the consequences of filling or leaving a square empty to make informed decisions.",
+        
+        "In column 6, the clue is 9. Fill in all squares except for the first or last one to meet this requirement.",
+        "Start by filling in row 7, column 7 with a filled square, as it's the intersection of both row and column clues.",
 
-        "Puzzle meaning riddle: 'I swim faster than you. My home is underwater. What am I?'"
+        "Puzzle meaning riddle: 'I swim faster than you. My home is underwater. What am I?'",
+        "Puzzle meaning riddle: 'I have scales and fins, but I'm not a reptile. What creature am I?'"
     ]
 }
