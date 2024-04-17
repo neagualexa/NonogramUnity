@@ -116,13 +116,12 @@ public class HTTPRequests : MonoBehaviour
         }
     }
 
-    public IEnumerator SendAudioClipRequest(string audioFilePath)
+        public IEnumerator SendHintToVerbalise(string hint)
     {
-        string apiUrl = "http://localhost:5005/verbal";
+        string apiUrl = "http://localhost:5000/verbalise_hint";
+        string jsonData = $"{{ \"hint\": \"{hint}\" }}";
         WWWForm form = new WWWForm();
-        string fileName = Path.GetFileName(audioFilePath);
-        form.AddBinaryData("audioFile", File.ReadAllBytes(audioFilePath), fileName, "audio/wav");
-        form.AddField("fileName", fileName);
+        form.AddField("hint", jsonData);
 
         using UnityWebRequest www = UnityWebRequest.Post(apiUrl, form);
         yield return www.SendWebRequest();
@@ -133,11 +132,32 @@ public class HTTPRequests : MonoBehaviour
         }
         else
         {
-            Debug.Log("SendAudioClipRequest:: Form upload complete!");
-            Debug.Log("SendAudioClipRequest:: Request successful!");
-
-            string responseContent = www.downloadHandler.text;
-            Debug.Log("SendAudioClipRequest:: Response received from LLM server: " + responseContent);
+            Debug.Log("SendHintToVerbalise:: Request successful!");
         }
     }
+
+    // public IEnumerator SendAudioClipRequest(string audioFilePath)
+    // {
+    //     string apiUrl = "http://localhost:5005/verbal";
+    //     WWWForm form = new WWWForm();
+    //     string fileName = Path.GetFileName(audioFilePath);
+    //     form.AddBinaryData("audioFile", File.ReadAllBytes(audioFilePath), fileName, "audio/wav");
+    //     form.AddField("fileName", fileName);
+
+    //     using UnityWebRequest www = UnityWebRequest.Post(apiUrl, form);
+    //     yield return www.SendWebRequest();
+
+    //     if (www.result != UnityWebRequest.Result.Success)
+    //     {
+    //         Debug.LogError(www.error);
+    //     }
+    //     else
+    //     {
+    //         Debug.Log("SendAudioClipRequest:: Form upload complete!");
+    //         Debug.Log("SendAudioClipRequest:: Request successful!");
+
+    //         string responseContent = www.downloadHandler.text;
+    //         Debug.Log("SendAudioClipRequest:: Response received from LLM server: " + responseContent);
+    //     }
+    // }
 }

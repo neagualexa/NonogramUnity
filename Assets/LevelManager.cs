@@ -82,6 +82,7 @@ public class LevelManager : MonoBehaviour
 
             // int randomIndex = UnityEngine.Random.Range(0, hints.hints.Count);
             string randomHint = hints.hints[hint_index];
+            StartCoroutine(httpRequests.SendHintToVerbalise(randomHint)); // send hint to verbalise server
             hint_text.text = randomHint;
             hint_index = (hint_index + 1) % hints.hints.Count;
             return;

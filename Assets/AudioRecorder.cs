@@ -109,7 +109,7 @@ public class AudioRecorder : MonoBehaviour
         {
             Debug.Log("Waiting for file to exist: " + path);
         }
-        StartCoroutine(httpRequests.SendAudioClipRequest(path));
+        // StartCoroutine(httpRequests.SendAudioClipRequest(path)); // commented out as not in use anymore
         Debug.Log("Sent audio clip to the server: " + path);
 
         Invoke("ReturnToInitialState", recordedClip.length); // wait for the clip 
