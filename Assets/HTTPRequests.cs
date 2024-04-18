@@ -1,7 +1,9 @@
 using UnityEngine;
 using UnityEngine.Networking;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
+using GridData;
 
 public class HTTPRequests : MonoBehaviour
 {
@@ -116,7 +118,7 @@ public class HTTPRequests : MonoBehaviour
         }
     }
 
-        public IEnumerator SendHintToVerbalise(string hint)
+    public IEnumerator SendHintToVerbalise(string hint)
     {
         string apiUrl = "http://localhost:5000/verbalise_hint";
         string jsonData = $"{{ \"hint\": \"{hint}\" }}";
@@ -135,6 +137,66 @@ public class HTTPRequests : MonoBehaviour
             Debug.Log("SendHintToVerbalise:: Request successful!");
         }
     }
+
+    public IEnumerator SendEndGameRequest(string username)
+    {
+        string apiUrl = "http://localhost:5000/end_game";
+        string jsonData = $"{{ \"username\": \"{username}\", \"levels_data\": {ReadAllUserData(username)} }}";
+        WWWForm form = new WWWForm();
+        form.AddField("EndGameData", jsonData);
+
+        using UnityWebRequest www = UnityWebRequest.Post(apiUrl, form);
+        yield return www.SendWebRequest();
+
+        if (www.result != UnityWebRequest.Result.Success)
+        {
+            Debug.LogError(www.error);
+        }
+        else
+        {
+            Debug.Log("SendEndGameRequest:: Request successful!");
+        }
+    }
+
+    private string ReadAllUserData(string username)
+    {
+        UserProgress overallProgress = new UserProgress();
+        overallProgress.levelProgress = new List<string>();
+        // read all user progress files
+        string[] progressFiles = Directory.GetFiles("./Assets/LevelsJSON/user_progress/", username + "_progress_level_*.json");
+        foreach (string progressFile in progressFiles)
+        {
+            string jsonFileContent = File.ReadAllText(progressFile);
+            
+            // parse the JSON file and save it under user_progress json object
+            GridStateData gridLoadedData = JsonUtility.FromJson<GridStateData>(jsonFileContent);
+            string jsonLevelData = "{\"level\": \"" + gridLoadedData.level + "\",\"on_time\": " + gridLoadedData.onTime + ",\"time\": " + gridLoadedData.time + ",\"level_completed\": " + gridLoadedData.levelCompletion + ",\"meaning_completed\": " + gridLoadedData.levelMeaningCompletion + ", \"nb_hints_used\":" + 0 + ", \"nb_mistakes_per_hint\":" + 0 + "}";
+            overallProgress.levelProgress.Add(jsonLevelData);
+        }
+
+        return overallProgress.toString();
+    }
+
+    public class UserProgress
+    {
+        public List<string> levelProgress;
+
+        public string toString()
+        {
+            string result = "{";
+            for(int i = 0; i < levelProgress.Count; i++)
+            {
+                result += "\"" + i + "\":" + levelProgress[i];
+                if (i != levelProgress.Count - 1)
+                {
+                    result += ",";
+                }
+            }
+            result += "}";
+            return result;
+        }
+    }
+        
 
     // public IEnumerator SendAudioClipRequest(string audioFilePath)
     // {
