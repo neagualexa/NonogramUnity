@@ -15,20 +15,20 @@ public class HTTPRequests : MonoBehaviour
         levelSetup = GetComponent<LevelSetup>();
         buttonAnimations = GetComponent<ButtonAnimations>();
     }
-    public IEnumerator SendPuzzleMeaningRequest(string userGuess, string solution)
+    public IEnumerator SendPuzzleMeaningRequest(string userGuess, string solution, string username, string level)
     {
         puzzleMeaningError = false;
         // initial condition
-        if (userGuess == solution)
-        {
+        // if (userGuess == solution)
+        // {
             // Debug.Log("Correct meaning");
-            puzzleMeaningCheck = true;
-            update_levelMeaningCompletion();
-        }
-        else
-        {
+            // puzzleMeaningCheck = true;
+            // update_levelMeaningCompletion();
+        // }
+        // else
+        // {
             string apiUrl = "http://localhost:5000/check_puzzle_meaning";
-            string jsonData = $"{{ \"user_guess\": \"{userGuess}\", \"solution\": \"{solution}\" }}";
+            string jsonData = $"{{ \"user_guess\": \"{userGuess}\", \"solution\": \"{solution}\", \"username\": \"{username}\", \"level\": \"{level}\" }}";
             WWWForm form = new WWWForm();
             form.AddField("puzzleMeaning", jsonData);
 
@@ -57,7 +57,7 @@ public class HTTPRequests : MonoBehaviour
             }
             update_levelMeaningCompletion();
             Debug.Log("Solved meaning: " + levelSetup.levelMeaningCompletion + ", real meaning: " + solution + ", input meaning: " + userGuess);
-        }
+        // }
     }
 
     private void update_levelMeaningCompletion()
@@ -72,7 +72,7 @@ public class HTTPRequests : MonoBehaviour
         buttonAnimations.OnMeaningCompletionCheck();
     }
 
-    public IEnumerator SendPuzzleProgressRequest(bool[,] cellStates, bool[,] solutionCellStates, string levelMeaning)
+    public IEnumerator SendPuzzleProgressRequest(bool[,] cellStates, bool[,] solutionCellStates, string levelMeaning, string username, string level)
     {
         Debug.Log("SendPuzzleProgressRequest:: Checking solution...");
         levelSetup.CheckSolution();
@@ -80,7 +80,7 @@ public class HTTPRequests : MonoBehaviour
         string solutionCellStatesString = "";
         convert_boolList_to_string(cellStates, solutionCellStates, ref cellStatesString, ref solutionCellStatesString);
         string apiUrl = "http://localhost:5000/check_puzzle_progress";
-        string jsonData = $"{{ \"cellStates\": \"{cellStatesString}\", \"solutionCellStates\": \"{solutionCellStatesString}\", \"levelMeaning\": \"{levelMeaning}\", \"completed\": \"{levelSetup.levelCompletion}\"}}";
+        string jsonData = $"{{ \"cellStates\": \"{cellStatesString}\", \"solutionCellStates\": \"{solutionCellStatesString}\", \"levelMeaning\": \"{levelMeaning}\", \"completed\": \"{levelSetup.levelCompletion}\", \"username\": \"{username}\", \"level\": \"{level}\" }}";
         Debug.Log("SendPuzzleProgressRequest:: jsonData: " + jsonData);
         WWWForm form = new WWWForm();
         form.AddField("puzzleProgress", jsonData);

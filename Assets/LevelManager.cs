@@ -11,6 +11,7 @@ public class LevelManager : MonoBehaviour
     private MainMenu mainMenu;
     private HTTPRequests httpRequests;
     private string user;
+    private string level;
     private TMP_Text hint_text;
 
     private int hint_index = 0;
@@ -22,7 +23,8 @@ public class LevelManager : MonoBehaviour
         mainMenu = GetComponent<MainMenu>();
         httpRequests = GetComponent<HTTPRequests>();
 
-        user = PlayerPrefs.GetString("Username");;
+        level = PlayerPrefs.GetString("LevelFilename");
+        user = PlayerPrefs.GetString("Username");
         if (user == null){
             user = "test";
             Debug.Log("TEST user in use!!!");
@@ -112,7 +114,7 @@ public class LevelManager : MonoBehaviour
         bool[,] solutionCellStates = levelGrid.GetSolutionCellStates();
         string levelMeaning = levelGrid.GetSolutionMeaning();
         Debug.Log("Sending puzzle progress to server...");
-        StartCoroutine(httpRequests.SendPuzzleProgressRequest(cellStates, solutionCellStates, levelMeaning));
+        StartCoroutine(httpRequests.SendPuzzleProgressRequest(cellStates, solutionCellStates, levelMeaning, user, level));
     }
 
     public void HintReminderLoop()

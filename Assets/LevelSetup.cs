@@ -572,12 +572,12 @@ public class LevelSetup : MonoBehaviour
     public void CheckMeaningSolution()
     {
         string user_meaning = meaningInputField.text;
-        if (user_meaning == "")
+        if (user_meaning == "" || user_meaning == "Enter...")
         {
             Debug.Log("Please enter a meaning");
             return;
         }
-        StartCoroutine(httpRequests.SendPuzzleMeaningRequest(user_meaning, solutionMeaning)); 
+        StartCoroutine(httpRequests.SendPuzzleMeaningRequest(user_meaning, solutionMeaning, username: PlayerPrefs.GetString("Username"), level: PlayerPrefs.GetString("LevelFilename"))); 
         // levelMeaningCompletion is updated under update_levelMeaningCompletion() in HTTPRequests.cs
     }
 
