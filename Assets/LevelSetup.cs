@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
 using TMPro;
+using GridData;
 
 
 public class LevelSetup : MonoBehaviour
@@ -44,6 +45,10 @@ public class LevelSetup : MonoBehaviour
         meaningInputField.onEndEdit.AddListener(delegate { OnEndEdit(); });
     }
 
+    /// <summary>
+    /// Function to create the empty grid based on the number of rows and columns
+    /// Initialisation of the grid and its row & column indices
+    /// </summary>
     void CreateGrid()
     {
         cells = new GameObject[rows, columns];  // Initialize the 2D array for cells
@@ -137,7 +142,11 @@ public class LevelSetup : MonoBehaviour
         originalCellPrefab.SetActive(false);
     }
 
-    // Function to change grid size dynamically
+    /// <summary>
+    /// Function to change grid size dynamically
+    /// </summary>
+    /// <param name="newRows"></param>
+    /// <param name="newColumns"></param>
     public void ChangeGridSize(int newRows, int newColumns)
     {
         ClearRowIndices();
@@ -187,7 +196,10 @@ public class LevelSetup : MonoBehaviour
 
 
 
-    // ####################### Cell State Management
+    /// <summary>
+    /// Cell State Management
+    /// </summary>
+    /// <returns></returns>
     public bool[,] GetCellStates()
     {
         return cellStates;
@@ -227,6 +239,12 @@ public class LevelSetup : MonoBehaviour
         // UpdateRowIndexText(row);
         // UpdateColumnIndexText(column);
     }
+
+    /// <summary>
+    /// Method to update the row and column indices text based on the grid state (either updated or from file read)
+    /// </summary>
+    /// <param name="rowIndex"></param>
+    /// <param name="solution"></param>
 
     // Update row indices text with consecutive pressed cell counts
     void UpdateRowIndexText(int rowIndex, bool solution = false)
@@ -308,7 +326,12 @@ public class LevelSetup : MonoBehaviour
         }
     }
 
-    // Method to calculate the count of consecutive pressed cells in a row
+    /// <summary>
+    /// Method to calculate the count of consecutive pressed cells in a row and column
+    /// </summary>
+    /// <param name="rowIndex or colIndex"></param>
+    /// <param name="solution"></param>
+    /// <returns></returns>
     string CalculateGroupPressedCellsPerRow(int rowIndex, bool solution = false)
     {
         int currentGroup = 0;
@@ -379,80 +402,10 @@ public class LevelSetup : MonoBehaviour
     }
 
 
-    // ####################### Grid State Management (Save & Load)
-    [System.Serializable]
-    public class GridStateData
-    {
-        public int rows;
-        public int columns;
-        public string meaning;
-        public string user;
-        public string level;
-        public bool onTime;
-        public float time;
-        public bool levelCompletion;
-        public bool levelMeaningCompletion;
-        public CellStatesWrapper cellStatesWrapper;
-        public CellStatesWrapper solutionCellStatesWrapper;
-
-        public void SetCellStates(bool[,] cellStates)
-        {
-            cellStatesWrapper = new CellStatesWrapper(cellStates);
-            rows = cellStates.GetLength(0);
-            columns = cellStates.GetLength(1);
-        }
-
-        public bool[,] GetCellStates()
-        {
-            return cellStatesWrapper.GetCellStates(rows, columns);
-        }
-
-        public void SetSolutionCellStates(bool[,] cellStates)
-        {
-            solutionCellStatesWrapper = new CellStatesWrapper(cellStates);
-        }
-
-        public bool[,] GetSolutionCellStates()
-        {
-            return solutionCellStatesWrapper.GetCellStates(rows, columns);
-        }
-    }
-
-    [System.Serializable]
-    public class CellStatesWrapper
-    {
-        public bool[] cellStates;
-
-        public CellStatesWrapper(bool[,] cellStates)
-        {
-            int rows = cellStates.GetLength(0);
-            int columns = cellStates.GetLength(1);
-            this.cellStates = new bool[rows * columns];
-
-            for (int i = 0; i < rows; i++)
-            {
-                for (int j = 0; j < columns; j++)
-                {
-                    this.cellStates[i * columns + j] = cellStates[i, j];
-                }
-            }
-        }
-
-        public bool[,] GetCellStates(int rows, int columns)
-        {
-            bool[,] result = new bool[rows, columns];
-
-            for (int i = 0; i < rows; i++)
-            {
-                for (int j = 0; j < columns; j++)
-                {
-                    result[i, j] = cellStates[i * columns + j];
-                }
-            }
-
-            return result;
-        }
-    }
+    /// <summary>
+    /// Section for saving and loading grid state from a JSON file
+    /// </summary>
+    /// <param name="fileName"></param>
     public void SaveProgress(string fileName)
     {
         // check if solved correctly
@@ -547,7 +500,10 @@ public class LevelSetup : MonoBehaviour
     }
 
 
-    // CHECKING SOLUTIONS
+    /// <summary>
+    /// Section for checking the solution of the puzzle
+    /// Checking: grid state and user guess for meaning
+    /// </summary>
     public void CheckSolution()
     {
         bool solvedLevel = true;
