@@ -106,7 +106,7 @@ public class LevelManager : MonoBehaviour
     IEnumerator AskAIAssistant()
     {
         yield return new WaitForSeconds(1.3f);
-        hint_text.text = "Message sent to NonoAI!";
+        hint_text.text = "Progress sent to NonoAI!";
         // Application.OpenURL("http://localhost:5000/");
         bool[,] cellStates = levelGrid.GetCellStates();
         bool[,] solutionCellStates = levelGrid.GetSolutionCellStates();
