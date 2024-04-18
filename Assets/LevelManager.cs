@@ -83,18 +83,27 @@ public class LevelManager : MonoBehaviour
             // int randomIndex = UnityEngine.Random.Range(0, hints.hints.Count);
             string randomHint = hints.hints[hint_index];
             StartCoroutine(httpRequests.SendHintToVerbalise(randomHint)); // send hint to verbalise server
-            hint_text.text = randomHint;
-            hint_index = (hint_index + 1) % hints.hints.Count;
+
+            // add a delay to receive the verbal response from the server
+            hint_text.text = "Requesting a hint...";
+            StartCoroutine(ShowHintAfterDelay(randomHint, hints.hints.Count));
             return;
         } else {
-            hint_text.text = "Sending message...";
+            hint_text.text = "Asking NonoAI for hint...";
             // add 1.2seconds delay
-            StartCoroutine(OpenChatbot());
+            StartCoroutine(AskAIAssistant());
             return;
         }
     }
 
-    IEnumerator OpenChatbot()
+    IEnumerator ShowHintAfterDelay(string hint, int hints_count)
+    {
+        yield return new WaitForSeconds(2.5f);
+        hint_text.text = hint;
+        hint_index = (hint_index + 1) % hints_count;
+    }
+
+    IEnumerator AskAIAssistant()
     {
         yield return new WaitForSeconds(1.3f);
         hint_text.text = "Message sent to NonoAI!";
@@ -120,7 +129,7 @@ public class LevelManager : MonoBehaviour
         {
             Debug.Log("Starting HintReminder every 180s ...");
             yield return new WaitForSeconds(180);
-            StartCoroutine(OpenChatbot());
+            ShowHint(PlayerPrefs.GetString("LevelFilename") + ".json");
         }
     }
 
