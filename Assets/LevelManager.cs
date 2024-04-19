@@ -12,7 +12,7 @@ public class LevelManager : MonoBehaviour
     private HTTPRequests httpRequests;
     private string user;
     private string level;
-    private TMP_Text hint_text;
+    public TMP_Text hint_text;
 
     private int hint_index = 0;
 
@@ -88,21 +88,22 @@ public class LevelManager : MonoBehaviour
 
             // add a delay to receive the verbal response from the server
             hint_text.text = "Requesting a hint...";
-            StartCoroutine(ShowHintAfterDelay(randomHint, hints.hints.Count));
+            StartCoroutine(ShowHintAfterDelay(randomHint, 2.5f));
+            hint_index = (hint_index + 1) % hints.hints.Count;
             return;
         } else {
             hint_text.text = "Asking NonoAI for hint...";
             // add 1.2seconds delay
             StartCoroutine(AskAIAssistant());
+            StartCoroutine(ShowHintAfterDelay("Waiting for NonoAI...", 3.5f));
             return;
         }
     }
 
-    IEnumerator ShowHintAfterDelay(string hint, int hints_count)
+    IEnumerator ShowHintAfterDelay(string hint, float delay)
     {
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(delay);
         hint_text.text = hint;
-        hint_index = (hint_index + 1) % hints_count;
     }
 
     IEnumerator AskAIAssistant()

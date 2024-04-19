@@ -9,12 +9,14 @@ public class HTTPRequests : MonoBehaviour
 {
     public bool puzzleMeaningCheck = false;
     private LevelSetup levelSetup;
+    private LevelManager levelManager;
     private ButtonAnimations buttonAnimations;
     private bool puzzleMeaningError = false;
 
     private void Start()
     {
         levelSetup = GetComponent<LevelSetup>();
+        levelManager = GetComponent<LevelManager>();
         buttonAnimations = GetComponent<ButtonAnimations>();
     }
     public IEnumerator SendPuzzleMeaningRequest(string userGuess, string solution, string username, string level)
@@ -101,6 +103,7 @@ public class HTTPRequests : MonoBehaviour
 
             string responseContent = www.downloadHandler.text;
             Debug.Log("SendPuzzleProgressRequest:: Response received from LLM server: " + responseContent);
+            levelManager.hint_text.text = responseContent; // update hint popup text
         }        
     }
 
@@ -171,6 +174,7 @@ public class HTTPRequests : MonoBehaviour
             // parse the JSON file and save it under user_progress json object
             GridStateData gridLoadedData = JsonUtility.FromJson<GridStateData>(jsonFileContent);
             string jsonLevelData = "{\"level\": \"" + gridLoadedData.level + "\",\"on_time\": " + gridLoadedData.onTime + ",\"time\": " + gridLoadedData.time + ",\"level_completed\": " + gridLoadedData.levelCompletion + ",\"meaning_completed\": " + gridLoadedData.levelMeaningCompletion + ", \"nb_hints_used\":" + 0 + ", \"nb_mistakes_per_hint\":" + 0 + "}";
+            // TODO: add nb_hints_used and nb_mistakes_per_hint
             overallProgress.levelProgress.Add(jsonLevelData);
         }
 
