@@ -71,6 +71,7 @@ public class LevelManager : MonoBehaviour
     public void ShowHint(string fileName)
     {
         int hintStyle = PlayerPrefs.GetInt("HintChat");
+        levelGrid.hint_count += 1;
 
         if (hintStyle == 0)
         {

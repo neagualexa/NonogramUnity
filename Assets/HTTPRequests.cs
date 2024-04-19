@@ -173,8 +173,7 @@ public class HTTPRequests : MonoBehaviour
             
             // parse the JSON file and save it under user_progress json object
             GridStateData gridLoadedData = JsonUtility.FromJson<GridStateData>(jsonFileContent);
-            string jsonLevelData = "{\"level\": \"" + gridLoadedData.level + "\",\"on_time\": " + gridLoadedData.onTime + ",\"time\": " + gridLoadedData.time + ",\"level_completed\": " + gridLoadedData.levelCompletion + ",\"meaning_completed\": " + gridLoadedData.levelMeaningCompletion + ", \"nb_hints_used\":" + 0 + ", \"nb_mistakes_per_hint\":" + 0 + "}";
-            // TODO: add nb_hints_used and nb_mistakes_per_hint
+            string jsonLevelData = "{\"level\": \"" + gridLoadedData.level + "\",\"on_time\": " + gridLoadedData.onTime + ",\"time\": " + gridLoadedData.time + ",\"level_completed\": " + gridLoadedData.levelCompletion + ",\"meaning_completed\": " + gridLoadedData.levelMeaningCompletion + ", \"nb_hints_used\":" + gridLoadedData.hintCount + "}";
             overallProgress.levelProgress.Add(jsonLevelData);
         }
 

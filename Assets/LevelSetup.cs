@@ -30,6 +30,7 @@ public class LevelSetup : MonoBehaviour
 
     public bool levelCompletion = false;
     public bool levelMeaningCompletion = false;
+    public int hint_count = 0;
 
     void Awake()
     {
@@ -427,6 +428,7 @@ public class LevelSetup : MonoBehaviour
         gridProgressData.time = levelTimer.GetTimePassed();
         gridProgressData.levelCompletion = levelCompletion;
         gridProgressData.levelMeaningCompletion = levelMeaningCompletion;
+        gridProgressData.hintCount = hint_count;
 
         Debug.Log("Saving grid state: " + gridProgressData.rows + " rows, " + gridProgressData.columns + " columns" + ", " + gridProgressData.cellStatesWrapper + " cell states");
 
@@ -470,6 +472,7 @@ public class LevelSetup : MonoBehaviour
             levelCompletion = gridLoadedData.levelCompletion;
             levelMeaningCompletion = gridLoadedData.levelMeaningCompletion;
             levelTimer.SetTimePassed(gridLoadedData.time);
+            hint_count = gridLoadedData.hintCount;
 
             // 2. Change grid size to match the loaded grid size, but empty states
             ChangeGridSize(gridLoadedData.rows, gridLoadedData.columns);

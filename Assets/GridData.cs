@@ -12,6 +12,7 @@ namespace GridData{
         public float time;
         public bool levelCompletion;
         public bool levelMeaningCompletion;
+        public int hintCount;
         public CellStatesWrapper cellStatesWrapper;
         public CellStatesWrapper solutionCellStatesWrapper;
 
