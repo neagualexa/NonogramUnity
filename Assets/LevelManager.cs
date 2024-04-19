@@ -73,6 +73,7 @@ public class LevelManager : MonoBehaviour
     {
         int hintStyle = PlayerPrefs.GetInt("HintChat");
         levelGrid.hint_count += 1;
+        // using the auto size feature in Unity with a max fontSize of 30 to fit the hint_text into the object
 
         if (hintStyle == 0)
         {
