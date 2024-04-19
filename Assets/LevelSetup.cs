@@ -410,7 +410,7 @@ public class LevelSetup : MonoBehaviour
     public void SaveProgress(string fileName)
     {
         // check if solved correctly
-        CheckSolution();
+        CheckSolution(cellStates, solutionCellStates);
         // check if meaning is correct
         CheckMeaningSolution();
 
@@ -507,15 +507,15 @@ public class LevelSetup : MonoBehaviour
     /// Section for checking the solution of the puzzle
     /// Checking: grid state and user guess for meaning
     /// </summary>
-    public void CheckSolution()
+    public void CheckSolution(bool[,] cellStates, bool[,] solutionCellStates)
     {
         bool solvedLevel = true;
         for (int i = 0; i < rows; i++)
         {
             for (int j = 0; j < columns; j++)
             {
-                bool currentCellState = GetCellState(i, j);
-                bool currentSolutionCellState = GetSolutionCellState(i, j);
+                bool currentCellState = cellStates[i,j];
+                bool currentSolutionCellState = solutionCellStates[i, j];
                 if (currentCellState != currentSolutionCellState)
                 {
                     solvedLevel = false;

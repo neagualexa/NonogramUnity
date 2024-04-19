@@ -34,6 +34,7 @@ public class LevelManager : MonoBehaviour
 
     void Start()
     {
+        // Comment out if testbench is active
         HintReminderLoop();
     }
 
@@ -116,7 +117,7 @@ public class LevelManager : MonoBehaviour
         bool[,] solutionCellStates = levelGrid.GetSolutionCellStates();
         string levelMeaning = levelGrid.GetSolutionMeaning();
         Debug.Log("Sending puzzle progress to server...");
-        StartCoroutine(httpRequests.SendPuzzleProgressRequest(cellStates, solutionCellStates, levelMeaning, user, level));
+        StartCoroutine(httpRequests.SendPuzzleProgressRequest(cellStates, solutionCellStates, levelMeaning, user, level, levelGrid.hint_count));
     }
 
     public void HintReminderLoop()
