@@ -127,17 +127,38 @@ public class HTTPRequests : MonoBehaviour
         }        
     }
 
-    private void convert_boolList_to_string(bool[,] cellStates, bool[,] solutionCellStates, ref string cellStatesString, ref string solutionCellStatesString)
+    private void convert_boolList_to_string(bool[,] cellStates, bool[,] solutionCellStates, ref string cellStatesString, ref string solutionCellStatesString, bool boolListFormal = false)
     {
+        if (boolListFormal)
+        {
+            cellStatesString = "[";
+            solutionCellStatesString = "[";
+        }
+
         for (int i = 0; i < cellStates.GetLength(0); i++)
         {
             for (int j = 0; j < cellStates.GetLength(1); j++)
             {
                 cellStatesString += cellStates[i, j] ? "1" : "0";
                 solutionCellStatesString += solutionCellStates[i, j] ? "1" : "0";
+
+                if (boolListFormal)
+                {
+                    cellStatesString += j != cellStates.GetLength(0) - 1 ? ", " : "";
+                    solutionCellStatesString += j != solutionCellStates.GetLength(0) - 1 ? ", " : "";
+                }
             }
-            cellStatesString += "|";
-            solutionCellStatesString += "|";
+            
+            if (boolListFormal)
+            {
+                cellStatesString += i != cellStates.GetLength(0) - 1 ? "], [" : "]";
+                solutionCellStatesString += i != solutionCellStates.GetLength(0) - 1 ? "], [" : "]";
+            }
+            else
+            {
+                cellStatesString += "|";
+                solutionCellStatesString += "|";
+            }
         }
     }
 
@@ -232,13 +253,18 @@ public class HTTPRequests : MonoBehaviour
     }
 
 
-    public IEnumerator SendGridInteractionRequest(string username, string level, GridInteractions gridInteractions)
+    public IEnumerator SendGridInteractionRequest(string username, string level, GridInteractions gridInteractions, bool[,] cellStates, bool[,] solutionCellStates)
     {
         string apiUrl = "http://localhost:5000/record_interaction";
         string lastPressedCell_1 = gridInteractions.lastPressedCell_1 != null ? $"[{gridInteractions.lastPressedCell_1[0]}, {gridInteractions.lastPressedCell_1[1]}, {gridInteractions.lastPressedCell_1[2]}, {gridInteractions.lastPressedCell_1[3]}]" : "null";
         string lastPressedCell_2 = gridInteractions.lastPressedCell_2 != null ? $"[{gridInteractions.lastPressedCell_2[0]}, {gridInteractions.lastPressedCell_2[1]}, {gridInteractions.lastPressedCell_2[2]}, {gridInteractions.lastPressedCell_2[3]}]" : "null";
         string lastPressedCell_3 = gridInteractions.lastPressedCell_3 != null ? $"[{gridInteractions.lastPressedCell_3[0]}, {gridInteractions.lastPressedCell_3[1]}, {gridInteractions.lastPressedCell_3[2]}, {gridInteractions.lastPressedCell_3[3]}]" : "null";
-        string jsonData = $"{{ \"username\": \"{username}\", \"level\": \"{level}\", \"lastPressedCell_1\": {lastPressedCell_1}, \"lastPressedCell_2\": {lastPressedCell_2}, \"lastPressedCell_3\": {lastPressedCell_3} }}";
+        string cellStatesString = "";
+        string solutionCellStatesString = "";
+        convert_boolList_to_string(cellStates, solutionCellStates, ref cellStatesString, ref solutionCellStatesString, boolListFormal: true);
+        
+        string jsonData = $"{{ \"username\": \"{username}\", \"level\": \"{level}\", \"lastPressedCell_1\": {lastPressedCell_1}, \"lastPressedCell_2\": {lastPressedCell_2}, \"lastPressedCell_3\": {lastPressedCell_3}, \"solutionGrid\": \"{solutionCellStatesString}\" }}";
+        // Debug.Log("SendGridInteractionRequest:: jsonData: " + jsonData);
         WWWForm form = new WWWForm();
         form.AddField("GridInteractions", jsonData);
 

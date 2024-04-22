@@ -80,7 +80,7 @@ public class LevelGridCellToggle : MonoBehaviour, IPointerEnterHandler, IPointer
 
         // record the last pressed cell
         gridReference.gridInteractions.SetLastPressedCell(rowIndex, columnIndex);
-        StartCoroutine(httpRequests.SendGridInteractionRequest(username: PlayerPrefs.GetString("Username"), level: PlayerPrefs.GetString("LevelFilename"), gridReference.gridInteractions));
+        StartCoroutine(httpRequests.SendGridInteractionRequest(username: PlayerPrefs.GetString("Username"), level: PlayerPrefs.GetString("LevelFilename"), gridReference.gridInteractions, gridReference.GetCellStates(), gridReference.GetSolutionCellStates() ));
     }
 
     // only used at initialisation of grid when loading a level
