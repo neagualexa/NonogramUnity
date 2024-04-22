@@ -17,9 +17,12 @@ public class LevelSetup : MonoBehaviour
     private GameObject originalCellPrefab;
     private TMP_InputField meaningInputField;
     private Button checkMeaningButton;
+    private Button checkPuzzleButton;
     private HTTPRequests httpRequests;
     private LevelTimer levelTimer;
     private MainMenu mainMenu;
+    private ButtonAnimations buttonAnimations;
+
 
     public Font fontAsset; // Add a field for the font asset
 
@@ -40,12 +43,18 @@ public class LevelSetup : MonoBehaviour
         gridParent = GameObject.Find("GridHolder").transform;
         originalCellPrefab = GameObject.Find("cellPrefab");
         checkMeaningButton = GameObject.Find("CheckMeaningButton").GetComponent<Button>();
+        checkPuzzleButton = GameObject.Find("CheckPuzzleButton").GetComponent<Button>();
         meaningInputField = GameObject.Find("InputField -Puzzle Meaning").GetComponent<TMP_InputField>();
         httpRequests = GetComponent<HTTPRequests>();
         levelTimer = GetComponent<LevelTimer>();
         mainMenu = GetComponent<MainMenu>();
+        buttonAnimations = GetComponent<ButtonAnimations>();
         // Add a listener to the input field's OnEndEdit event to check for Enter key
         meaningInputField.onEndEdit.AddListener(delegate { OnEndEdit(); });
+
+        // assign functions to the buttons
+        checkPuzzleButton.onClick.AddListener(delegate { CheckSolution(cellStates, solutionCellStates); });
+        checkMeaningButton.onClick.AddListener(delegate { CheckMeaningSolution(); });
     }
 
     /// <summary>
@@ -533,7 +542,7 @@ public class LevelSetup : MonoBehaviour
         }
         Debug.Log("Solved level: " + solvedLevel);
         levelCompletion = solvedLevel;
-        // return solvedLevel;
+        buttonAnimations.OnLevelCompletionCheck();
     }
 
     public void CheckMeaningSolution()
