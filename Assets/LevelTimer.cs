@@ -5,7 +5,7 @@ using TMPro;
 
 public class LevelTimer : MonoBehaviour
 {
-    private float timeRemaining = 600; // in seconds
+    private float timeRemaining = 10000; //600; // in seconds
     private float timePassed = 0;
     private bool timerIsRunning = false;
     private TMP_Text timer_text;

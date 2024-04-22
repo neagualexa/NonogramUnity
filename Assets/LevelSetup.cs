@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using System.IO;
 using TMPro;
 using GridData;
-
+using Interactions;
 
 public class LevelSetup : MonoBehaviour
 {
@@ -26,6 +26,8 @@ public class LevelSetup : MonoBehaviour
     public GameObject[,] cells; // 2D array to hold references to the grid cells
     private bool[,] cellStates; // 2D array to store the state of each cell
     private bool[,] solutionCellStates; // 2D array to store the Solution state of each cell
+    private CellsGrouping cellsGrouping; // Object to store the size of the group that each cell is part of
+    public GridInteractions gridInteractions; // Object to handle past interactions with the grid
     private string solutionMeaning = "";
 
     public bool levelCompletion = false;
@@ -397,8 +399,6 @@ public class LevelSetup : MonoBehaviour
             colGroupText = colGroupText.Substring(0, colGroupText.Length - 1);
         }
 
-
-
         return colGroupText;
     }
 
@@ -487,6 +487,14 @@ public class LevelSetup : MonoBehaviour
             {
                 UpdateColumnIndexText(j, true);
             }
+
+            // 4. update CellsGrouping and initialize GridInteractions
+            cellsGrouping = new CellsGrouping();
+            cellsGrouping.SetCellsGrouping(solutionCellStates, rows, columns);
+            // Debug.Log("Grid state loaded cellsGrouping: " );
+            // cellsGrouping.print(); // print the cellsGrouping
+            
+            gridInteractions = new GridInteractions(cellsGrouping);
 
 
             Debug.Log("Grid state loaded from: " + filePath);

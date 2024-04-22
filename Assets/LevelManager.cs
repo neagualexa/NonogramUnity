@@ -35,7 +35,7 @@ public class LevelManager : MonoBehaviour
     void Start()
     {
         // Comment out if testbench is active
-        HintReminderLoop();
+        // HintReminderLoop();
     }
 
     public void LoadLevel(string fileName)

@@ -3,6 +3,8 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
+using Interactions;
+
 public class LevelGridCellToggle : MonoBehaviour, IPointerEnterHandler, IPointerDownHandler, IPointerUpHandler
 {
     private Button button;
@@ -17,12 +19,15 @@ public class LevelGridCellToggle : MonoBehaviour, IPointerEnterHandler, IPointer
     private Image buttonImage;
     private TrackInput trackInput;
 
+    private HTTPRequests httpRequests;
+
 
     void Start()
     {
         button = GetComponent<Button>();
         buttonImage = button.GetComponent<Image>();
         gridReference = GetComponentInParent<LevelSetup>();
+        httpRequests = GetComponentInParent<HTTPRequests>();
         trackInput = gridReference.GetComponent<TrackInput>();
 
         setOriginalColor();
@@ -72,8 +77,13 @@ public class LevelGridCellToggle : MonoBehaviour, IPointerEnterHandler, IPointer
                 gridReference.SetCellState(rowIndex, columnIndex, false);
             }
         }
+
+        // record the last pressed cell
+        gridReference.gridInteractions.SetLastPressedCell(rowIndex, columnIndex);
+        StartCoroutine(httpRequests.SendGridInteractionRequest(username: PlayerPrefs.GetString("Username"), level: PlayerPrefs.GetString("LevelFilename"), gridReference.gridInteractions));
     }
 
+    // only used at initialisation of grid when loading a level
     public void UpdateButton(bool active)
     {
         button = GetComponent<Button>();

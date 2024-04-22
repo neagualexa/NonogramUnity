@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using GridData;
+using Interactions;
 
 public class HTTPRequests : MonoBehaviour
 {
@@ -19,6 +20,15 @@ public class HTTPRequests : MonoBehaviour
         levelManager = GetComponent<LevelManager>();
         buttonAnimations = GetComponent<ButtonAnimations>();
     }
+
+    /// <summary>
+    /// Send a request to the server to check if the user's guess is correct
+    /// </summary>
+    /// <param name="userGuess"></param>
+    /// <param name="solution"></param>
+    /// <param name="username"></param>
+    /// <param name="level"></param>
+    /// <returns></returns>
     public IEnumerator SendPuzzleMeaningRequest(string userGuess, string solution, string username, string level)
     {
         puzzleMeaningError = false;
@@ -76,6 +86,16 @@ public class HTTPRequests : MonoBehaviour
         buttonAnimations.OnMeaningCompletionCheck();
     }
 
+    /// <summary>
+    /// Send a request to the server to check the user's progress and update the hint text
+    /// </summary>
+    /// <param name="cellStates"></param>
+    /// <param name="solutionCellStates"></param>
+    /// <param name="levelMeaning"></param>
+    /// <param name="username"></param>
+    /// <param name="level"></param>
+    /// <param name="hint_id"></param>
+    /// <returns></returns>
     public IEnumerator SendPuzzleProgressRequest(bool[,] cellStates, bool[,] solutionCellStates, string levelMeaning, string username, string level, int hint_id)
     {
         Debug.Log("SendPuzzleProgressRequest:: Checking solution...");
@@ -121,6 +141,11 @@ public class HTTPRequests : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Send a request to the server to get an audio for the hint
+    /// </summary>
+    /// <param name="hint"></param>
+    /// <returns></returns>
     public IEnumerator SendHintToVerbalise(string hint)
     {
         string apiUrl = "http://localhost:5000/verbalise_hint";
@@ -141,6 +166,12 @@ public class HTTPRequests : MonoBehaviour
         }
     }
 
+
+    /// <summary>
+    /// Send a request to the server to share all the user progress data throughout the game
+    /// </summary>
+    /// <param name="username"></param>
+    /// <returns></returns>
     public IEnumerator SendEndGameRequest(string username)
     {
         string apiUrl = "http://localhost:5000/end_game";
@@ -197,6 +228,30 @@ public class HTTPRequests : MonoBehaviour
             }
             result += "}";
             return result;
+        }
+    }
+
+
+    public IEnumerator SendGridInteractionRequest(string username, string level, GridInteractions gridInteractions)
+    {
+        string apiUrl = "http://localhost:5000/record_interaction";
+        string lastPressedCell_1 = gridInteractions.lastPressedCell_1 != null ? $"[{gridInteractions.lastPressedCell_1[0]}, {gridInteractions.lastPressedCell_1[1]}, {gridInteractions.lastPressedCell_1[2]}, {gridInteractions.lastPressedCell_1[3]}]" : "null";
+        string lastPressedCell_2 = gridInteractions.lastPressedCell_2 != null ? $"[{gridInteractions.lastPressedCell_2[0]}, {gridInteractions.lastPressedCell_2[1]}, {gridInteractions.lastPressedCell_2[2]}, {gridInteractions.lastPressedCell_2[3]}]" : "null";
+        string lastPressedCell_3 = gridInteractions.lastPressedCell_3 != null ? $"[{gridInteractions.lastPressedCell_3[0]}, {gridInteractions.lastPressedCell_3[1]}, {gridInteractions.lastPressedCell_3[2]}, {gridInteractions.lastPressedCell_3[3]}]" : "null";
+        string jsonData = $"{{ \"username\": \"{username}\", \"level\": \"{level}\", \"lastPressedCell_1\": {lastPressedCell_1}, \"lastPressedCell_2\": {lastPressedCell_2}, \"lastPressedCell_3\": {lastPressedCell_3} }}";
+        WWWForm form = new WWWForm();
+        form.AddField("GridInteractions", jsonData);
+
+        using UnityWebRequest www = UnityWebRequest.Post(apiUrl, form);
+        yield return www.SendWebRequest();
+
+        if (www.result != UnityWebRequest.Result.Success)
+        {
+            Debug.LogError(www.error);
+        }
+        else
+        {
+            Debug.Log("SendGridInteractionRequest:: Request successful!");
         }
     }
         
