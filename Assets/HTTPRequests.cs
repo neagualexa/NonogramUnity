@@ -264,7 +264,7 @@ public class HTTPRequests : MonoBehaviour
         convert_boolList_to_string(cellStates, solutionCellStates, ref cellStatesString, ref solutionCellStatesString, boolListFormal: true);
         Debug.Log("SendGridInteractionRequest:: cellStatesString: " + solutionCellStatesString);
         
-        string jsonData = $"{{ \"username\": \"{username}\", \"level\": \"{level}\", \"lastPressedCell_1\": {lastPressedCell_1}, \"lastPressedCell_2\": {lastPressedCell_2}, \"lastPressedCell_3\": {lastPressedCell_3}, \"solutionGrid\": \"{solutionCellStatesString}\" }}";
+        string jsonData = $"{{ \"username\": \"{username}\", \"level\": \"{level}\", \"lastPressedCell_1\": {lastPressedCell_1}, \"lastPressedCell_2\": {lastPressedCell_2}, \"lastPressedCell_3\": {lastPressedCell_3}, \"solutionGrid\": \"{solutionCellStatesString}\", \"progressGrid\": \"{cellStatesString}\" }}";
         // Debug.Log("SendGridInteractionRequest:: jsonData: " + jsonData);
         WWWForm form = new WWWForm();
         form.AddField("GridInteractions", jsonData);
