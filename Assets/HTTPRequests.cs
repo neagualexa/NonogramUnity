@@ -131,8 +131,8 @@ public class HTTPRequests : MonoBehaviour
     {
         if (boolListFormal)
         {
-            cellStatesString = "[";
-            solutionCellStatesString = "[";
+            cellStatesString = "[[";
+            solutionCellStatesString = "[[";
         }
 
         for (int i = 0; i < cellStates.GetLength(0); i++)
@@ -151,8 +151,8 @@ public class HTTPRequests : MonoBehaviour
             
             if (boolListFormal)
             {
-                cellStatesString += i != cellStates.GetLength(0) - 1 ? "], [" : "]";
-                solutionCellStatesString += i != solutionCellStates.GetLength(0) - 1 ? "], [" : "]";
+                cellStatesString += i != cellStates.GetLength(0) - 1 ? "], [" : "]]";
+                solutionCellStatesString += i != solutionCellStates.GetLength(0) - 1 ? "], [" : "]]";
             }
             else
             {
@@ -262,6 +262,7 @@ public class HTTPRequests : MonoBehaviour
         string cellStatesString = "";
         string solutionCellStatesString = "";
         convert_boolList_to_string(cellStates, solutionCellStates, ref cellStatesString, ref solutionCellStatesString, boolListFormal: true);
+        Debug.Log("SendGridInteractionRequest:: cellStatesString: " + solutionCellStatesString);
         
         string jsonData = $"{{ \"username\": \"{username}\", \"level\": \"{level}\", \"lastPressedCell_1\": {lastPressedCell_1}, \"lastPressedCell_2\": {lastPressedCell_2}, \"lastPressedCell_3\": {lastPressedCell_3}, \"solutionGrid\": \"{solutionCellStatesString}\" }}";
         // Debug.Log("SendGridInteractionRequest:: jsonData: " + jsonData);
