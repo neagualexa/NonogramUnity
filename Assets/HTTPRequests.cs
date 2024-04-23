@@ -102,7 +102,7 @@ public class HTTPRequests : MonoBehaviour
         levelSetup.CheckSolution(cellStates, solutionCellStates);
         string cellStatesString = "";
         string solutionCellStatesString = "";
-        convert_boolList_to_string(cellStates, solutionCellStates, ref cellStatesString, ref solutionCellStatesString);
+        convert_boolList_to_string(cellStates, solutionCellStates, ref cellStatesString, ref solutionCellStatesString, boolListFormal: true);
         string apiUrl = "http://localhost:5000/check_puzzle_progress";
         string jsonData = $"{{ \"cellStates\": \"{cellStatesString}\", \"solutionCellStates\": \"{solutionCellStatesString}\", \"levelMeaning\": \"{levelMeaning}\", \"completed\": \"{levelSetup.levelCompletion}\", \"username\": \"{username}\", \"level\": \"{level}\", \"hint_id\": \"{hint_id}\" }}";
         Debug.Log("SendPuzzleProgressRequest:: jsonData: " + jsonData);
