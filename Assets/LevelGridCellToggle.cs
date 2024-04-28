@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using TMPro;
 
 using Interactions;
 
@@ -15,6 +16,7 @@ public class LevelGridCellToggle : MonoBehaviour, IPointerEnterHandler, IPointer
     private LevelSetup gridReference; // Reference to the LevelSetup script
     private int rowIndex; // Index of the row this cell belongs to
     private int columnIndex; // Index of the column this cell belongs to
+    private TMP_Text clickedCell;
 
     private Image buttonImage;
     private TrackInput trackInput;
@@ -29,6 +31,7 @@ public class LevelGridCellToggle : MonoBehaviour, IPointerEnterHandler, IPointer
         gridReference = GetComponentInParent<LevelSetup>();
         httpRequests = GetComponentInParent<HTTPRequests>();
         trackInput = gridReference.GetComponent<TrackInput>();
+        clickedCell = GameObject.Find("ClickedCell").GetComponent<TMP_Text>();
 
         setOriginalColor();
         // button.onClick.AddListener(OnButtonClick);
@@ -80,6 +83,7 @@ public class LevelGridCellToggle : MonoBehaviour, IPointerEnterHandler, IPointer
 
         // record the last pressed cell
         gridReference.gridInteractions.SetLastPressedCell(rowIndex, columnIndex);
+        clickedCell.text = "(" + (rowIndex + 1) + ", " + (columnIndex + 1) + ")";
         StartCoroutine(httpRequests.SendGridInteractionRequest(username: PlayerPrefs.GetString("Username"), level: PlayerPrefs.GetString("LevelFilename"), gridReference.gridInteractions, gridReference.GetCellStates(), gridReference.GetSolutionCellStates() ));
     }
 
