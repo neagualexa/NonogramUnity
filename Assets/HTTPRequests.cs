@@ -256,9 +256,9 @@ public class HTTPRequests : MonoBehaviour
     public IEnumerator SendGridInteractionRequest(string username, string level, GridInteractions gridInteractions, bool[,] cellStates, bool[,] solutionCellStates)
     {
         string apiUrl = "http://localhost:5000/record_interaction";
-        string lastPressedCell_1 = gridInteractions.lastPressedCell_1 != null ? $"[{gridInteractions.lastPressedCell_1[0]}, {gridInteractions.lastPressedCell_1[1]}, {gridInteractions.lastPressedCell_1[2]}, {gridInteractions.lastPressedCell_1[3]}]" : "null";
-        string lastPressedCell_2 = gridInteractions.lastPressedCell_2 != null ? $"[{gridInteractions.lastPressedCell_2[0]}, {gridInteractions.lastPressedCell_2[1]}, {gridInteractions.lastPressedCell_2[2]}, {gridInteractions.lastPressedCell_2[3]}]" : "null";
-        string lastPressedCell_3 = gridInteractions.lastPressedCell_3 != null ? $"[{gridInteractions.lastPressedCell_3[0]}, {gridInteractions.lastPressedCell_3[1]}, {gridInteractions.lastPressedCell_3[2]}, {gridInteractions.lastPressedCell_3[3]}]" : "null";
+        string lastPressedCell_1 = gridInteractions.lastPressedCell_1 != null ? $"[{gridInteractions.lastPressedCell_1[0]}, {gridInteractions.lastPressedCell_1[1]}]" : "null"; //, {gridInteractions.lastPressedCell_1[2]}, {gridInteractions.lastPressedCell_1[3]}]" : "null";
+        string lastPressedCell_2 = gridInteractions.lastPressedCell_2 != null ? $"[{gridInteractions.lastPressedCell_2[0]}, {gridInteractions.lastPressedCell_2[1]}]" : "null"; //, {gridInteractions.lastPressedCell_2[2]}, {gridInteractions.lastPressedCell_2[3]}]" : "null";
+        string lastPressedCell_3 = gridInteractions.lastPressedCell_3 != null ? $"[{gridInteractions.lastPressedCell_3[0]}, {gridInteractions.lastPressedCell_3[1]}]" : "null"; //, {gridInteractions.lastPressedCell_3[2]}, {gridInteractions.lastPressedCell_3[3]}]" : "null";
         string cellStatesString = "";
         string solutionCellStatesString = "";
         convert_boolList_to_string(cellStates, solutionCellStates, ref cellStatesString, ref solutionCellStatesString, boolListFormal: true);

@@ -169,25 +169,7 @@ namespace Interactions
         {
             int rowGroupSize = cellsGrouping.cellGroupingRows[row, column];
             int columnGroupSize = cellsGrouping.cellGroupingColumns[row, column];
-
-            // switch (StateMachine)
-            // {
-            //     case 0:
-            //         lastPressedCell_1 = new List<int> {row, column, rowGroupSize, columnGroupSize};
-            //         UpdateStateMachine(StateMachine);
-            //         break;
-            //     case 1:
-            //         lastPressedCell_2 = new List<int> {row, column, rowGroupSize, columnGroupSize};
-            //         UpdateStateMachine(StateMachine);
-            //         break;
-            //     case 2:
-            //         lastPressedCell_3 = new List<int> {row, column, rowGroupSize, columnGroupSize};
-            //         UpdateStateMachine(StateMachine);
-            //         break;
-            //     default:
-            //         Debug.Log("Invalid State Machine Value");
-            //         break;
-            // }
+            
             lastPressedCell_3 = lastPressedCell_2;
             lastPressedCell_2 = lastPressedCell_1;
             lastPressedCell_1 = new List<int> {row, column, rowGroupSize, columnGroupSize};
