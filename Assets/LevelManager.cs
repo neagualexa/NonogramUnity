@@ -98,7 +98,7 @@ public class LevelManager : MonoBehaviour
             hint_text.text = "Asking NonoAI for hint...";
             // add 1.2seconds delay
             StartCoroutine(AskAIAssistant());
-            StartCoroutine(ShowHintAfterDelay("Waiting for NonoAI...", 3.5f));
+            StartCoroutine(ShowHintAfterDelay("Waiting for NonoAI...", 2.5f)); //3.5f for old directional hint pipeline
             return;
         }
     }
@@ -111,8 +111,8 @@ public class LevelManager : MonoBehaviour
 
     IEnumerator AskAIAssistant()
     {
-        yield return new WaitForSeconds(1.3f);
-        hint_text.text = "Progress sent to NonoAI!";
+        yield return new WaitForSeconds(1.5f);
+        hint_text.text = "Progress sent to NonoAI...";
         // Application.OpenURL("http://localhost:5000/");
         bool[,] cellStates = levelGrid.GetCellStates();
         bool[,] solutionCellStates = levelGrid.GetSolutionCellStates();

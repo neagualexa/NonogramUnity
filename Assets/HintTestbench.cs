@@ -40,7 +40,7 @@ public class HintTestbench : MonoBehaviour
                 string levelMeaning = levelGrid.GetSolutionMeaning();
                 levelGrid.hint_count += 1;
                 AskAIAssistant_testbench(solutionCellStates, levelMeaning, i, j, levelGrid.hint_count);
-                yield return new WaitForSeconds(20f); // wait for couple of seconds and start the next iteration
+                yield return new WaitForSeconds(10f); // wait for couple of seconds and start the next iteration
             }
         }
 
