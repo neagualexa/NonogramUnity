@@ -22,6 +22,7 @@ public class LevelSetup : MonoBehaviour
     private LevelTimer levelTimer;
     private MainMenu mainMenu;
     private ButtonAnimations buttonAnimations;
+    private TMP_Text level_size_text;
 
 
     public Font fontAsset; // Add a field for the font asset
@@ -45,6 +46,7 @@ public class LevelSetup : MonoBehaviour
         checkMeaningButton = GameObject.Find("CheckMeaningButton").GetComponent<Button>();
         checkPuzzleButton = GameObject.Find("CheckPuzzleButton").GetComponent<Button>();
         meaningInputField = GameObject.Find("InputField -Puzzle Meaning").GetComponent<TMP_InputField>();
+        level_size_text = GameObject.Find("PuzzleSize").GetComponent<TMP_Text>();
         httpRequests = GetComponent<HTTPRequests>();
         levelTimer = GetComponent<LevelTimer>();
         mainMenu = GetComponent<MainMenu>();
@@ -482,6 +484,7 @@ public class LevelSetup : MonoBehaviour
             levelMeaningCompletion = gridLoadedData.levelMeaningCompletion;
             levelTimer.SetTimePassed(gridLoadedData.time);
             hint_count = gridLoadedData.hintCount;
+            level_size_text.text = gridLoadedData.rows + " x " + gridLoadedData.columns;
 
             // 2. Change grid size to match the loaded grid size, but empty states
             ChangeGridSize(gridLoadedData.rows, gridLoadedData.columns);
