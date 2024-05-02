@@ -1,9 +1,13 @@
 {
     "descriptive_hints":[
         "In column 6, the clue is 9. Fill in all squares except for the first or last one to meet this requirement.",
-        "Start by filling in row 7, column 7 with a filled square, as it's the intersection of both row and column clues."
-
-        
+        "In row 5, the clue is [7], indicating that the entire middle section from columns 3 to 9 must be filled.",
+        "In row 7, the clue is [9], confirming that columns 2 through 10 are all filled.",
+        "For row 3 with clue [1, 2], there is a filled block on columns 4 and 5.",
+        "In column 6 with clue [9], you can confidently fill rows 2 through 9.",
+        "Since column 8 has a clue [2, 2], check that rows 4 and 7 that have cells part of filled groups.",
+        "Row 6 has a clue [5, 2], with filled cells tilted to the right.",
+        "In column 2, given the clues [3, 3], you can fill the cells in some of the first rows."
     ],
     "meaning_hints":[
         "Puzzle meaning riddle: 'I swim faster than you. My home is underwater. What am I?'",

@@ -4,8 +4,6 @@
         "Look for rows or columns where the sum of the clue numbers plus the required gaps equals the total length of the row or column. For instance, in row 5, the clue is (9), and there are 10 cells in the row. Since there must be 9 consecutive filled cells, the first or last cell in the row might be empty.",
         "Rows 5 and 9 have clues indicating large groups of filled cells (9 and 7, respectively), hence making them good candidates for completion.",
         "Focus on the central area of the grid, particularly around rows 4, 5, and 6, as they contain longer consecutive filled cells."
-
-        
     ],
     "meaning_hints":[
         "Puzzle meaning riddle: 'I'm a daily morning companion, handle me with care, I hold the potion that stirs you awake. What am I?'",

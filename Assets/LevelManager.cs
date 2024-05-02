@@ -43,9 +43,7 @@ public class LevelManager : MonoBehaviour
         print("Reading UNTAILORED Descriptive hints from: " + filePath);
         hints = JsonUtility.FromJson<Hints>(fileContent);
         // shuffle the hints to randomize the order
-        Debug.Log("Descriptive hints: " + hints.descriptive_hints[0]);
         Shuffle(hints.descriptive_hints);
-        Debug.Log("After shuffle: " + hints.descriptive_hints[0]);
         Shuffle(hints.meaning_hints);
 
         filePath = "./Assets/LevelsJSON/general_hints.json";

@@ -1,9 +1,13 @@
 {
     "descriptive_hints":[
-        "Pay attention to the border columns, they can be a first step to start with.",
-        "Remember that the puzzle is symmetrical, so you can use the filled squares in one half to deduce the corresponding squares in the other half."
-
-        
+        "The puzzle is symmetrical, so you can use the filled squares in one half to deduce the corresponding squares in the other half.",
+        "Start with rows that have the maximum number of filled cells, as these are easier to complete.",
+        "Look at the middle area of rows 3-6; these rows have consecutive filled cells, making them easy to complete.",
+        "Columns 3 through 8 should be completely filled between rows 3 and 6, as they contain a sequence of 8 cells each.",
+        "There should be at least one empty cell between the two filled blocks in row 2, leaving room for interpretation.",
+        "Since column 2 contains 6 consecutive filled cells, focus on filling rows 2-7 in this column.",
+        "Row 1 has gaps between the filled cells, so start filling the cells that have definite spaces.",
+        "Given that row 3 is entirely filled, examine how this affects the consecutive filled cell pattern for other columns."
     ],
     "meaning_hints":[
         "Puzzle meaning riddle: 'I'm a muscle that beats to life's rhythm, an organ of love and emotional prism. What am I?'",

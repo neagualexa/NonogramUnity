@@ -1,0 +1,20 @@
+{
+    "descriptive_hints":[
+        "In column 3, the clue [10] means every cell in that column is filled, so you can mark them all.",
+        "Since column 4 also has a [10] clue, you can fill every cell in that column as well.",
+        "In column 5, with the clue [10], fill all cells, solidifying three entire columns.",
+        "The middle columns (3-5) are completely filled, providing a solid base for filling other areas.",
+        "In the left columns (1-2), the [2, 2] clues indicate four filled cells on each column, with gaps at the beginning and end.",
+        "The top row has a clue of [3], indicating three filled cells, which aligns with the left part of the grid.",
+        "The third row's clue of [8] suggests that all rows except the last two have filled cells in this row.",
+        "The fifth row clue [2, 3] aligns with the filled patterns on the left and most right of the puzzle.",
+        "The eighth row clue [2, 5] matches with the filled pattern in columns 1 through 5.",
+        "The left quadrants reveal a mirrored pattern between the top and bottom halves, with two gaps on either end.",
+        "The [6] clue in the second row shows a clear pattern starting from the left, extending to the middle columns."
+    ],
+    "meaning_hints":[
+        "Puzzle meaning riddle: 'I help you get to places fast and comfortably. What am I?'",
+        "Puzzle meaning riddle: 'I have four wheels, but I'm not a cart. I run on roads and take you from start to finish. What am I?'",
+        "Puzzle meaning riddle: 'I have an engine but I'm not a plane. I need fuel to keep moving but I'm not a rocket. What am I?'"
+    ]
+}

@@ -1,9 +1,16 @@
 {
     "descriptive_hints":[
-        "//For Row 8, with a clue of [6], identify the middle filled cells first, as they can help determine the placement of the remaining filled squares.",
-        "//Utilize the intersection of clues on Row 3 ([1, 3, 2, 1]) and Column 3 ([1, 6, 1]) to strategically fill in the squares where these clues overlap.",
-        "//Focus on filling in the end squares of Column 4 ([5, 3]) and Column 5 ([4, 3]), as these are likely to be more constrained by neighboring clues."
-  
+        "In row 8, the clue [10] means every cell in that row is filled, so you can mark them all.",
+        "Since row 6 also has a [10] clue, you can fill every cell in that row as well.",
+        "In row 7, with the clue [10], fill all cells, solidifying three entire rows.",
+        "The middle rows (6-8) are completely filled, providing a solid base for filling other areas.",
+        "In the bottom rows (9-10), the [2, 2] clues indicate four filled cells on each row, with gaps at the beginning and end.",
+        "The first column has a clue of [3], indicating three filled cells, which aligns with the bottom part of the grid.",
+        "The third column's clue of [8] suggests that all rows except the first two have filled cells in this column.",
+        "The fifth column clue [2, 3] aligns with the filled patterns on the top and bottom of the puzzle.",
+        "The eighth column clue [2, 5] matches with the filled pattern in rows 6 through 10.",
+        "The bottom quadrants reveal a mirrored pattern between the left and right halves, with two gaps on either end.",
+        "The [6] clue in the second column shows a clear pattern starting from the middle, extending to the bottom rows."
     ],
     "meaning_hints":[
         "Puzzle meaning riddle: 'I help you get to places fast and comfortably. What am I?'",

@@ -1,8 +1,14 @@
 {
     "descriptive_hints":[
         "Focus on Column 3, which has a clue of [10]. This means the entire column must be filled. Start by marking all squares in Column 3 as filled.",
-        "Column 4 has a clue of [2, 7]. There are few possibilities for this column, so use the surrounding clues to help deduce the correct placement."
-
+        "Column 4 has a clue of [2, 7]. There are few possibilities for this column, so use the surrounding clues to help deduce the correct placement.",
+        "Focus on completing the 4th row first, as it has a single clue of length 9.",
+        "Pay attention to the middle columns where there are longer consecutive filled cell sequences.",
+        "Start by filling the entire third and fifth columns, as their clues indicate they are completely filled.",
+        "The first row has a block of three filled cells in the middle, beginning at the third cell.",
+        "In the third row, the clue is [2, 5], how about leaving a gap at the beginning and end of the row.",
+        "The ninth row has a clue of seven, indicating that the first seven cells are filled.",
+        "Focus on the intersections of the filled columns and rows to help determine where filled cells should be in both directions."
     ],
     "meaning_hints":[
         "Puzzle meaning riddle: 'I'm a bird with a vibrant hue, my beak is big and colorful too. What am I?'"
