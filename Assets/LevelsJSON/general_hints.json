@@ -1,0 +1,19 @@
+{
+    "general_hints":[
+        "When you have multiple clues in a row or column, remember that the gaps between groups of shaded cells must be at least one square.",
+        "If a clue spans nearly the whole row or column, fill in the overlapping areas to establish a base for further deductions.",
+        "Look for rows or columns where the sum of all clue values plus the mandatory gaps equals the total length. This means you can fill in all corresponding cells.",
+        "Use cross-referencing between rows and columns to identify cells that can be filled or marked as empty.",
+        "If a row or column has a clue that is the same length as the grid, you can immediately fill all the cells in that row or column.",
+        "If you're unsure about a specific cell, leave it unfilled for now and move on to a more definite section. Return to it once you have more information.",
+        "Once you've completed a row or column, double-check that it aligns with the given clues before moving on to the next section.",
+        "Start by identifying the definite cells first, focusing on rows and columns with the most filled or empty squares, and then gradually work your way through the puzzle using logic and elimination.",
+        "Utilize the intersection of row and column clues to pinpoint specific squares that must be filled.",
+        "Take advantage of any rows or columns that are nearly complete, as they can help in deducing neighboring squares.",
+        "Double-check for similar rows or columns, ensuring consistency across rows and columns.",
+        "Remember that empty squares can also provide valuable information, especially when deducing the placement of filled squares nearby.",
+        "Break down larger clue numbers into smaller segments to facilitate easier visualization and deduction.",
+        "When faced with uncertainty, analyse the consequences of filling or leaving a square empty to make informed decisions.",
+        "Don't overlook the importance of maintaining a clear mental picture of the puzzle's progress to avoid overlooking potential deductions."
+    ]
+}

@@ -1,16 +1,10 @@
 {
-    "hints":[
-        "Utilize the intersection of row and column clues to pinpoint specific squares that must be filled.",
-        "Take advantage of any rows or columns that are nearly complete, as they can help in deducing neighboring squares.",
-        "Remember that empty squares can also provide valuable information, especially when deducing the placement of filled squares nearby.",
-        "Double-check the symmetry of your progress regularly, ensuring consistency across rows and columns.",
-        "Break down larger clue numbers into smaller segments to facilitate easier visualization and deduction.",
-        "When faced with uncertainty, analyze the consequences of filling or leaving a square empty to make informed decisions.",
-
+    "descriptive_hints":[
         "Focus on Column 3, which has a clue of [10]. This means the entire column must be filled. Start by marking all squares in Column 3 as filled.",
-        "Column 4 has a clue of [2, 7]. There are few possibilities for this column, so use the surrounding clues to help deduce the correct placement.",
+        "Column 4 has a clue of [2, 7]. There are few possibilities for this column, so use the surrounding clues to help deduce the correct placement."
 
+    ],
+    "meaning_hints":[
         "Puzzle meaning riddle: 'I'm a bird with a vibrant hue, my beak is big and colorful too. What am I?'"
-        
     ]
 }

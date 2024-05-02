@@ -15,6 +15,11 @@ public class LevelManager : MonoBehaviour
     public TMP_Text hint_text;
 
     private int hint_index = 0;
+    private int general_hint_index = 0;
+    private float user_progress = 0.0f;
+    private float prev_user_progress = 0.0f;
+    private Hints hints;
+    private GeneralHints general_hints;
 
     void Awake()
     {
@@ -30,6 +35,25 @@ public class LevelManager : MonoBehaviour
             Debug.Log("TEST user in use!!!");
         }
         Debug.Log("Username: " + user);
+
+        // prepare UNTAILORED hints for the level
+        // read the hints from the JSON file: ./LevelsJSON/levelname_hints.json
+        string filePath = "./Assets/LevelsJSON/"+level+"_hints.json";
+        string fileContent = File.ReadAllText(filePath);;
+        print("Reading UNTAILORED Descriptive hints from: " + filePath);
+        hints = JsonUtility.FromJson<Hints>(fileContent);
+        // shuffle the hints to randomize the order
+        Debug.Log("Descriptive hints: " + hints.descriptive_hints[0]);
+        Shuffle(hints.descriptive_hints);
+        Debug.Log("After shuffle: " + hints.descriptive_hints[0]);
+        Shuffle(hints.meaning_hints);
+
+        filePath = "./Assets/LevelsJSON/general_hints.json";
+        fileContent = File.ReadAllText(filePath);;
+        print("Reading UNTAILORED General hints from: " + filePath);
+        general_hints = JsonUtility.FromJson<GeneralHints>(fileContent);
+        // shuffle the hints to randomize the order
+        Shuffle(general_hints.general_hints);
     }
 
     void Start()
@@ -66,7 +90,31 @@ public class LevelManager : MonoBehaviour
     [System.Serializable]
     public class Hints
     {
-        public List<string> hints;
+        public List<string> descriptive_hints;
+        public List<string> meaning_hints;
+    }
+
+    [System.Serializable]
+    public class GeneralHints
+    {
+        public List<string> general_hints;
+    }
+
+    private float CalculateUserProgress(bool[,] cellStates, bool[,] solutionCellStates)
+    {
+        int totalCells = cellStates.Length;
+        int correctCells = 0;
+        for (int i = 0; i < cellStates.GetLength(0); i++)
+        {
+            for (int j = 0; j < cellStates.GetLength(1); j++)
+            {
+                if (cellStates[i, j] == solutionCellStates[i, j])
+                {
+                    correctCells += 1;
+                }
+            }
+        }
+        return (float)correctCells / totalCells;
     }
 
     public void ShowHint(string fileName)
@@ -77,23 +125,26 @@ public class LevelManager : MonoBehaviour
 
         if (hintStyle == 0)
         {
-            // read the hints from the JSON file: ./LevelsJSON/coffecup_hints.json
-            // at random choose one and display it in the hint_text object
-            string filePath = "./Assets/LevelsJSON/"+fileName.Split('.')[0]+"_hints.json";
-            string fileContent = File.ReadAllText(filePath);;
-            print("Reading hints from: " + filePath);
-
-            Hints hints = JsonUtility.FromJson<Hints>(fileContent);
-
-            // int randomIndex = UnityEngine.Random.Range(0, hints.hints.Count);
-            string randomHint = hints.hints[hint_index];
-            StartCoroutine(httpRequests.SendHintToVerbalise(randomHint)); // send hint to verbalise server
-
-            // add a delay to receive the verbal response from the server
-            hint_text.text = "Requesting a hint...";
-            StartCoroutine(ShowHintAfterDelay(randomHint, 2.5f));
-            hint_index = (hint_index + 1) % hints.hints.Count;
-            return;
+            prev_user_progress = user_progress;
+            user_progress = CalculateUserProgress(levelGrid.GetCellStates(), levelGrid.GetSolutionCellStates());
+            if (user_progress == 1.0f)
+            {
+                // if user completed the puzzle, then return a meaning hint
+                UntailoredDescriptiveHints(true);
+                return;
+            }
+            if(prev_user_progress >= user_progress)
+            {
+                // if the user has not made progress, then provide a hint tailored to the level
+                UntailoredDescriptiveHints();
+                return;
+            }
+            else
+            {
+                // if the user has made progress, then provide a general hint
+                UntailoredGeneralHints();
+                return;
+            }
         } else {
             hint_text.text = "Asking NonoAI for hint...";
             // add 1.2seconds delay
@@ -101,6 +152,43 @@ public class LevelManager : MonoBehaviour
             StartCoroutine(ShowHintAfterDelay("Waiting for NonoAI...", 2.5f)); //3.5f for old directional hint pipeline
             return;
         }
+    }
+
+    private void UntailoredDescriptiveHints(bool meaning=false)
+    {
+        string randomHint;
+
+        if (meaning)
+        {   // return a meaning hint
+            randomHint = hints.meaning_hints[hint_index];
+            StartCoroutine(httpRequests.SendHintToVerbalise(randomHint)); // send hint to verbalise server
+
+            // add a delay to receive the verbal response from the server
+            hint_text.text = "Requesting a hint...";
+            StartCoroutine(ShowHintAfterDelay(randomHint, 2.5f));
+            hint_index = (hint_index + 1) % hints.meaning_hints.Count;
+            return;
+        }
+
+        // return a descriptive hint
+        randomHint = hints.descriptive_hints[hint_index];
+        StartCoroutine(httpRequests.SendHintToVerbalise(randomHint)); // send hint to verbalise server
+
+        // add a delay to receive the verbal response from the server
+        hint_text.text = "Requesting a hint...";
+        StartCoroutine(ShowHintAfterDelay(randomHint, 2.5f));
+        hint_index = (hint_index + 1) % hints.descriptive_hints.Count;
+    }
+
+    private void UntailoredGeneralHints()
+    {
+        string randomHint = general_hints.general_hints[general_hint_index];
+        StartCoroutine(httpRequests.SendHintToVerbalise(randomHint)); // send hint to verbalise server
+
+        // add a delay to receive the verbal response from the server
+        hint_text.text = "Requesting a hint...";
+        StartCoroutine(ShowHintAfterDelay(randomHint, 2.5f));
+        general_hint_index = (general_hint_index + 1) % general_hints.general_hints.Count;
     }
 
     IEnumerator ShowHintAfterDelay(string hint, float delay)
@@ -150,5 +238,18 @@ public class LevelManager : MonoBehaviour
         // string availableLevels = PlayerPrefs.GetString("AvailableLevels");
         // PlayerPrefs.SetString("AvailableLevels", availableLevels.Replace(fileName, ""));
         // Debug.Log("Updated Available levels: " + PlayerPrefs.GetString("AvailableLevels") + " where removed: " + fileName);
+    }
+
+
+    private void Shuffle<T>(List<T> ts)
+    {
+        var count = ts.Count;
+        var last = count - 1;
+        for (var i = 0; i < last; ++i) {
+            var r = UnityEngine.Random.Range(i, count);
+            var tmp = ts[i];
+            ts[i] = ts[r];
+            ts[r] = tmp;
+        }
     }
 }

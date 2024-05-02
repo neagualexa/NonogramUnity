@@ -1,18 +1,13 @@
 {
-    "hints":[
+    "descriptive_hints":[
         "Pay attention to the middle columns, they can be a first step to start with.",
-        "Complete the rows/columns that have the most filled cells first, then move onto others.",
-        "Start by identifying the definite cells first, focusing on rows and columns with the most filled or empty squares, and then gradually work your way through the puzzle using logic and elimination.",
-        "When solving, prioritize filling in cells that are certain based on intersecting row and column hints. This reduces guesswork and improves accuracy.",
-        "Use the 'one possibility rule': if a row or column has only one possible configuration based on its hints, fill it in without hesitation.",
-        "For rows or columns with only one hint, focus on deducing the exact placement of blocks rather than their lengths. This simplifies decision-making.",
-        "Regularly revisit partially completed rows and columns to ensure consistency with the given hints. This minimizes errors and maintains puzzle integrity.",
-        "Experiment with visualizing different arrangements of blocks within rows and columns, exploring various possibilities to find the correct solution.",
-
         "Look for rows or columns where the sum of the clue numbers plus the required gaps equals the total length of the row or column. For instance, in row 5, the clue is (9), and there are 10 cells in the row. Since there must be 9 consecutive filled cells, the first or last cell in the row might be empty.",
         "Rows 5 and 9 have clues indicating large groups of filled cells (9 and 7, respectively), hence making them good candidates for completion.",
-        "Focus on the central area of the grid, particularly around rows 4, 5, and 6, as they contain longer consecutive filled cells.",
+        "Focus on the central area of the grid, particularly around rows 4, 5, and 6, as they contain longer consecutive filled cells."
 
+        
+    ],
+    "meaning_hints":[
         "Puzzle meaning riddle: 'I'm a daily morning companion, handle me with care, I hold the potion that stirs you awake. What am I?'",
         "Puzzle meaning riddle: 'I sit on desks, a vessel of warmth, swirling tales of caffeine, a workday's charm. What am I?'",
         "Puzzle meaning riddle: 'I'm a ceramic embrace, kissed by steamy whispers, lifting spirits in the dawn's soft haze. What am I?'"
