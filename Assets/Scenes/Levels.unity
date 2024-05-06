@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9348441}
   - component: {fileID: 9348442}
+  - component: {fileID: 9348443}
   m_Layer: 5
   m_Name: GroupContainer
   m_TagString: Untagged
@@ -191,6 +192,18 @@ MonoBehaviour:
   m_Spacing: {x: 10, y: 10}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!114 &9348443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9348440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76ae007240cadc34ebe64811853ec2d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &25150423
 GameObject:
   m_ObjectHideFlags: 0
@@ -923,7 +936,7 @@ GameObject:
   - component: {fileID: 374532593}
   - component: {fileID: 374532592}
   m_Layer: 5
-  m_Name: Level Button (6)
+  m_Name: Level Button (6) fish
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1068,7 +1081,7 @@ GameObject:
   - component: {fileID: 393875585}
   - component: {fileID: 393875584}
   m_Layer: 5
-  m_Name: Level Button (1)
+  m_Name: Level Button (1) heart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2281,7 +2294,7 @@ GameObject:
   - component: {fileID: 917655803}
   - component: {fileID: 917655802}
   m_Layer: 5
-  m_Name: Level Button (7)
+  m_Name: Level Button (7) invertedcar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2914,7 +2927,7 @@ GameObject:
   - component: {fileID: 971534545}
   - component: {fileID: 971534544}
   m_Layer: 5
-  m_Name: Level Button (4)
+  m_Name: Level Button (4) boat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3059,7 +3072,7 @@ GameObject:
   - component: {fileID: 1219051744}
   - component: {fileID: 1219051743}
   m_Layer: 5
-  m_Name: Level Button (3)
+  m_Name: Level Button (3) toucan
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3204,7 +3217,7 @@ GameObject:
   - component: {fileID: 1231720427}
   - component: {fileID: 1231720426}
   m_Layer: 5
-  m_Name: Level Button (2)
+  m_Name: Level Button (2) car
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4244,7 +4257,7 @@ GameObject:
   - component: {fileID: 2008872831}
   - component: {fileID: 2008872830}
   m_Layer: 5
-  m_Name: Level Button (5)
+  m_Name: Level Button (5) clock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
