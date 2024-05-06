@@ -4847,7 +4847,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1549432634}
-  - component: {fileID: 1549432635}
   - component: {fileID: 1549432636}
   m_Layer: 5
   m_Name: LevelScript
@@ -4881,18 +4880,6 @@ RectTransform:
   m_AnchoredPosition: {x: 596, y: -0.00002861}
   m_SizeDelta: {x: 501.4817, y: 832.5977}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1549432635
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1549432633}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1eb8b1d83e76a24ba03363826547bf5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1549432636
 MonoBehaviour:
   m_ObjectHideFlags: 0

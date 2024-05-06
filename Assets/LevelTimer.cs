@@ -10,12 +10,14 @@ public class LevelTimer : MonoBehaviour
     private bool timerIsRunning = false;
     private TMP_Text timer_text;
     private LevelWrapper levelwrapper;
+    private LevelSetup levelsetup;
 
     private void Start()
     {
         // Starts the timer automatically
         timerIsRunning = true;
         timer_text = GameObject.Find("TimerText").GetComponent<TMP_Text>();
+        levelsetup = GetComponent<LevelSetup>();
         levelwrapper = GetComponent<LevelWrapper>();
         if (timePassed > 0)
         {
@@ -39,6 +41,11 @@ public class LevelTimer : MonoBehaviour
                 timeRemaining = 0;
                 timerIsRunning = false;
                 levelwrapper.LevelGameOver();
+            }
+
+            if (levelsetup.levelCompletion && levelsetup.levelMeaningCompletion)
+            {
+                timerIsRunning = false;
             }
         }
     }
