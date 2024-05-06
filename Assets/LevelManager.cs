@@ -159,7 +159,7 @@ public class LevelManager : MonoBehaviour
         if (meaning)
         {   // return a meaning hint
             randomHint = hints.meaning_hints[hint_index];
-            StartCoroutine(httpRequests.SendHintToVerbalise(randomHint)); // send hint to verbalise server
+            StartCoroutine(httpRequests.SendHintToVerbalise(randomHint, 7, level)); // send hint to verbalise server
 
             // add a delay to receive the verbal response from the server
             hint_text.text = "Requesting a hint...";
@@ -170,7 +170,7 @@ public class LevelManager : MonoBehaviour
 
         // return a descriptive hint
         randomHint = hints.descriptive_hints[hint_index];
-        StartCoroutine(httpRequests.SendHintToVerbalise(randomHint)); // send hint to verbalise server
+        StartCoroutine(httpRequests.SendHintToVerbalise(randomHint, 1, level)); // send hint to verbalise server
 
         // add a delay to receive the verbal response from the server
         hint_text.text = "Requesting a hint...";
@@ -181,7 +181,7 @@ public class LevelManager : MonoBehaviour
     private void UntailoredGeneralHints()
     {
         string randomHint = general_hints.general_hints[general_hint_index];
-        StartCoroutine(httpRequests.SendHintToVerbalise(randomHint)); // send hint to verbalise server
+        StartCoroutine(httpRequests.SendHintToVerbalise(randomHint, 0, level)); // send hint to verbalise server
 
         // add a delay to receive the verbal response from the server
         hint_text.text = "Requesting a hint...";

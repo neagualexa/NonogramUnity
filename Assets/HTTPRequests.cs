@@ -169,10 +169,10 @@ public class HTTPRequests : MonoBehaviour
     /// </summary>
     /// <param name="hint"></param>
     /// <returns></returns>
-    public IEnumerator SendHintToVerbalise(string hint)
+    public IEnumerator SendHintToVerbalise(string hint, int hint_level, string level)
     {
         string apiUrl = "http://localhost:5000/verbalise_hint";
-        string jsonData = $"{{ \"hint\": \"{hint}\" }}";
+        string jsonData = $"{{ \"hint\": \"{hint}\", \"hint_level\": \"{hint_level}\", \"level\": \"{level}\" }}";
         WWWForm form = new WWWForm();
         form.AddField("hint", jsonData);
 
