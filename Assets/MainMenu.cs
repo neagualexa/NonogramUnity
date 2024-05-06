@@ -31,6 +31,7 @@ public class MainMenu : MonoBehaviour {
         /*
         This function saves the PlayerPrefs (such as username, level progress state, hint style selected, etc) and quits the application.
         */
+        Debug.Log("Quitting the application...");
         PlayerPrefs.Save(); // saving the username, level progress, etc.
         Application.Quit();
     }

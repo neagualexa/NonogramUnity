@@ -57,7 +57,7 @@ public class LevelManager : MonoBehaviour
     void Start()
     {
         // Comment out if testbench is active
-        // HintReminderLoop();
+        HintReminderLoop();
     }
 
     public void LoadLevel(string fileName)
@@ -203,7 +203,7 @@ public class LevelManager : MonoBehaviour
         bool[,] cellStates = levelGrid.GetCellStates();
         bool[,] solutionCellStates = levelGrid.GetSolutionCellStates();
         string levelMeaning = levelGrid.GetSolutionMeaning();
-        Debug.Log("Sending puzzle progress to server...");
+        // Debug.Log("Sending puzzle progress to server...");
         StartCoroutine(httpRequests.SendPuzzleProgressRequest(cellStates, solutionCellStates, levelMeaning, user, level, levelGrid.hint_count));
     }
 
@@ -216,11 +216,11 @@ public class LevelManager : MonoBehaviour
 
     IEnumerator HintReminder()
     {
-        // Every 3 mins, send a request to the server to get a sendPuzzleProgressRequest
+        // Every 2 mins, send a request to the server to get a sendPuzzleProgressRequest
         while (true)
         {
-            Debug.Log("Starting HintReminder every 180s ...");
-            yield return new WaitForSeconds(180);
+            Debug.Log("Starting HintReminder every 120s ...");
+            yield return new WaitForSeconds(120);
             ShowHint(PlayerPrefs.GetString("LevelFilename") + ".json");
         }
     }

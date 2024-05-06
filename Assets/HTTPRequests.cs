@@ -11,6 +11,7 @@ public class HTTPRequests : MonoBehaviour
     public bool puzzleMeaningCheck = false;
     private LevelSetup levelSetup;
     private LevelManager levelManager;
+    private MainMenu mainMenu;
     private ButtonAnimations buttonAnimations;
     private bool puzzleMeaningError = false;
 
@@ -18,6 +19,7 @@ public class HTTPRequests : MonoBehaviour
     {
         levelSetup = GetComponent<LevelSetup>();
         levelManager = GetComponent<LevelManager>();
+        mainMenu = GetComponent<MainMenu>();
         buttonAnimations = GetComponent<ButtonAnimations>();
     }
 
@@ -105,7 +107,7 @@ public class HTTPRequests : MonoBehaviour
         convert_boolList_to_string(cellStates, solutionCellStates, ref cellStatesString, ref solutionCellStatesString, boolListFormal: true);
         string apiUrl = "http://localhost:5000/check_puzzle_progress";
         string jsonData = $"{{ \"cellStates\": \"{cellStatesString}\", \"solutionCellStates\": \"{solutionCellStatesString}\", \"levelMeaning\": \"{levelMeaning}\", \"completed\": \"{levelSetup.levelCompletion}\", \"username\": \"{username}\", \"level\": \"{level}\", \"hint_id\": \"{hint_id}\" }}";
-        Debug.Log("SendPuzzleProgressRequest:: jsonData: " + jsonData);
+        Debug.Log("SendPuzzleProgressRequest:: Sending jsonData... ");
         WWWForm form = new WWWForm();
         form.AddField("puzzleProgress", jsonData);
 
@@ -210,6 +212,7 @@ public class HTTPRequests : MonoBehaviour
         else
         {
             Debug.Log("SendEndGameRequest:: Request successful!");
+            mainMenu.QuitApp();
         }
     }
 
