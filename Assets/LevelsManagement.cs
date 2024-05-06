@@ -42,7 +42,7 @@ public class LevelsManagement : MonoBehaviour {
                 GridStateData gridLoadedData = JsonUtility.FromJson<GridStateData>(fileContent);
                 string levelName = gridLoadedData.level;
                 // if the player ran out of time, set the button to be innactive
-                if (!gridLoadedData.onTime) {
+                if (!gridLoadedData.onTime || (gridLoadedData.levelCompletion && gridLoadedData.levelMeaningCompletion)) {
                     foreach (GameObject levelButton in levelButtons) {
                         Debug.Log("Checking button: " + levelButton.name + " for level: " + levelName);
                         if (levelButton.name.Contains(levelName)) {

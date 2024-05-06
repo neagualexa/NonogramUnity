@@ -2782,7 +2782,7 @@ GameObject:
   - component: {fileID: 958563004}
   - component: {fileID: 958563003}
   m_Layer: 5
-  m_Name: Level Button (cup)
+  m_Name: Level Button (coffeecup)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
