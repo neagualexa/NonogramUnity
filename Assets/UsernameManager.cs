@@ -51,6 +51,8 @@ public class UsernameManager : MonoBehaviour
     public void SetUsername()
     {
         username = usernameInputField.text;
+        // Set username to lower caps
+        username = username.ToLower();
 
         // Save the username in PlayerPrefs
         PlayerPrefs.SetString("Username", username);
@@ -64,6 +66,9 @@ public class UsernameManager : MonoBehaviour
         {
             usernameDisplayText.text = "TESTING user";
         }
+
+        // Set level_index order for new user
+        PlayerPrefs.SetInt("CurrentLevelIndex", 1);
     }
 
     private void LoadUsername()

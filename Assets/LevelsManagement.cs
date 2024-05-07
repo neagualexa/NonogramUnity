@@ -10,12 +10,17 @@ public class LevelsManagement : MonoBehaviour {
     // private MainMenu mainMenu;
     // public TMP_FontAsset fontAsset; 
     private GameObject[] levelButtons;
+    private int currentLevelIndex = -1; // 1 indexed
 
     void Awake() {
         // mainMenu = GetComponent<MainMenu>();
         // GetAllLevelButtons();
+
+        currentLevelIndex = PlayerPrefs.GetInt("CurrentLevelIndex");
+        Debug.Log("Current level index: " + currentLevelIndex);
+
         GetAllLevelButtonObjects();
-        SetInnactiveLevelButtons();
+        // SetInnactiveLevelButtons();
     }
 
     private void GetAllLevelButtonObjects() {
@@ -25,35 +30,43 @@ public class LevelsManagement : MonoBehaviour {
         levelButtons = new GameObject[GameObject.Find("GroupContainer").transform.childCount];
         for (int i = 0; i < GameObject.Find("GroupContainer").transform.childCount; i++) {
             levelButtons[i] = GameObject.Find("GroupContainer").transform.GetChild(i).gameObject;
-        }
-    }
 
-    private void SetInnactiveLevelButtons() {
-        /*
-        This function sets level buttons to be innactive if the variable onTime is false.
-        Get the level file under the current PlayerPrefs username.
-        For all levels under LevelsJSON/user_progress.
-        */
-        string username = PlayerPrefs.GetString("Username");
-        string[] levelFiles = System.IO.Directory.GetFiles("./Assets/LevelsJSON/user_progress", "*.json");
-        foreach (string levelFile in levelFiles) {
-            if (levelFile.Contains(username)) {
-                string fileContent = System.IO.File.ReadAllText(levelFile);
-                GridStateData gridLoadedData = JsonUtility.FromJson<GridStateData>(fileContent);
-                string levelName = gridLoadedData.level;
-                // if the player ran out of time, set the button to be innactive
-                if (!gridLoadedData.onTime || (gridLoadedData.levelCompletion && gridLoadedData.levelMeaningCompletion)) {
-                    foreach (GameObject levelButton in levelButtons) {
-                        Debug.Log("Checking button: " + levelButton.name + " for level: " + levelName);
-                        if (levelButton.name.Contains(levelName)) {
-                            Debug.Log("Setting button to be interactable: " + levelButton.name);
-                            levelButton.GetComponent<Button>().interactable = false;
-                        }
-                    }
-                }
+            // if the level is the current level, set the button to be active, else all innactive // 0 indexed
+            if ( i != currentLevelIndex - 1) {
+                levelButtons[i].GetComponent<Button>().interactable = false;
+            } else {
+                levelButtons[i].GetComponent<Button>().interactable = true;
             }
         }
     }
+
+    // private void SetInnactiveLevelButtons() {
+    //     /*
+    //     This function sets level buttons to be innactive if the variable onTime is false.
+    //     Get the level file under the current PlayerPrefs username.
+    //     For all levels under LevelsJSON/user_progress.
+    //     */
+    //     string username = PlayerPrefs.GetString("Username");
+    //     string[] levelFiles = System.IO.Directory.GetFiles("./Assets/LevelsJSON/user_progress", "*.json");
+    //     foreach (string levelFile in levelFiles) {
+    //         if (levelFile.Contains(username)) {
+    //             string fileContent = System.IO.File.ReadAllText(levelFile);
+    //             GridStateData gridLoadedData = JsonUtility.FromJson<GridStateData>(fileContent);
+    //             string levelName = gridLoadedData.level;
+    //             // if the player ran out of time, set the button to be innactive
+    //             Debug.Log("Checking level: " + levelName + " for onTime: " + gridLoadedData.onTime + ","+ gridLoadedData.levelCompletion + ","+ gridLoadedData.levelMeaningCompletion);
+    //             if (!gridLoadedData.onTime || (gridLoadedData.levelCompletion && gridLoadedData.levelMeaningCompletion)) {
+    //                 foreach (GameObject levelButton in levelButtons) {
+    //                     // Debug.Log("Checking button: " + levelButton.name + " for level: " + levelName);
+    //                     if (levelButton.name.Contains(levelName)) {
+    //                         Debug.Log("Setting button to be not interactable: " + levelButton.name);
+    //                         levelButton.GetComponent<Button>().interactable = false;
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 
     // private void GetAllLevelButtons() {
     //     /*

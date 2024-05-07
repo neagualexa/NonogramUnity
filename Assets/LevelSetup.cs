@@ -424,6 +424,11 @@ public class LevelSetup : MonoBehaviour
         CheckSolution(cellStates, solutionCellStates);
         // check if meaning is correct
         CheckMeaningSolution();
+        if (levelCompletion && levelMeaningCompletion)
+        {
+            // Move player to next level
+            PlayerPrefs.SetInt("CurrentLevelIndex", PlayerPrefs.GetInt("CurrentLevelIndex") + 1);
+        }
 
         GridStateData gridProgressData = new GridStateData();
         gridProgressData.SetCellStates(cellStates);

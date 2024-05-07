@@ -229,6 +229,8 @@ public class LevelManager : MonoBehaviour
     public void LevelGameOver(string fileName)
     {
         Debug.Log("Game Over!");
+        // Move player to next level
+        PlayerPrefs.SetInt("CurrentLevelIndex", PlayerPrefs.GetInt("CurrentLevelIndex") + 1);
         // Save the progress
         SaveProgress(fileName);
         mainMenu.GoToScene("Levels");
