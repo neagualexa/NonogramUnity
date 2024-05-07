@@ -104,8 +104,8 @@ public class LevelsManagement : MonoBehaviour {
 
     // }
 
-    // private void LoadSpriteByGUID(Image targetImage){
-    //     string assetPath = "Assets/UnityAssets/SimplePixelUI/artwork/colorCustomizible/rounded/buttons/button2_rounded_CC.png";
+    // private void LoadSpriteByPath(Image targetImage, string assetPath){
+    //     // asset must be in Assets/Resources folder for this to work
     //     if (string.IsNullOrEmpty(assetPath) || targetImage == null)
     //     {
     //         Debug.LogError("Asset path or Image component is not set.");
@@ -113,7 +113,7 @@ public class LevelsManagement : MonoBehaviour {
     //     }
 
     //     // Load the sprite from the specified path
-    //     Sprite loadedSprite = AssetDatabase.LoadAssetAtPath<Sprite>(assetPath);
+    //     Sprite loadedSprite = Resources.Load<Sprite>(assetPath);
 
     //     if (loadedSprite == null)
     //     {
@@ -123,6 +123,7 @@ public class LevelsManagement : MonoBehaviour {
 
     //     // Assign the sprite to the Image component
     //     targetImage.sprite = loadedSprite;
+    //     buttonImage.type = Image.Type.Sliced;
     // }
     
     
