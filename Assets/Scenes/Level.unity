@@ -2456,6 +2456,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPressed: 0
+  sprite_normal: {fileID: 21300000, guid: e48b869e1b13ad54295d3d9efb9e78bf, type: 3}
+  sprite_blocked: {fileID: 21300000, guid: deec8d7a3b0f3f041abfa564ca06a282, type: 3}
 --- !u!1 &686170001
 GameObject:
   m_ObjectHideFlags: 0

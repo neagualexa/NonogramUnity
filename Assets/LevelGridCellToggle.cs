@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using TMPro;
-using UnityEditor;
+// using UnityEditor;
 // using Interactions;
 
 public class LevelGridCellToggle : MonoBehaviour, IPointerEnterHandler, IPointerDownHandler, IPointerUpHandler
@@ -22,6 +22,9 @@ public class LevelGridCellToggle : MonoBehaviour, IPointerEnterHandler, IPointer
     private TrackInput trackInput;
 
     private HTTPRequests httpRequests;
+
+    public Sprite sprite_normal;
+    public Sprite sprite_blocked;
 
 
     void Start()
@@ -95,8 +98,7 @@ public class LevelGridCellToggle : MonoBehaviour, IPointerEnterHandler, IPointer
         {
             // empty the cell
             buttonImage.color = originalColor;
-            string spritePath = "Assets/UnityAssets/SimplePixelUI/artwork/colorCustomizible/square/slot3D.png";
-            LoadSpriteByGUID(buttonImage, spritePath);
+            buttonImage.sprite = sprite_normal;
             if (gridReference != null)
             {
                 gridReference.SetCellState(rowIndex, columnIndex, false);
@@ -107,8 +109,7 @@ public class LevelGridCellToggle : MonoBehaviour, IPointerEnterHandler, IPointer
             // block the cell
             // setColor("#FF0000");
             buttonImage.color = originalColor;
-            string spritePath = "Assets/UnityAssets/SimplePixelUI/artwork/colorCustomizible/square/slot3D_crossed.png";
-            LoadSpriteByGUID(buttonImage, spritePath);
+            buttonImage.sprite = sprite_blocked;
             if (gridReference != null)
             {
                 gridReference.SetCellState(rowIndex, columnIndex, false);
@@ -199,26 +200,5 @@ public class LevelGridCellToggle : MonoBehaviour, IPointerEnterHandler, IPointer
         {
             trackInput.LeftMouseisPressed = false;
         }
-    }
-
-    private void LoadSpriteByGUID(Image targetImage, string assetPath){
-        if (string.IsNullOrEmpty(assetPath) || targetImage == null)
-        {
-            Debug.LogError("Asset path or Image component is not set.");
-            return;
-        }
-
-        // Load the sprite from the specified path
-        Sprite loadedSprite = AssetDatabase.LoadAssetAtPath<Sprite>(assetPath);
-
-        if (loadedSprite == null)
-        {
-            Debug.LogError($"Sprite at '{assetPath}' could not be loaded.");
-            return;
-        }
-
-        // Assign the sprite to the Image component
-        targetImage.sprite = loadedSprite;
-        buttonImage.type = Image.Type.Sliced;
     }
 }
