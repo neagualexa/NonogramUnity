@@ -82,4 +82,10 @@ public class ButtonAnimations : MonoBehaviour
         }
 
     }
+
+    public void SetHintSectionVisible()
+    {
+        Debug.Log("Setting hint section visible");
+        hint_section_animator.SetTrigger("Appear");
+    }
 }

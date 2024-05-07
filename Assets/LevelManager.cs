@@ -10,6 +10,7 @@ public class LevelManager : MonoBehaviour
     private LevelSetup levelGrid;
     private MainMenu mainMenu;
     private HTTPRequests httpRequests;
+    private ButtonAnimations buttonAnimations;
     private string user;
     private string level;
     public TMP_Text hint_text;
@@ -27,6 +28,7 @@ public class LevelManager : MonoBehaviour
         levelGrid = GetComponent<LevelSetup>();
         mainMenu = GetComponent<MainMenu>();
         httpRequests = GetComponent<HTTPRequests>();
+        buttonAnimations = GetComponent<ButtonAnimations>();
 
         level = PlayerPrefs.GetString("LevelFilename");
         user = PlayerPrefs.GetString("Username");
@@ -221,6 +223,8 @@ public class LevelManager : MonoBehaviour
         {
             Debug.Log("Starting HintReminder every 120s ...");
             yield return new WaitForSeconds(120);
+            // display the Hint popup panel
+            buttonAnimations.SetHintSectionVisible();
             ShowHint(PlayerPrefs.GetString("LevelFilename") + ".json");
         }
     }
