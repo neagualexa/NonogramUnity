@@ -3,13 +3,13 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using TMPro;
-
-using Interactions;
+using UnityEditor;
+// using Interactions;
 
 public class LevelGridCellToggle : MonoBehaviour, IPointerEnterHandler, IPointerDownHandler, IPointerUpHandler
 {
     private Button button;
-    public bool isPressed = false;
+    public int isPressed = 0;
     private Color originalColor;
     private Color color;
 
@@ -56,15 +56,34 @@ public class LevelGridCellToggle : MonoBehaviour, IPointerEnterHandler, IPointer
         columnIndex = column;
     }
 
-    // void OnButtonClick()
-    // {
-    //     isPressed = !isPressed;
-    //     buttonStateChange();
-    // }
+    public void StateMachinePressed()
+    {
+        /*
+         A cell can be 
+             1 : filled
+             0 : empty
+            -1 : blocked
+
+        Toggle state change: empty -> filled -> blocked -> empty
+        */
+        if (isPressed == 0)
+        {
+            isPressed = 1;
+        }
+        else if (isPressed == 1)
+        {
+            isPressed = -1;
+        }
+        else
+        {
+            isPressed = 0;
+        }
+    }
 
     void buttonStateChange(){
-        if (isPressed)
+        if (isPressed == 1)
         {
+            // fill the cell
             setColor("#46A2B4");
             buttonImage.color = color;
             if (gridReference != null)
@@ -72,9 +91,24 @@ public class LevelGridCellToggle : MonoBehaviour, IPointerEnterHandler, IPointer
                 gridReference.SetCellState(rowIndex, columnIndex, true);
             }
         }
+        else if (isPressed == 0)
+        {
+            // empty the cell
+            buttonImage.color = originalColor;
+            string spritePath = "Assets/UnityAssets/SimplePixelUI/artwork/colorCustomizible/square/slot3D.png";
+            LoadSpriteByGUID(buttonImage, spritePath);
+            if (gridReference != null)
+            {
+                gridReference.SetCellState(rowIndex, columnIndex, false);
+            }
+        }
         else
         {
+            // block the cell
+            // setColor("#FF0000");
             buttonImage.color = originalColor;
+            string spritePath = "Assets/UnityAssets/SimplePixelUI/artwork/colorCustomizible/square/slot3D_crossed.png";
+            LoadSpriteByGUID(buttonImage, spritePath);
             if (gridReference != null)
             {
                 gridReference.SetCellState(rowIndex, columnIndex, false);
@@ -93,7 +127,12 @@ public class LevelGridCellToggle : MonoBehaviour, IPointerEnterHandler, IPointer
         button = GetComponent<Button>();
         buttonImage = button.GetComponent<Image>();
         setOriginalColor();
-        isPressed = active; // TODO: stil iffy indexing detencing if cell is on or off, also still have to press twice to start updating the grid (as if isPressed is False)
+        if (active)
+        {
+            isPressed = 1;
+        } else {
+            isPressed = 0;
+        }
 
         if (active)
         {
@@ -123,7 +162,8 @@ public class LevelGridCellToggle : MonoBehaviour, IPointerEnterHandler, IPointer
         if (trackInput.LeftMouseisPressed)
         {
             // Debug.Log("Cursor Entering " + name + " GameObject" + "Left mouse is pressed: " + trackInput.LeftMouseisPressed);
-            isPressed = !isPressed;
+            // isPressed = !isPressed;
+            StateMachinePressed();
             buttonStateChange();
         }
     }
@@ -141,7 +181,8 @@ public class LevelGridCellToggle : MonoBehaviour, IPointerEnterHandler, IPointer
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            isPressed = !isPressed;
+            // isPressed = !isPressed;
+            StateMachinePressed();
             buttonStateChange();
         }
 
@@ -158,5 +199,26 @@ public class LevelGridCellToggle : MonoBehaviour, IPointerEnterHandler, IPointer
         {
             trackInput.LeftMouseisPressed = false;
         }
+    }
+
+    private void LoadSpriteByGUID(Image targetImage, string assetPath){
+        if (string.IsNullOrEmpty(assetPath) || targetImage == null)
+        {
+            Debug.LogError("Asset path or Image component is not set.");
+            return;
+        }
+
+        // Load the sprite from the specified path
+        Sprite loadedSprite = AssetDatabase.LoadAssetAtPath<Sprite>(assetPath);
+
+        if (loadedSprite == null)
+        {
+            Debug.LogError($"Sprite at '{assetPath}' could not be loaded.");
+            return;
+        }
+
+        // Assign the sprite to the Image component
+        targetImage.sprite = loadedSprite;
+        buttonImage.type = Image.Type.Sliced;
     }
 }
