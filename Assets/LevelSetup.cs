@@ -25,7 +25,7 @@ public class LevelSetup : MonoBehaviour
     private TMP_Text level_size_text;
 
 
-    public Font fontAsset; // Add a field for the font asset
+    public TMP_FontAsset fontAsset; // Add a field for the font asset
 
     public GameObject[,] cells; // 2D array to hold references to the grid cells
     private bool[,] cellStates; // 2D array to store the state of each cell
@@ -80,7 +80,7 @@ public class LevelSetup : MonoBehaviour
         float startX = -totalWidth / 2f + cellSizeX / 2f;
         float startY = totalHeight / 2f - cellSizeY / 2f;
 
-        Font font = fontAsset != null ? fontAsset : Resources.GetBuiltinResource<Font>("Arial.ttf"); // Use selected font asset or default font
+        TMP_FontAsset font = fontAsset; // Use selected font asset or default font
 
         // ####################### Creating and positioning row indices
         for (int i = 0; i < rows; i++)
@@ -88,10 +88,10 @@ public class LevelSetup : MonoBehaviour
             GameObject rowIndex = new GameObject("RowIndex_" + i);
             rowIndex.transform.SetParent(gridParent);
 
-            Text indexText = rowIndex.AddComponent<Text>();
+            TextMeshProUGUI indexText = rowIndex.AddComponent<TextMeshProUGUI>();
             indexText.font = font;
             indexText.text = "0 "; //(i + 1).ToString();
-            indexText.alignment = TextAnchor.MiddleCenter;
+            indexText.alignment = TextAlignmentOptions.BottomRight;
             indexText.color = Color.white;
 
             RectTransform indexRect = indexText.GetComponent<RectTransform>();
@@ -110,10 +110,10 @@ public class LevelSetup : MonoBehaviour
             GameObject colIndex = new GameObject("ColIndex_" + j);
             colIndex.transform.SetParent(gridParent);
 
-            Text indexText = colIndex.AddComponent<Text>();
+            TextMeshProUGUI indexText = colIndex.AddComponent<TextMeshProUGUI>();
             indexText.font = font;
             indexText.text = "0"; //(j + 1).ToString();
-            indexText.alignment = TextAnchor.MiddleCenter;
+            indexText.alignment = TextAlignmentOptions.Bottom;
             indexText.color = Color.white;
 
             RectTransform indexRect = indexText.GetComponent<RectTransform>();
@@ -266,30 +266,22 @@ public class LevelSetup : MonoBehaviour
         Transform rowTextTransform = gridParent.Find("RowIndex_" + rowIndex);
         if (rowTextTransform != null)
         {
-            Text indexText = rowTextTransform.GetComponent<Text>();
+            TMP_Text indexText = rowTextTransform.GetComponent<TMP_Text>();
             if (indexText != null)
             {
                 RectTransform indexRect = indexText.GetComponent<RectTransform>();
 
                 // get width of a text containing "0" to calculate the difference in size for position adjustment in horizontal direction
-                indexText.text = "0 ";
+                indexText.text = "0 0 0 (00)";
                 float text_width_0 = indexRect.rect.width;
+                float text_height_0 = indexRect.rect.height;
 
                 string consecutiveCount = CalculateGroupPressedCellsPerRow(rowIndex, solution);
-                indexText.text = consecutiveCount;
+                indexText.text = consecutiveCount + " (" + (rowIndex + 1).ToString() + ")";
 
                 // Calculate preferred size of the text
-                Vector2 preferredSize = new Vector2(indexText.preferredWidth, indexText.preferredHeight);
+                Vector2 preferredSize = new Vector2(indexText.preferredWidth, text_height_0);
 
-                // // Calculate the minimum size (size of the cell in the grid)
-                // float cellSizeY = gridParent.GetComponent<RectTransform>().rect.height / rows;
-                // Vector2 minSize = new Vector2(cellSizeY, cellSizeY);
-
-                // // Set the size to the maximum between preferred size and minimum cell size
-                // Vector2 newSize = new Vector2(
-                //     Mathf.Max(preferredSize.x, minSize.x),
-                //     Mathf.Max(preferredSize.y, minSize.y)    // Adjust to fit the font size
-                // );
                 indexRect.sizeDelta = preferredSize;
 
                 // Calculate the difference in size for position adjustment in horizontal direction
@@ -307,34 +299,28 @@ public class LevelSetup : MonoBehaviour
         Transform colTextTransform = gridParent.Find("ColIndex_" + colIndex);
         if (colTextTransform != null)
         {
-            Text indexText = colTextTransform.GetComponent<Text>();
+            TMP_Text indexText = colTextTransform.GetComponent<TMP_Text>();
             if (indexText != null)
             {
                 RectTransform indexRect = indexText.GetComponent<RectTransform>();
-                float previous_text_height = indexRect.rect.height; // remember the previous text width
+                // get width of a text containing "0" to calculate the difference in size for position adjustment in horizontal direction
+                indexText.text = "0\n0\n(00)";
+                float text_height_0 = indexRect.rect.height;
+                float text_width_0 = indexRect.rect.width;
+
+                // float previous_text_height = indexRect.rect.height; // remember the previous text width
 
                 string consecutiveCount = CalculateGroupPressedCellsPerColumn(colIndex, solution);
-                indexText.text = consecutiveCount;
+                indexText.text = consecutiveCount + "\n(" + (colIndex + 1).ToString() + ")";
 
                 // Calculate preferred size of the text
-                Vector2 preferredSize = indexText.preferredHeight > indexText.preferredWidth ?
-                    new Vector2(indexText.preferredWidth, indexText.preferredHeight) :
-                    new Vector2(indexText.preferredHeight, indexText.preferredWidth);
+                Vector2 preferredSize = new Vector2(indexText.preferredWidth, indexText.preferredHeight);
 
-                // Calculate the minimum size (size of the cell in the grid)
-                float cellSizeX = gridParent.GetComponent<RectTransform>().rect.width / columns;
-                Vector2 minSize = new Vector2(cellSizeX, cellSizeX);
-
-                // Set the size to the maximum between preferred size and minimum cell size
-                Vector2 newSize = new Vector2(
-                    Mathf.Max(preferredSize.x, minSize.x),
-                    Mathf.Max(preferredSize.y, minSize.y)
-                );
-                indexRect.sizeDelta = newSize;
+                indexRect.sizeDelta = preferredSize;
                 // rotate by -90 degrees
                 // indexRect.Rotate(new Vector3(0, 0, -90));
 
-                float difference = (indexRect.rect.height - previous_text_height) / 6f;
+                float difference = (indexRect.rect.height - text_height_0) / 6f;
                 indexRect.anchoredPosition += new Vector2(0f, difference);
             }
         }
@@ -360,7 +346,7 @@ public class LevelSetup : MonoBehaviour
             }
             else if (currentGroup > 0)
             {
-                rowGroupText += currentGroup + " ";
+                rowGroupText += currentGroup + "  ";
                 currentGroup = 0;
             }
         }

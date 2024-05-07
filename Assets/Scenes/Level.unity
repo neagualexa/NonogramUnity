@@ -5359,7 +5359,7 @@ MonoBehaviour:
   columns: 0
   cellSizeX: 0
   cellSizeY: 0
-  fontAsset: {fileID: 12800000, guid: 585188cdc4600544eb408bee749e4b3a, type: 3}
+  fontAsset: {fileID: 11400000, guid: ed1a5b203c484ce40aeca2ed7f35c79b, type: 2}
   levelCompletion: 0
   levelMeaningCompletion: 0
   hint_count: 0
