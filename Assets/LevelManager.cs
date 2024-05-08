@@ -15,12 +15,12 @@ public class LevelManager : MonoBehaviour
     private string level;
     public TMP_Text hint_text;
 
-    private int hint_index = 0;
-    private int general_hint_index = 0;
+    // private int hint_index = 0;
+    // private int general_hint_index = 0;
     private float user_progress = 0.0f;
     private float prev_user_progress = 0.0f;
-    private Hints hints;
-    private GeneralHints general_hints;
+    // private Hints hints;
+    // private GeneralHints general_hints;
 
     void Awake()
     {
@@ -38,22 +38,22 @@ public class LevelManager : MonoBehaviour
         }
         Debug.Log("Username: " + user);
 
-        // prepare UNTAILORED hints for the level
-        // read the hints from the JSON file: ./LevelsJSON/levelname_hints.json
-        string filePath = "./Assets/LevelsJSON/"+level+"_hints.json";
-        string fileContent = File.ReadAllText(filePath);;
-        print("Reading UNTAILORED Descriptive hints from: " + filePath);
-        hints = JsonUtility.FromJson<Hints>(fileContent);
-        // shuffle the hints to randomize the order
-        Shuffle(hints.descriptive_hints);
-        Shuffle(hints.meaning_hints);
+        // // prepare UNTAILORED hints for the level
+        // // read the hints from the JSON file: ./LevelsJSON/levelname_hints.json
+        // string filePath = "./Assets/LevelsJSON/"+level+"_hints.json";
+        // string fileContent = File.ReadAllText(filePath);;
+        // print("Reading UNTAILORED Descriptive hints from: " + filePath);
+        // hints = JsonUtility.FromJson<Hints>(fileContent);
+        // // shuffle the hints to randomize the order
+        // Shuffle(hints.descriptive_hints);
+        // Shuffle(hints.meaning_hints);
 
-        filePath = "./Assets/LevelsJSON/general_hints.json";
-        fileContent = File.ReadAllText(filePath);;
-        print("Reading UNTAILORED General hints from: " + filePath);
-        general_hints = JsonUtility.FromJson<GeneralHints>(fileContent);
-        // shuffle the hints to randomize the order
-        Shuffle(general_hints.general_hints);
+        // filePath = "./Assets/LevelsJSON/general_hints.json";
+        // fileContent = File.ReadAllText(filePath);;
+        // print("Reading UNTAILORED General hints from: " + filePath);
+        // general_hints = JsonUtility.FromJson<GeneralHints>(fileContent);
+        // // shuffle the hints to randomize the order
+        // Shuffle(general_hints.general_hints);
     }
 
     void Start()
@@ -157,7 +157,7 @@ public class LevelManager : MonoBehaviour
 
     private void UntailoredDescriptiveHints(bool meaning=false)
     {
-        string randomHint;
+        // string randomHint;
         if (meaning)
         {   // return a meaning hint
             // randomHint = hints.meaning_hints[hint_index];
