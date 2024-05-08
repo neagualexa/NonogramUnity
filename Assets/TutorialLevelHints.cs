@@ -10,6 +10,7 @@ public class TutorialLevelHints : MonoBehaviour {
     private TMP_Text hint_text;
     private Animator arrowUIHint_animator;
     private Animator arrowGridInfo_animator;
+    private Animator arrowCell_animator;
     private Animator arrowColumn_animator;
     private Animator arrowRow_animator;
     private Animator arrowMeaning_animator;
@@ -20,13 +21,16 @@ public class TutorialLevelHints : MonoBehaviour {
     private int UIHintIndex = 0;
 
     private string[] UI_Hints = {
-        "Welcome to the tutorial level! You will have to solve the Nonogram puzzle and guess the meaning of the image that it represents. \n Press Next to see the next Tutorial Introduction Hint.",
-        "On the left is the grid where you will be solving the puzzles. Below you can find information regarding your latest clicked cell, the grid size (rows x columns), and remaining time to complete the level.",
-        "Here you can find the clues for each row and their respective index number. \nThe clues show the number of consecutive filled squares. If there are multiple numbers, there is at least one white cell between the groups of filled squares.",
+        "Welcome to the tutorial level! You will have to solve the Nonogram puzzle and guess the meaning of the image it represents. \nClick 'Next' to move on to the next tutorial hint.",
+        "On the left is the grid where you will be solving the puzzles. Below it, you can view details like the cell you've clicked, the grid size (rows x columns), and the time remaining for the level.",
+        "To fill a cell, click on the corresponding square in the grid. Click again to cross it out, and click a third time to mark it back as empty. \nCrossing a cell helps you identify squares that should not be filled, it is considered empty.",
+        "Here you can find the clues for each row and their respective index number in brackets.",
+        "The clues indicate how many consecutive squares should be filled. If there are multiple numbers, there is at least one unfilled square between groups of filled squares.",
         "Here you can find the clues for each column and their respective index number. \nThe same rules apply as for the row clues.",
-        "This is where you can put your guess for the meaning of the image that the Nonogram puzzle represents. Try to guess the meaning after you have completed the puzzle on the left. \nYou can check your guess by pressing the check button or pressing <Enter> Key.",
+        "This is where you can guess what the completed Nonogram image represents. Once you finish the puzzle, you can check your guess by pressing the check button or hitting the <Enter> key.",
         "Here you can check if your current progress of the puzzle is correct. If you think you have completed the puzzle, press the check button to see if your solution is correct.",
-        "Lastly, here you can request for a hint. \nI highly recommend to press the hint button if you need help understanding the game rules or getting unstuck."
+        "Lastly, here you can request for a hint. \nI highly recommend to press the hint button if you need help understanding the game rules or getting unstuck.",
+        "The hints aim to understand your progress and describe strategies to solve the Nonogram or point out areas to focus on next. Mistakes found will be given in (row, column) format."
     };
 
     void Awake() {
@@ -34,6 +38,7 @@ public class TutorialLevelHints : MonoBehaviour {
         hint_text = GameObject.Find("HintText").GetComponent<TMP_Text>();
         arrowUIHint_animator = GameObject.Find("ArrowUIHint").GetComponent<Animator>();
         arrowGridInfo_animator = GameObject.Find("ArrowGridInfo").GetComponent<Animator>();
+        arrowCell_animator = GameObject.Find("ArrowCell").GetComponent<Animator>();
         arrowColumn_animator = GameObject.Find("ArrowColumn").GetComponent<Animator>();
         arrowRow_animator = GameObject.Find("ArrowRow").GetComponent<Animator>();
         arrowMeaning_animator = GameObject.Find("ArrowMeaning").GetComponent<Animator>();
@@ -43,10 +48,13 @@ public class TutorialLevelHints : MonoBehaviour {
         animation_list = new List<Animator> {
             arrowUIHint_animator,
             arrowGridInfo_animator,
+            arrowCell_animator,
+            arrowRow_animator,
             arrowRow_animator,
             arrowColumn_animator,
             arrowMeaning_animator,
             arrowCheck_animator,
+            arrowHint_animator,
             arrowHint_animator
         };
 
