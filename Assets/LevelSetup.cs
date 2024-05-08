@@ -87,6 +87,8 @@ public class LevelSetup : MonoBehaviour
         {
             GameObject rowIndex = new GameObject("RowIndex_" + i);
             rowIndex.transform.SetParent(gridParent);
+            // set layer to UI
+            rowIndex.layer = 5;
 
             TextMeshProUGUI indexText = rowIndex.AddComponent<TextMeshProUGUI>();
             indexText.font = font;
@@ -109,6 +111,8 @@ public class LevelSetup : MonoBehaviour
         {
             GameObject colIndex = new GameObject("ColIndex_" + j);
             colIndex.transform.SetParent(gridParent);
+            // set layer to UI
+            colIndex.layer = 5;
 
             TextMeshProUGUI indexText = colIndex.AddComponent<TextMeshProUGUI>();
             indexText.font = font;
