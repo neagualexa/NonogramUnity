@@ -98,15 +98,25 @@ public class HTTPRequests : MonoBehaviour
     /// <param name="level"></param>
     /// <param name="hint_id"></param>
     /// <returns></returns>
-    public IEnumerator SendPuzzleProgressRequest(bool[,] cellStates, bool[,] solutionCellStates, string levelMeaning, string username, string level, int hint_id)
+    public IEnumerator SendPuzzleProgressRequest(bool[,] cellStates, bool[,] solutionCellStates, string levelMeaning, string username, string level, int hint_id, bool tailoredHint = true, int hint_level = 0)
     {
-        Debug.Log("SendPuzzleProgressRequest:: Checking solution...");
+        Debug.Log("SendPuzzleProgressRequest:: Checking solution..." + tailoredHint);
         levelSetup.CheckSolution(cellStates, solutionCellStates);
         string cellStatesString = "";
         string solutionCellStatesString = "";
         convert_boolList_to_string(cellStates, solutionCellStates, ref cellStatesString, ref solutionCellStatesString, boolListFormal: true);
-        string apiUrl = "http://localhost:5000/check_puzzle_progress";
-        string jsonData = $"{{ \"cellStates\": \"{cellStatesString}\", \"solutionCellStates\": \"{solutionCellStatesString}\", \"levelMeaning\": \"{levelMeaning}\", \"completed\": \"{levelSetup.levelCompletion}\", \"username\": \"{username}\", \"level\": \"{level}\", \"hint_id\": \"{hint_id}\" }}";
+        string apiUrl = "";
+        string jsonData = "";
+        if (tailoredHint)
+        {
+            apiUrl = "http://localhost:5000/check_puzzle_progress";
+            jsonData = $"{{ \"cellStates\": \"{cellStatesString}\", \"solutionCellStates\": \"{solutionCellStatesString}\", \"levelMeaning\": \"{levelMeaning}\", \"completed\": \"{levelSetup.levelCompletion}\", \"username\": \"{username}\", \"level\": \"{level}\", \"hint_id\": \"{hint_id}\" }}";
+        }
+        else
+        {
+            apiUrl = "http://localhost:5000/ask_untailored_hint";
+            jsonData = $"{{ \"solutionCellStates\": \"{solutionCellStatesString}\", \"levelMeaning\": \"{levelMeaning}\", \"completed\": \"{levelSetup.levelCompletion}\", \"username\": \"{username}\", \"level\": \"{level}\", \"hint_id\": \"{hint_id}\", \"hint_level\": \"{hint_level}\"}}";
+        }
         Debug.Log("SendPuzzleProgressRequest:: Sending jsonData... ");
         WWWForm form = new WWWForm();
         form.AddField("puzzleProgress", jsonData);

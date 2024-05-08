@@ -146,10 +146,10 @@ public class LevelManager : MonoBehaviour
                 return;
             }
         } else {
-            hint_text.text = "Asking NonoAI for hint...";
+            hint_text.text = "Asking Nono_AI for hint...";
             // add 1.2seconds delay
             StartCoroutine(AskAIAssistant());
-            StartCoroutine(ShowHintAfterDelay("Waiting for NonoAI...", 2.5f)); //3.5f for old directional hint pipeline
+            StartCoroutine(ShowHintAfterDelay("Waiting for Nono_AI...", 2.5f)); //3.5f for old directional hint pipeline
             return;
         }
     }
@@ -161,34 +161,40 @@ public class LevelManager : MonoBehaviour
         if (meaning)
         {   // return a meaning hint
             randomHint = hints.meaning_hints[hint_index];
-            StartCoroutine(httpRequests.SendHintToVerbalise(randomHint, 7, level)); // send hint to verbalise server
+            // StartCoroutine(httpRequests.SendHintToVerbalise(randomHint, 7, level)); // send hint to verbalise server
+            StartCoroutine(AskAIAssistant(true, 7));                                   // ask for untailored hint
+            StartCoroutine(ShowHintAfterDelay("Waiting for Nono_AI...", 2.5f)); //3.5f for old directional hint pipeline
 
             // add a delay to receive the verbal response from the server
-            hint_text.text = "Requesting a hint...";
-            StartCoroutine(ShowHintAfterDelay(randomHint, 2.5f));
-            hint_index = (hint_index + 1) % hints.meaning_hints.Count;
+            // hint_text.text = "Requesting a hint...";
+            // StartCoroutine(ShowHintAfterDelay(randomHint, 2.5f));
+            // hint_index = (hint_index + 1) % hints.meaning_hints.Count;
             return;
         }
 
         // return a descriptive hint
         randomHint = hints.descriptive_hints[hint_index];
-        StartCoroutine(httpRequests.SendHintToVerbalise(randomHint, 1, level)); // send hint to verbalise server
+        // StartCoroutine(httpRequests.SendHintToVerbalise(randomHint, 1, level)); // send hint to verbalise server
+        StartCoroutine(AskAIAssistant(true, 1));                                   // ask for untailored hint
+        StartCoroutine(ShowHintAfterDelay("Waiting for Nono_AI...", 2.5f)); //3.5f for old directional hint pipeline
 
         // add a delay to receive the verbal response from the server
-        hint_text.text = "Requesting a hint...";
-        StartCoroutine(ShowHintAfterDelay(randomHint, 2.5f));
-        hint_index = (hint_index + 1) % hints.descriptive_hints.Count;
+        // hint_text.text = "Requesting a hint...";
+        // StartCoroutine(ShowHintAfterDelay(randomHint, 2.5f));
+        // hint_index = (hint_index + 1) % hints.descriptive_hints.Count;
     }
 
     private void UntailoredGeneralHints()
     {
         string randomHint = general_hints.general_hints[general_hint_index];
-        StartCoroutine(httpRequests.SendHintToVerbalise(randomHint, 0, level)); // send hint to verbalise server
+        // StartCoroutine(httpRequests.SendHintToVerbalise(randomHint, 0, level)); // send hint to verbalise server
+        StartCoroutine(AskAIAssistant(true, 0));                                   // ask for untailored hint
+        StartCoroutine(ShowHintAfterDelay("Waiting for Nono_AI...", 2.5f)); //3.5f for old directional hint pipeline
 
         // add a delay to receive the verbal response from the server
-        hint_text.text = "Requesting a hint...";
-        StartCoroutine(ShowHintAfterDelay(randomHint, 2.5f));
-        general_hint_index = (general_hint_index + 1) % general_hints.general_hints.Count;
+        // hint_text.text = "Requesting a hint...";
+        // StartCoroutine(ShowHintAfterDelay(randomHint, 2.5f));
+        // general_hint_index = (general_hint_index + 1) % general_hints.general_hints.Count;
     }
 
     IEnumerator ShowHintAfterDelay(string hint, float delay)
@@ -197,16 +203,16 @@ public class LevelManager : MonoBehaviour
         hint_text.text = hint;
     }
 
-    IEnumerator AskAIAssistant()
+    IEnumerator AskAIAssistant(bool untailoredHints = false, int level_hint = 0)
     {
         yield return new WaitForSeconds(1.5f);
-        hint_text.text = "Progress sent to NonoAI...";
+        hint_text.text = "Progress sent to Nono_AI...";
         // Application.OpenURL("http://localhost:5000/");
         bool[,] cellStates = levelGrid.GetCellStates();
         bool[,] solutionCellStates = levelGrid.GetSolutionCellStates();
         string levelMeaning = levelGrid.GetSolutionMeaning();
         // Debug.Log("Sending puzzle progress to server...");
-        StartCoroutine(httpRequests.SendPuzzleProgressRequest(cellStates, solutionCellStates, levelMeaning, user, level, levelGrid.hint_count));
+        StartCoroutine(httpRequests.SendPuzzleProgressRequest(cellStates, solutionCellStates, levelMeaning, user, level, levelGrid.hint_count, untailoredHints, level_hint));
     }
 
     public void HintReminderLoop()
