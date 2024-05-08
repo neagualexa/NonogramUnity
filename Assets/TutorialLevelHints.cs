@@ -29,8 +29,10 @@ public class TutorialLevelHints : MonoBehaviour {
         "Here you can find the clues for each column and their respective index number. \nThe same rules apply as for the row clues.",
         "This is where you can guess what the completed Nonogram image represents. Once you finish the puzzle, you can check your guess by pressing the check button or hitting the <Enter> key.",
         "Here you can check if your current progress of the puzzle is correct. If you think you have completed the puzzle, press the check button to see if your solution is correct.",
+        "Once you complete the level and guess the correct meaning, the timer at the bottom will stop and you will be able to move on to the next level.",
         "Lastly, here you can request for a hint. \nI highly recommend to press the hint button if you need help understanding the game rules or getting unstuck.",
-        "The hints aim to understand your progress and describe strategies to solve the Nonogram or point out areas to focus on next. Mistakes found will be given in (row, column) format."
+        "The hints aim to understand your progress and describe strategies to solve the Nonogram or point out areas to focus on next. Mistakes found will be given in (row, column) format.",
+        "If you encounter any errors or long loading times in receiving the hints, don't worry and just request for another one."
     };
 
     void Awake() {
@@ -54,6 +56,8 @@ public class TutorialLevelHints : MonoBehaviour {
             arrowColumn_animator,
             arrowMeaning_animator,
             arrowCheck_animator,
+            arrowGridInfo_animator,
+            arrowHint_animator,
             arrowHint_animator,
             arrowHint_animator
         };
