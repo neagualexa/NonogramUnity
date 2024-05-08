@@ -117,7 +117,7 @@ public class HTTPRequests : MonoBehaviour
             apiUrl = "http://localhost:5000/ask_untailored_hint";
             jsonData = $"{{ \"solutionCellStates\": \"{solutionCellStatesString}\", \"levelMeaning\": \"{levelMeaning}\", \"completed\": \"{levelSetup.levelCompletion}\", \"username\": \"{username}\", \"level\": \"{level}\", \"hint_id\": \"{hint_id}\", \"hint_level\": \"{hint_level}\"}}";
         }
-        Debug.Log("SendPuzzleProgressRequest:: Sending jsonData... ");
+        Debug.Log("SendPuzzleProgressRequest:: Sending jsonData... "+ jsonData);
         WWWForm form = new WWWForm();
         form.AddField("puzzleProgress", jsonData);
 

@@ -127,6 +127,7 @@ public class LevelManager : MonoBehaviour
         {
             prev_user_progress = user_progress;
             user_progress = CalculateUserProgress(levelGrid.GetCellStates(), levelGrid.GetSolutionCellStates());
+            Debug.Log("User Progress: " + user_progress +" prev: "+prev_user_progress);
             if (user_progress == 1.0f)
             {
                 // if user completed the puzzle, then return a meaning hint
@@ -157,12 +158,11 @@ public class LevelManager : MonoBehaviour
     private void UntailoredDescriptiveHints(bool meaning=false)
     {
         string randomHint;
-
         if (meaning)
         {   // return a meaning hint
-            randomHint = hints.meaning_hints[hint_index];
+            // randomHint = hints.meaning_hints[hint_index];
             // StartCoroutine(httpRequests.SendHintToVerbalise(randomHint, 7, level)); // send hint to verbalise server
-            StartCoroutine(AskAIAssistant(true, 7));                                   // ask for untailored hint
+            StartCoroutine(AskAIAssistant(false, 7));                                   // ask for untailored hint
             StartCoroutine(ShowHintAfterDelay("Waiting for Nono_AI...", 2.5f)); //3.5f for old directional hint pipeline
 
             // add a delay to receive the verbal response from the server
@@ -173,9 +173,9 @@ public class LevelManager : MonoBehaviour
         }
 
         // return a descriptive hint
-        randomHint = hints.descriptive_hints[hint_index];
+        // randomHint = hints.descriptive_hints[hint_index];
         // StartCoroutine(httpRequests.SendHintToVerbalise(randomHint, 1, level)); // send hint to verbalise server
-        StartCoroutine(AskAIAssistant(true, 1));                                   // ask for untailored hint
+        StartCoroutine(AskAIAssistant(false, 1));                                   // ask for untailored hint
         StartCoroutine(ShowHintAfterDelay("Waiting for Nono_AI...", 2.5f)); //3.5f for old directional hint pipeline
 
         // add a delay to receive the verbal response from the server
@@ -186,9 +186,9 @@ public class LevelManager : MonoBehaviour
 
     private void UntailoredGeneralHints()
     {
-        string randomHint = general_hints.general_hints[general_hint_index];
+        // string randomHint = general_hints.general_hints[general_hint_index];
         // StartCoroutine(httpRequests.SendHintToVerbalise(randomHint, 0, level)); // send hint to verbalise server
-        StartCoroutine(AskAIAssistant(true, 0));                                   // ask for untailored hint
+        StartCoroutine(AskAIAssistant(false, 0));                                   // ask for untailored hint
         StartCoroutine(ShowHintAfterDelay("Waiting for Nono_AI...", 2.5f)); //3.5f for old directional hint pipeline
 
         // add a delay to receive the verbal response from the server
@@ -203,16 +203,18 @@ public class LevelManager : MonoBehaviour
         hint_text.text = hint;
     }
 
-    IEnumerator AskAIAssistant(bool untailoredHints = false, int level_hint = 0)
+    IEnumerator AskAIAssistant(bool tailoredHint = true, int level_hint = 0)
     {
+        /// Method to request a hint from the Nono_AI for either Tailored or Untailored hints
+        
         yield return new WaitForSeconds(1.5f);
         hint_text.text = "Progress sent to Nono_AI...";
         // Application.OpenURL("http://localhost:5000/");
         bool[,] cellStates = levelGrid.GetCellStates();
         bool[,] solutionCellStates = levelGrid.GetSolutionCellStates();
         string levelMeaning = levelGrid.GetSolutionMeaning();
-        // Debug.Log("Sending puzzle progress to server...");
-        StartCoroutine(httpRequests.SendPuzzleProgressRequest(cellStates, solutionCellStates, levelMeaning, user, level, levelGrid.hint_count, untailoredHints, level_hint));
+        Debug.Log("Sending puzzle progress to server...");
+        StartCoroutine(httpRequests.SendPuzzleProgressRequest(cellStates, solutionCellStates, levelMeaning, user, level, levelGrid.hint_count, tailoredHint, level_hint));
     }
 
     public void HintReminderLoop()
