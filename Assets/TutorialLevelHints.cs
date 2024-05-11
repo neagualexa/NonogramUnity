@@ -23,14 +23,14 @@ public class TutorialLevelHints : MonoBehaviour {
     private string[] UI_Hints = {
         "Welcome to the tutorial level! You will have to solve the Nonogram puzzle and guess the meaning of the image it represents. \nClick 'Next' to move on to the next tutorial hint.",
         "On the left is the grid where you will be solving the puzzles. Below it, you can view details like the cell you've clicked, the grid size (rows x columns), and the time remaining for the level.",
-        "To fill a cell, click on the corresponding square in the grid. Click again to cross it out, and click a third time to mark it back as empty. \nCrossing a cell helps you identify squares that should not be filled, it is considered empty.",
+        "To fill a cell, click on the corresponding square in the grid. Click again to cross it out and click a third time to mark it back as empty. \nCrossing a cell helps you identify squares that should not be filled, it is considered empty.",
         "Here you can find the clues for each row and their respective index number in brackets.",
         "The clues indicate how many consecutive squares should be filled. If there are multiple numbers, there is at least one empty square between groups of filled squares.",
         "Here you can find the clues for each column and their respective index number. \nThe same rules apply as for the row clues.",
         "This is where you can guess what the completed Nonogram image represents. Once you finish the puzzle, you can check your guess by pressing the check button or hitting the <Enter> key.",
         "Here you can check if your current progress of the puzzle is correct. If you think you have completed the puzzle, press the check button to see if your solution is correct.",
         "Once you complete the level and guess the correct meaning, the timer at the bottom will stop and you will be able to move on to the next level.",
-        "Lastly, here you can request for a hint. \nI highly recommend to press the hint button if you need help understanding the game rules or getting unstuck.",
+        "Lastly, here you can request for a hint. \nI highly recommend pressing the hint button if you need help understanding the game rules or getting unstuck.",
         "The hints aim to understand your progress and describe strategies to solve the Nonogram or point out areas to focus on next. Mistakes found will be given in (row, column) format.",
         "If you encounter any errors or long loading times in receiving the hints, don't worry and just request for another one."
     };
