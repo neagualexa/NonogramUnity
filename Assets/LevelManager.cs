@@ -123,6 +123,7 @@ public class LevelManager : MonoBehaviour
         levelGrid.hint_count += 1;
         // using the auto size feature in Unity with a max fontSize of 30 to fit the hint_text into the object
 
+        hint_text.text = "Asking Nono_AI for hint...";
         if (hintStyle == 0)
         {
             prev_user_progress = user_progress;
@@ -147,7 +148,6 @@ public class LevelManager : MonoBehaviour
                 return;
             }
         } else {
-            hint_text.text = "Asking Nono_AI for hint...";
             // add 1.2seconds delay
             StartCoroutine(AskAIAssistant());
             StartCoroutine(ShowHintAfterDelay("Waiting for Nono_AI...", 2.5f)); //3.5f for old directional hint pipeline
