@@ -86,6 +86,11 @@ public class ButtonAnimations : MonoBehaviour
     public void SetHintSectionVisible()
     {
         Debug.Log("Setting hint section visible");
+        // if the hint section is already visible, do not trigger the animation again
+        if (hint_section_animator.GetCurrentAnimatorStateInfo(0).IsName("HintAppear")){
+            print("HINT Already open");
+            return;
+        }
         hint_section_animator.SetTrigger("Appear");
     }
 }
