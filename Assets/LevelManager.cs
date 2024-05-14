@@ -229,8 +229,8 @@ public class LevelManager : MonoBehaviour
         // Every 2 mins, send a request to the server to get a sendPuzzleProgressRequest
         while (true)
         {
-            Debug.Log("Starting HintReminder every 120s ...");
-            yield return new WaitForSeconds(10);
+            Debug.Log("Starting HintReminder every 60s ...");
+            yield return new WaitForSeconds(60);
             if (httpRequests.hintBuffering)
             {
                 Debug.Log("HintReminder:: Hint buffering... wait for "+httpRequests.hint_buffer+" seconds.");
