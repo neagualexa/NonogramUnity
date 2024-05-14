@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
+using TMPro;
 
 public class ButtonAnimations : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class ButtonAnimations : MonoBehaviour
     private Animator hint_section_animator;
     private LevelSetup levelSetup;
     private LevelWrapper levelWrapper;
+    private TMP_Text instruction_hint_text;
 
     private void Start()
     {
@@ -24,9 +26,12 @@ public class ButtonAnimations : MonoBehaviour
         wrong_meaning_animator = GameObject.Find("WrongMeaning").GetComponent<Animator>();
         error_meaning_animator = GameObject.Find("ErrorMeaning").GetComponent<Animator>();
         hint_section_animator = GameObject.Find("HintSection").GetComponent<Animator>();
+        instruction_hint_text = GameObject.Find("InstructionsHints").GetComponent<TMP_Text>();
 
         levelSetup = GetComponent<LevelSetup>();
         levelWrapper = GetComponent<LevelWrapper>();
+
+        InnactiveHintButton();
     }
 
     public void OnLevelCompletionCheck()
@@ -92,5 +97,20 @@ public class ButtonAnimations : MonoBehaviour
             return;
         }
         hint_section_animator.SetTrigger("Appear");
+    }
+
+    public void InnactiveHintButton()
+    {
+        // if current level is car or invertedcar then disable the hint button
+        if (PlayerPrefs.GetString("LevelFilename") == "car" || PlayerPrefs.GetString("LevelFilename") == "invertedcar")
+        {
+            GameObject.Find("HintButton").GetComponent<Button>().interactable = false;
+            instruction_hint_text.text = "Hints not available for this level";
+        }
+        else
+        {
+            GameObject.Find("HintButton").GetComponent<Button>().interactable = true;
+            instruction_hint_text.text = "";
+        }
     }
 }

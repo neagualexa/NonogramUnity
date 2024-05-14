@@ -20,6 +20,7 @@ public class LevelsManagement : MonoBehaviour {
         Debug.Log("Current level index: " + currentLevelIndex);
 
         GetAllLevelButtonObjects();
+        RanOutOfTimeWarning(); 
         // SetInnactiveLevelButtons();
     }
 
@@ -38,6 +39,32 @@ public class LevelsManagement : MonoBehaviour {
                 levelButtons[i].GetComponent<Button>().interactable = true;
             }
         }
+    }
+
+    public void RanOutOfTimeWarning() {
+        /*
+        This function is called when the player runs out of time on the previous level.
+        */
+        if (currentLevelIndex > 1) {
+            int previousLevelIndex = currentLevelIndex - 1 - 1; // convert to 0 indexed and get the previous level
+            // read the level file for the previous level and check the onTime variable
+            string username = PlayerPrefs.GetString("Username");
+            string previousLevelName = levelButtons[previousLevelIndex].name.Split(' ')[3];
+            string levelFile = "./Assets/LevelsJSON/user_progress/" + username + "_progress_level_" + previousLevelName + ".json";
+
+            Debug.Log("Checking level file: " + levelFile);
+
+            string fileContent = System.IO.File.ReadAllText(levelFile);
+            GridStateData gridLoadedData = JsonUtility.FromJson<GridStateData>(fileContent);
+            
+            if (!gridLoadedData.onTime) {
+                Debug.Log("Player ran out of time on level: " + previousLevelName);
+                // set the text to the Warning message
+                GameObject.Find("WarningText").GetComponent<TMP_Text>().text = "You ran out of time on the previous level! Don't worry, you can continue to the next level: " + currentLevelIndex;
+            }
+            
+        }
+
     }
 
     // private void SetInnactiveLevelButtons() {
