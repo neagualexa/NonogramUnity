@@ -14,6 +14,8 @@ public class HTTPRequests : MonoBehaviour
     private MainMenu mainMenu;
     private ButtonAnimations buttonAnimations;
     private bool puzzleMeaningError = false;
+    public bool hintBuffering = false;
+    public int hint_buffer = 20;   // add a 20s buffer to the hint time, no hint can be requested during this time
 
     private void Start()
     {
@@ -21,6 +23,25 @@ public class HTTPRequests : MonoBehaviour
         levelManager = GetComponent<LevelManager>();
         mainMenu = GetComponent<MainMenu>();
         buttonAnimations = GetComponent<ButtonAnimations>();
+
+        StartCoroutine(Buffering());
+    }
+
+    IEnumerator Buffering()
+    {
+        while (true)
+        {
+            if (hintBuffering){
+                Debug.Log("Hint buffering: " + hintBuffering + ", hint buffer: " + hint_buffer);
+                hint_buffer -= 1;
+            }
+            if (hint_buffer == 0){
+                hintBuffering = false;
+                hint_buffer = 20;
+                Debug.Log("Hint buffering: " + hintBuffering + ", hint buffer: " + hint_buffer);
+            }
+            yield return new WaitForSeconds(1);
+        }
     }
 
     /// <summary>
@@ -102,6 +123,7 @@ public class HTTPRequests : MonoBehaviour
     {
         Debug.Log("SendPuzzleProgressRequest:: Checking solution..." + tailoredHint);
         levelSetup.CheckSolution(cellStates, solutionCellStates);
+
         string cellStatesString = "";
         string solutionCellStatesString = "";
         convert_boolList_to_string(cellStates, solutionCellStates, ref cellStatesString, ref solutionCellStatesString, boolListFormal: true);
@@ -115,12 +137,14 @@ public class HTTPRequests : MonoBehaviour
         else
         {
             apiUrl = "http://localhost:5000/ask_untailored_hint";
-            jsonData = $"{{ \"solutionCellStates\": \"{solutionCellStatesString}\", \"levelMeaning\": \"{levelMeaning}\", \"completed\": \"{levelSetup.levelCompletion}\", \"username\": \"{username}\", \"level\": \"{level}\", \"hint_id\": \"{hint_id}\", \"hint_level\": \"{hint_level}\"}}";
+            jsonData = $"{{ \"cellStates\": \"{cellStatesString}\", \"solutionCellStates\": \"{solutionCellStatesString}\", \"levelMeaning\": \"{levelMeaning}\", \"completed\": \"{levelSetup.levelCompletion}\", \"username\": \"{username}\", \"level\": \"{level}\", \"hint_id\": \"{hint_id}\", \"hint_level\": \"{hint_level}\"}}";
         }
         Debug.Log("SendPuzzleProgressRequest:: Sending jsonData... "+ jsonData);
         WWWForm form = new WWWForm();
         form.AddField("puzzleProgress", jsonData);
 
+        // set the hint buffering
+        hintBuffering = true;
         using UnityWebRequest www = UnityWebRequest.Post(apiUrl, form);
         yield return www.SendWebRequest();
 
