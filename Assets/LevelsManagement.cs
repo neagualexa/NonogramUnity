@@ -21,6 +21,7 @@ public class LevelsManagement : MonoBehaviour {
 
         GetAllLevelButtonObjects();
         RanOutOfTimeWarning(); 
+        EndGameWarning();
         // SetInnactiveLevelButtons();
     }
 
@@ -65,6 +66,16 @@ public class LevelsManagement : MonoBehaviour {
             
         }
 
+    }
+
+    public void EndGameWarning() {
+        /*
+        This function is called when the player completes the last level.
+        */
+        if (currentLevelIndex == levelButtons.Length) {
+            // set the text to the Warning message
+            GameObject.Find("WarningText").GetComponent<TMP_Text>().text = "Congratulations! You have completed all levels! Please press the <End Game> button and ask for the supervisor to return in the room.";
+        }
     }
 
     // private void SetInnactiveLevelButtons() {
