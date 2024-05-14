@@ -116,7 +116,7 @@ public class LevelSetup : MonoBehaviour
 
             TextMeshProUGUI indexText = colIndex.AddComponent<TextMeshProUGUI>();
             indexText.font = font;
-            indexText.text = "0"; //(j + 1).ToString();
+            indexText.text = "00"; //(j + 1).ToString();
             indexText.alignment = TextAlignmentOptions.Bottom;
             indexText.color = Color.white;
 
@@ -288,11 +288,13 @@ public class LevelSetup : MonoBehaviour
 
                 indexRect.sizeDelta = preferredSize;
 
-                // Calculate the difference in size for position adjustment in horizontal direction
+                // // Calculate the difference in size for position adjustment in horizontal direction
                 float difference = (indexRect.rect.width - text_width_0) / 6f; // Difference in text width
 
-                // Shift the text to the left based on the text size difference
+                // // Shift the text to the left based on the text size difference
                 indexRect.anchoredPosition -= new Vector2(difference, 0f);
+                indexText.fontSize = 35;
+                
             }
         }
     }
@@ -307,25 +309,13 @@ public class LevelSetup : MonoBehaviour
             if (indexText != null)
             {
                 RectTransform indexRect = indexText.GetComponent<RectTransform>();
-                // get width of a text containing "0" to calculate the difference in size for position adjustment in horizontal direction
-                indexText.text = "0\n0\n(00)";
-                float text_height_0 = indexRect.rect.height;
-                float text_width_0 = indexRect.rect.width;
-
-                // float previous_text_height = indexRect.rect.height; // remember the previous text width
 
                 string consecutiveCount = CalculateGroupPressedCellsPerColumn(colIndex, solution);
                 indexText.text = consecutiveCount + "\n(" + (colIndex + 1).ToString() + ")";
 
-                // Calculate preferred size of the text
-                Vector2 preferredSize = new Vector2(indexText.preferredWidth, indexText.preferredHeight);
-
-                indexRect.sizeDelta = preferredSize;
-                // rotate by -90 degrees
-                // indexRect.Rotate(new Vector3(0, 0, -90));
-
-                float difference = (indexRect.rect.height - text_height_0) / 6f;
-                indexRect.anchoredPosition += new Vector2(0f, difference);
+                indexText.fontSize = 35;
+                indexRect.position = new Vector3(indexRect.position.x, indexRect.position.y + 1.5f, indexRect.position.z);
+                
             }
         }
     }

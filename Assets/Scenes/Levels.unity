@@ -1073,7 +1073,7 @@ GameObject:
   - component: {fileID: 374532593}
   - component: {fileID: 374532592}
   m_Layer: 5
-  m_Name: Level Button (5) snail
+  m_Name: Level Button (5) rooster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1164,7 +1164,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: snail
+          m_StringArgument: rooster
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &374532593
@@ -3075,7 +3075,7 @@ GameObject:
   - component: {fileID: 1219051744}
   - component: {fileID: 1219051743}
   m_Layer: 5
-  m_Name: Level Button (3) toucan
+  m_Name: Level Button (3) snail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3166,7 +3166,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: toucan
+          m_StringArgument: snail
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1219051744
