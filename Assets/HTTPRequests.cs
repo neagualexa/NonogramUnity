@@ -15,6 +15,7 @@ public class HTTPRequests : MonoBehaviour
     private ButtonAnimations buttonAnimations;
     private bool puzzleMeaningError = false;
     public bool hintBuffering = false;
+    public bool hintBufferingCountdown = false;
     public int hint_buffer = 20;   // add a 20s buffer to the hint time, no hint can be requested during this time
 
     private void Start()
@@ -33,10 +34,14 @@ public class HTTPRequests : MonoBehaviour
         {
             if (hintBuffering){
                 Debug.Log("Hint buffering: " + hintBuffering + ", hint buffer: " + hint_buffer);
+            }
+            if (hintBuffering && hintBufferingCountdown){
+                // once request received, start the countdown
                 hint_buffer -= 1;
             }
             if (hint_buffer == 0){
                 hintBuffering = false;
+                hintBufferingCountdown = false;
                 hint_buffer = 20;
                 Debug.Log("Hint buffering: " + hintBuffering + ", hint buffer: " + hint_buffer);
             }
@@ -145,6 +150,7 @@ public class HTTPRequests : MonoBehaviour
 
         // set the hint buffering
         hintBuffering = true;
+        hintBufferingCountdown = false;
         using UnityWebRequest www = UnityWebRequest.Post(apiUrl, form);
         yield return www.SendWebRequest();
 
@@ -160,6 +166,8 @@ public class HTTPRequests : MonoBehaviour
             string responseContent = www.downloadHandler.text;
             Debug.Log("SendPuzzleProgressRequest:: Response received from LLM server: " + responseContent);
             levelManager.hint_text.text = responseContent; // update hint popup text
+            hint_buffer = 20;
+            hintBufferingCountdown = true;
         }        
     }
 
