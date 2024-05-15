@@ -59,7 +59,14 @@ public class LevelManager : MonoBehaviour
     void Start()
     {
         // Comment out if testbench is active
-        HintReminderLoop();
+        if (PlayerPrefs.GetString("LevelFilename") != "car" && PlayerPrefs.GetString("LevelFilename") != "invertedcar")
+        {
+            HintReminderLoop();
+        }
+        else 
+        {
+            Debug.Log("Hint disabled for this level");
+        }
     }
 
     public void LoadLevel(string fileName)
