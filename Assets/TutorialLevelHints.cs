@@ -65,6 +65,18 @@ public class TutorialLevelHints : MonoBehaviour {
         animation_list[0].SetTrigger("ArrowPopUp");
     }
 
+    void Update(){
+        // if last hint, disable the next button
+        if ( UIHintIndex >= UI_Hints.Length ) {
+            GameObject.Find("NextHintIcon").GetComponent<Button>().interactable = false;
+            GameObject.Find("NextText").GetComponent<TMP_Text>().text = "";
+        }
+        else {
+            GameObject.Find("NextHintIcon").GetComponent<Button>().interactable = true;
+            GameObject.Find("NextText").GetComponent<TMP_Text>().text = "Next";
+        }
+    }
+
     public void ShowUIHints() {
         UIHintIndex = 0;
         // open Hint popup panel with a welcome message

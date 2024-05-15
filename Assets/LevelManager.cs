@@ -233,14 +233,27 @@ public class LevelManager : MonoBehaviour
 
     IEnumerator HintReminder()
     {
+        bool tutorial_wait = true;
         // Every 2 mins, send a request to the server to get a sendPuzzleProgressRequest
         while (true)
         {
-            Debug.Log("Starting HintReminder every 60s ...");
-            yield return new WaitForSeconds(60);
+            Debug.Log("Starting HintReminder every 90s ...");
+            yield return new WaitForSeconds(90);
             if (httpRequests.hintBuffering)
             {
                 Debug.Log("HintReminder:: Hint buffering... wait for "+httpRequests.hint_buffer+" seconds.");
+            }
+            // if level currently is car or invertedcar, then do not send hint reminders
+            else if (PlayerPrefs.GetString("LevelFilename") == "car" || PlayerPrefs.GetString("LevelFilename") == "invertedcar")
+            {
+                Debug.Log("Hint disabled for this level");
+            }
+            // if tutorial level with filename heart, add another 60 seconds delay
+            else if (PlayerPrefs.GetString("LevelFilename") == "heart" && tutorial_wait)
+            {
+                Debug.Log("Hint delayed for this level");
+                yield return new WaitForSeconds(10);
+                tutorial_wait = false;
             }
             else
             {

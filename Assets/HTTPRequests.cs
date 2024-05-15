@@ -157,6 +157,8 @@ public class HTTPRequests : MonoBehaviour
         if (www.result != UnityWebRequest.Result.Success)
         {
             Debug.LogError(www.error);
+            hint_buffer = 20;
+            hintBufferingCountdown = true;
         }
         else
         {
