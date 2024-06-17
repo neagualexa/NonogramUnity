@@ -5,6 +5,8 @@
 This project is a Unity-based User Interface (UI) for my final year project. It is designed to provide an interactive and intuitive experience for the trial participants. The puzzle game is the only interface the users interact with throughout the participant trials. The game was developed in Unity, using its respective object-oriented scripting language, C#. The goal of the game is for the experiment participants to complete several Nonogram puzzles and, when stuck or confused, ask for hints about what to do next. Hints differ depending on the progress the user has made and the level they are at.
 Completing the levels involves filling in the Nonogram puzzle to fully respect the numerical clues and solution state, and also guessing the meaning of the revealed image correctly.
 
+This is one of the repos for the Final Year Project of [Alexandra Neagu (@neagualexa)](https://github.com/neagualexa) titled `Enhancing Puzzle-Solving with User-Tailored AI Assistance: A Study on Nonogram Learning Outcomes` at Imperial College London.
+
 This project works in collaboration with the AI Asssitant I developed. The codebase can be found in the repository: https://github.com/neagualexa/LLM-chat-bot
 
 ## Features
