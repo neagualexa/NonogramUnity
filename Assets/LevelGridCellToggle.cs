@@ -95,12 +95,13 @@ public class LevelGridCellToggle : MonoBehaviour, IPointerEnterHandler, IPointer
 
         Toggle state change: crossed -> empty; any -> crossed
         */
-        crossedInteraction = true;
         if (isPressed == -1)
         {
+            crossedInteraction = false;
             isPressed = 0;
         }
         else {
+            crossedInteraction = true;
             isPressed = -1;
         }
     }
