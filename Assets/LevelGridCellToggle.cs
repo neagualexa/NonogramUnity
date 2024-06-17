@@ -26,6 +26,8 @@ public class LevelGridCellToggle : MonoBehaviour, IPointerEnterHandler, IPointer
     public Sprite sprite_normal;
     public Sprite sprite_blocked;
 
+    public bool crossedInteraction = false;
+
 
     void Start()
     {
@@ -65,21 +67,41 @@ public class LevelGridCellToggle : MonoBehaviour, IPointerEnterHandler, IPointer
          A cell can be 
              1 : filled
              0 : empty
-            -1 : blocked
+            // -1 : blocked
 
         Toggle state change: empty -> filled -> blocked -> empty
         */
+        crossedInteraction = false;
         if (isPressed == 0)
         {
             isPressed = 1;
         }
-        else if (isPressed == 1)
+        else if (isPressed == -1)
         {
-            isPressed = -1;
+            isPressed = 1;
         }
         else
         {
             isPressed = 0;
+        }
+    }
+
+    public void CrossStateMachinePressed()
+    {
+        /*
+         A cell can be 
+             X: any state
+             -1 : blocked
+
+        Toggle state change: crossed -> empty; any -> crossed
+        */
+        crossedInteraction = true;
+        if (isPressed == -1)
+        {
+            isPressed = 0;
+        }
+        else {
+            isPressed = -1;
         }
     }
 
@@ -89,6 +111,7 @@ public class LevelGridCellToggle : MonoBehaviour, IPointerEnterHandler, IPointer
             // fill the cell
             setColor("#46A2B4");
             buttonImage.color = color;
+            buttonImage.sprite = sprite_normal;
             if (gridReference != null)
             {
                 gridReference.SetCellState(rowIndex, columnIndex, true);
@@ -116,10 +139,12 @@ public class LevelGridCellToggle : MonoBehaviour, IPointerEnterHandler, IPointer
             }
         }
 
-        // record the last pressed cell
-        gridReference.gridInteractions.SetLastPressedCell(rowIndex, columnIndex);
-        clickedCell.text = "(" + (rowIndex + 1) + ", " + (columnIndex + 1) + ")";
-        StartCoroutine(httpRequests.SendGridInteractionRequest(username: PlayerPrefs.GetString("Username"), level: PlayerPrefs.GetString("LevelFilename"), gridReference.gridInteractions, gridReference.GetCellStates(), gridReference.GetSolutionCellStates() ));
+        if (!crossedInteraction){
+            // record the last pressed cell
+            gridReference.gridInteractions.SetLastPressedCell(rowIndex, columnIndex);
+            clickedCell.text = "(" + (rowIndex + 1) + ", " + (columnIndex + 1) + ")";
+            StartCoroutine(httpRequests.SendGridInteractionRequest(username: PlayerPrefs.GetString("Username"), level: PlayerPrefs.GetString("LevelFilename"), gridReference.gridInteractions, gridReference.GetCellStates(), gridReference.GetSolutionCellStates() ));
+        }
     }
 
     // only used at initialisation of grid when loading a level
@@ -166,6 +191,12 @@ public class LevelGridCellToggle : MonoBehaviour, IPointerEnterHandler, IPointer
             // isPressed = !isPressed;
             StateMachinePressed();
             buttonStateChange();
+        } else if (trackInput.RightMouseisPressed)
+        {
+            // Debug.Log("Cursor Entering " + name + " GameObject" + "Right mouse is pressed: " + trackInput.RightMouseisPressed);
+            // isPressed = !isPressed;
+            CrossStateMachinePressed();
+            buttonStateChange();
         }
     }
 
@@ -185,12 +216,21 @@ public class LevelGridCellToggle : MonoBehaviour, IPointerEnterHandler, IPointer
             // isPressed = !isPressed;
             StateMachinePressed();
             buttonStateChange();
+        } else if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            // isPressed = !isPressed;
+            CrossStateMachinePressed();
+            buttonStateChange();
         }
 
         if (eventData.button == PointerEventData.InputButton.Left) // also allowing to press and hold when on cell vs TrackInput.cs
         {
             // Debug.Log("CHILD:: Left mouse is pressed");
             trackInput.LeftMouseisPressed = true;
+        } else if (eventData.button == PointerEventData.InputButton.Right) // also allowing to press and hold when on cell vs TrackInput.cs
+        {
+            // Debug.Log("CHILD:: Right mouse is pressed");
+            trackInput.RightMouseisPressed = true;
         }
     }
 
@@ -199,6 +239,9 @@ public class LevelGridCellToggle : MonoBehaviour, IPointerEnterHandler, IPointer
         if (eventData.button == PointerEventData.InputButton.Left) // also allowing to press and hold when on cell vs TrackInput.cs
         {
             trackInput.LeftMouseisPressed = false;
+        } else if (eventData.button == PointerEventData.InputButton.Right) // also allowing to press and hold when on cell vs TrackInput.cs
+        {
+            trackInput.RightMouseisPressed = false;
         }
     }
 }

@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 public class TrackInput : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     public bool LeftMouseisPressed = false;
+    public bool RightMouseisPressed = false;
     // void Update()
     // {
     //     if (LeftMouseisPressed)
@@ -25,6 +26,22 @@ public class TrackInput : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         if (eventData.button == PointerEventData.InputButton.Left) // allowing to press and hold when outside of the cell
         {
             LeftMouseisPressed = false;
+        }
+    }
+
+    public void OnPointerRightDown(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Right) // allowing to press and hold when outside of the cell
+        {
+            RightMouseisPressed = true;
+        }
+    }
+
+    public void OnPointerRightUp(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Right) // allowing to press and hold when outside of the cell
+        {
+            RightMouseisPressed = false;
         }
     }
 }
