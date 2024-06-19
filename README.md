@@ -7,7 +7,7 @@ Completing the levels involves filling in the Nonogram puzzle to fully respect t
 
 This is one of the repos for the Final Year Project of [Alexandra Neagu (@neagualexa)](https://github.com/neagualexa) titled `Enhancing Puzzle-Solving with User-Tailored AI Assistance: A Study on Nonogram Learning Outcomes` at Imperial College London.
 
-This project works in collaboration with the AI Asssitant I developed. The codebase can be found in the repository: https://github.com/neagualexa/LLM-chat-bot
+This project works in collaboration with the AI Asssitant I developed. The codebase can be found in the repository: https://github.com/neagualexa/LLM-nonogram-assistant
 
 ## Features
 
