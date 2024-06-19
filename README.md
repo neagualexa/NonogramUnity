@@ -16,6 +16,9 @@ This project works in collaboration with the AI Asssitant I developed. The codeb
 - The levels gradually unlock as the player progresses throughout the game. The player starts with a tutorial level that introduces them to the main rules of Nonograms, and every interaction they can make with the game to pass the levels.
 - The game provides the user with an AI Assistant (running on the https://github.com/neagualexa/LLM-chat-bot) that provides the players with tailored help to learn the best strategies in completing the tasks.
 
+![Level3CompleteScreen](https://github.com/neagualexa/NonogramUnity/assets/33195033/52e02311-fa97-443c-8cd3-8d8fdbda450b)
+
+
 ## Installation
 
 To install this project, follow these steps:
